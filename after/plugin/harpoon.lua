@@ -1,4 +1,3 @@
-
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
 
@@ -9,3 +8,8 @@ vim.keymap.set("n", "<leader>aa", mark.rm_file)
 vim.keymap.set("n", "<C-n>", function() ui.nav_next() end)
 vim.keymap.set("n", "<C-z>", function() ui.nav_prev() end)
 
+require('harpoon').setup({
+	global_settings = {
+		mark_branch = true
+	}
+})
