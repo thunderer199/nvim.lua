@@ -206,6 +206,11 @@ _G.packer_plugins = {
     path = "/Users/vladlashko/.local/share/nvim/site/pack/packer/start/printer.nvim",
     url = "https://github.com/rareitems/printer.nvim"
   },
+  ["refactoring.nvim"] = {
+    loaded = true,
+    path = "/Users/vladlashko/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
+    url = "https://github.com/ThePrimeagen/refactoring.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/vladlashko/.local/share/nvim/site/pack/packer/start/telescope.nvim",
