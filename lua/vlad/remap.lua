@@ -41,3 +41,6 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- buffer navigation
 vim.keymap.set("n", "<leader>bn", "<cmd>bn<CR>")
 vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>")
+
+-- save file faster
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>")
