@@ -4,9 +4,9 @@ lsp.preset('recommended')
 
 lsp.ensure_installed({
     'tsserver',
-   -- 'eslint',
+    -- 'eslint',
     'sumneko_lua',
- --   'rust_analyzer',
+    --   'rust_analyzer',
 })
 
 -- Fix Undefined global 'vim'
@@ -35,7 +35,14 @@ cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    mapping = cmp_mappings,
+    sources = {
+        { name = 'luasnip'},
+        { name = 'path' },
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lua' },
+        { name = 'buffer' },
+    }
 })
 
 lsp.set_preferences({
