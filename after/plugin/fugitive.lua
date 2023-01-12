@@ -25,5 +25,9 @@ autocmd("BufWinEnter", {
         vim.keymap.set("n", "<leader>gP", function()
             vim.cmd.Git('pull --rebase')
         end, opts)
+
+        vim.keymap.set("n", "<leader>gpu", function()
+            vim.cmd.Git('push -u origin HEAD')
+        end, opts);
     end
 })
