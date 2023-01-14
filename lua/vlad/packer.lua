@@ -34,6 +34,7 @@ return require('packer').startup(function(use)
     }
 
     use('theprimeagen/harpoon')
+    use { 'phaazon/hop.nvim', branch = 'v2' }
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
     use { 'lewis6991/gitsigns.nvim' }
