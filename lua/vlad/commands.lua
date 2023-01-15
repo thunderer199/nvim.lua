@@ -7,7 +7,7 @@ end, {})
 vim.keymap.set('n', '<leader>cp', ':Cppath<CR>')
 
 -- Angular files jump
-vim.api.nvim_create_user_command("A", function(opts)
+vim.api.nvim_create_user_command("JToFile", function(opts)
     local type = opts.args
     local path = vim.fn.expand("%:t:r")
     local path_with_ext = vim.fn.expand("%:t")
@@ -31,12 +31,12 @@ vim.api.nvim_create_user_command("A", function(opts)
     end
 end, { nargs = 1 })
 -- go to spec file
-vim.keymap.set('n', '<leader>at', ':A spec<CR>')
+vim.keymap.set('n', '<leader>at', ':JToFile spec<CR>')
 -- got to componrny file
-vim.keymap.set('n', '<leader>am', ':A main<CR>')
+vim.keymap.set('n', '<leader>am', ':JToFile main<CR>')
 -- go to scss file
-vim.keymap.set('n', '<leader>as', ':A scss<CR>')
+vim.keymap.set('n', '<leader>as', ':JToFile scss<CR>')
 -- go to html file
-vim.keymap.set('n', '<leader>ah', ':A html<CR>')
+vim.keymap.set('n', '<leader>ah', ':JToFile html<CR>')
 --  go to snapshot file
-vim.keymap.set('n', '<leader>an', ':A snapshot<CR>')
+vim.keymap.set('n', '<leader>an', ':JToFile snapshot<CR>')
