@@ -6,12 +6,13 @@ end, {})
 
 vim.keymap.set('n', '<leader>cp', ':Cppath<CR>')
 
-
 -- Angular files jump
 vim.api.nvim_create_user_command("A", function(opts)
     local type = opts.args
     local path = vim.fn.expand("%:t:r")
+    local path_with_ext = vim.fn.expand("%:t")
     local main_path = path
+    print('a', path_with_ext)
     if path:find(".spec") then
         main_path = path:gsub(".spec", "")
     end
@@ -24,6 +25,9 @@ vim.api.nvim_create_user_command("A", function(opts)
         vim.fn.execute(":find " .. main_path .. ".scss")
     elseif type == 'html' then
         vim.fn.execute(":find " .. main_path .. ".html")
+    elseif type == 'snapshot' then
+        local snapshot_path = '__snapshots__/' .. main_path .. '.spec.ts.snap'
+        vim.fn.execute(":find " .. snapshot_path)
     end
 end, { nargs = 1 })
 -- go to spec file
@@ -34,3 +38,5 @@ vim.keymap.set('n', '<leader>am', ':A main<CR>')
 vim.keymap.set('n', '<leader>as', ':A scss<CR>')
 -- go to html file
 vim.keymap.set('n', '<leader>ah', ':A html<CR>')
+--  go to snapshot file
+vim.keymap.set('n', '<leader>an', ':A snapshot<CR>')
