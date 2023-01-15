@@ -10,9 +10,7 @@ vim.keymap.set('n', '<leader>cp', ':Cppath<CR>')
 vim.api.nvim_create_user_command("JToFile", function(opts)
     local type = opts.args
     local path = vim.fn.expand("%:t:r")
-    local path_with_ext = vim.fn.expand("%:t")
     local main_path = path
-    print('a', path_with_ext)
     if path:find(".spec") then
         main_path = path:gsub(".spec", "")
     end
