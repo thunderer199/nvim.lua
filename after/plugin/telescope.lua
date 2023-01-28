@@ -23,4 +23,5 @@ local git_files_fallback_to_find_file = function()
 	end
 end
 
+vim.keymap.set('n', '<leader>fs', builtin.git_status)
 vim.keymap.set('n', '<leader>ff', git_files_fallback_to_find_file, {})
