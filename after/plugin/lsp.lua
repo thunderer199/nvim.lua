@@ -84,7 +84,6 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
     vim.keymap.set("n", "<leader>i", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 end)
 
 lsp.setup()
