@@ -25,6 +25,8 @@ return require('packer').startup(function(use)
     use 'nvim-tree/nvim-web-devicons'
 
     use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
+
     -- html tap pairs
     use('windwp/nvim-ts-autotag')
     -- bracket etc pair

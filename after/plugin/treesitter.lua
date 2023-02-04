@@ -24,6 +24,28 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        ['aa'] = '@parameter.outer',
+        ['ia'] = '@parameter.inner',
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+      },
+      include_surrounding_whitespace = true,
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>k"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<leader>j"] = "@parameter.inner",
+      },
+    },
+  },
 }
 
 local ts_utils = require 'nvim-treesitter.ts_utils'
