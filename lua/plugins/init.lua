@@ -5,6 +5,5 @@ return {
     'tpope/vim-sleuth',
     'github/copilot.vim',
     'mattn/emmet-vim',
-    'vim-airline/vim-airline',
     'tpope/vim-surround',
 }
