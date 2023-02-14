@@ -9,6 +9,10 @@ return {
         event = "VeryLazy",
         config = true,
     },
+    {
+        "windwp/nvim-autopairs",
+        config = true,
+    },
     'mattn/emmet-vim',
     'tpope/vim-surround',
 }
