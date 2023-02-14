@@ -1,5 +1,6 @@
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.0',
     dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
         local builtin = require('telescope.builtin')
@@ -17,6 +18,7 @@ return {
         vim.keymap.set('n', '<leader>fds', builtin.lsp_document_symbols)
 
         vim.keymap.set('n', '<leader>ft', builtin.treesitter)
+        vim.keymap.set('n', '<leader>fc', builtin.colorscheme)
 
         local git_files_fallback_to_find_file = function()
             local opts = {} -- define here if you want to define something
