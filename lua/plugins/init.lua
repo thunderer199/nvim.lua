@@ -12,6 +12,10 @@ return {
         "windwp/nvim-autopairs",
         config = true,
     },
+    {
+        'norcalli/nvim-colorizer.lua',
+        config = true
+    },
     'mattn/emmet-vim',
     'tpope/vim-surround',
 }
