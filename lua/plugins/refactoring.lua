@@ -17,6 +17,6 @@ return {
             [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
             { noremap = true, silent = true, expr = false })
 
-        vim.keymap.set("v", "<leader>rr", refactoring.select_refactor)
+        vim.keymap.set({"n", "v"}, "<leader>rr", refactoring.select_refactor)
     end
 }
