@@ -1,8 +1,6 @@
 return {
     'rareitems/printer.nvim',
-    -- keys = {
-    --     { 'gp', 'Print variable' },
-    -- },
+    keys = { 'gp' },
     config = function()
         local printer = require('printer')
 
