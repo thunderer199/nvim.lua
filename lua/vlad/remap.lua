@@ -46,10 +46,13 @@ vim.keymap.set('n', '<leader>x', '<cmd>x<CR>')
 vim.keymap.set("n", "<leader>e", "<C-w>")
 
 -- splits
-vim.keymap.set("n", "ss", ':split<CR>')
-vim.keymap.set("n", "sv", ':vsplit<CR>')
+vim.keymap.set("n", "ss", ':split<CR><C-w>k')
+vim.keymap.set("n", "sv", ':vsplit<CR><C-w>l')
 
 vim.keymap.set('n', '<leader>sh', '<C-w>h')
 vim.keymap.set('n', '<leader>sk', '<C-w>k')
 vim.keymap.set('n', '<leader>sj', '<C-w>j')
 vim.keymap.set('n', '<leader>sl', '<C-w>l')
+
+-- go to last edit 
+vim.keymap.set('n', '<leader>g', '<cmd>normal! `^<CR>')
