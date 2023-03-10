@@ -27,6 +27,17 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         main_path = path:gsub(".test", "")
     end
 
+    -- for snapshot move one level up
+    if path:find(".snap") then
+        local splited = vim.split(main_path, "/")
+        local last = table.remove(splited)
+        table.remove(splited)
+        table.insert(splited, last)
+        main_path = vim.fn.join(splited, "/")
+        -- remove .ts from env of the line
+        main_path = main_path:gsub(".ts$", "")
+    end
+
     local js_extensions = { ".ts", ".tsx", ".js", ".jsx" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     if type == 'spec' then
@@ -43,8 +54,12 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     elseif type == 'html' then
         vim.fn.execute(":find " .. main_path .. ".html")
     elseif type == 'snapshot' then
-        local snapshot_path = '__snapshots__/' .. main_path .. '.spec.ts.snap'
-        vim.fn.execute(":find " .. snapshot_path)
+        local splited = vim.split(main_path, "/")
+        local last = table.remove(splited)
+        table.insert(splited, "__snapshots__")
+        table.insert(splited, last .. ".spec.ts.snap")
+        local p = vim.fn.join(splited, "/")
+        vim.fn.execute(":find " .. p)
     end
 end, { nargs = 1 })
 -- go to spec file
