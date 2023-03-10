@@ -6,21 +6,40 @@ end, {})
 
 vim.keymap.set('n', '<leader>cp', ':Cppath<CR>')
 
+local function try_file(main_path, extensions)
+    for _, ext in pairs(extensions) do
+        if vim.fn.filereadable(main_path .. ext) == 1 then
+            return main_path .. ext
+        end
+    end
+
+    return main_path
+end
+
 -- Angular files jump
 vim.api.nvim_create_user_command("JToFile", function(opts)
     local type = opts.args
-    local path = vim.fn.expand("%:t:r")
+    local path = vim.fn.expand("%:r")
     local main_path = path
     if path:find(".spec") then
         main_path = path:gsub(".spec", "")
+    elseif path:find(".test") then
+        main_path = path:gsub(".test", "")
     end
 
+    local js_extensions = { ".ts", ".tsx", ".js", ".jsx" }
+    local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     if type == 'spec' then
-        vim.fn.execute(":find " .. main_path .. ".spec.ts")
+        local p = try_file(main_path .. ".spec", js_extensions)
+        if vim.fn.filereadable(p) == 1 then
+            vim.fn.execute(":find " .. p)
+        else
+            vim.fn.execute(":find " .. try_file(main_path .. ".test", js_extensions))
+        end
     elseif type == 'main' then
-        vim.fn.execute(":find " .. main_path .. ".ts")
+        vim.fn.execute(":find " .. try_file(main_path, js_extensions))
     elseif type == 'scss' then
-        vim.fn.execute(":find " .. main_path .. ".scss")
+        vim.fn.execute(":find " .. try_file(main_path, style_extensions))
     elseif type == 'html' then
         vim.fn.execute(":find " .. main_path .. ".html")
     elseif type == 'snapshot' then
