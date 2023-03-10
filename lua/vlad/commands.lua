@@ -22,9 +22,9 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     local path = vim.fn.expand("%:r")
     local main_path = path
     if path:find(".spec") then
-        main_path = path:gsub(".spec", "")
+        main_path = path:gsub(".spec$", "")
     elseif path:find(".test") then
-        main_path = path:gsub(".test", "")
+        main_path = path:gsub(".test$", "")
     end
 
     -- for snapshot move one level up
@@ -35,7 +35,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         table.insert(splited, last)
         main_path = vim.fn.join(splited, "/")
         -- remove .ts from env of the line
-        main_path = main_path:gsub(".ts$", "")
+        main_path = main_path:gsub(".spec.ts$", "")
+        main_path = main_path:gsub(".test.ts$", "")
     end
 
     local js_extensions = { ".ts", ".tsx", ".js", ".jsx" }
