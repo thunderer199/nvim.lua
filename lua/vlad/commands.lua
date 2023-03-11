@@ -7,8 +7,8 @@ end, {})
 vim.keymap.set('n', '<leader>cp', ':Cppath<CR>')
 
 local function try_file(main_path, extensions)
-    for _, ext in pairs(extensions) do
-        if vim.fn.filereadable(main_path .. ext) == 1 then
+    for _, ext in ipairs(extensions) do
+        if vim.loop.fs_stat(main_path .. ext) then
             return main_path .. ext
         end
     end
@@ -30,20 +30,20 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     -- for snapshot move one level up
     if path:find(".snap") then
         local splited = vim.split(main_path, "/")
-        local last = table.remove(splited)
-        table.remove(splited)
-        table.insert(splited, last)
+        -- remove last folder element from the path
+        -- e.g. src/app/__snapshots__/app.component.spec.ts.snap -> src/app/app.component.spec.ts
+        table.remove(splited, #splited - 1)
         main_path = vim.fn.join(splited, "/")
         -- remove .ts from env of the line
-        main_path = main_path:gsub(".spec.ts$", "")
-        main_path = main_path:gsub(".test.ts$", "")
+        main_path = main_path:gsub("%.spec%.ts$", "")
+        main_path = main_path:gsub("%.test%.ts$", "")
     end
 
     local js_extensions = { ".ts", ".tsx", ".js", ".jsx" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     if type == 'spec' then
         local p = try_file(main_path .. ".spec", js_extensions)
-        if vim.fn.filereadable(p) == 1 then
+        if vim.loop.fs_stat(p) then
             vim.fn.execute(":find " .. p)
         else
             vim.fn.execute(":find " .. try_file(main_path .. ".test", js_extensions))
@@ -56,10 +56,12 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         vim.fn.execute(":find " .. main_path .. ".html")
     elseif type == 'snapshot' then
         local splited = vim.split(main_path, "/")
-        local last = table.remove(splited)
-        table.insert(splited, "__snapshots__")
-        table.insert(splited, last .. ".spec.ts.snap")
-        local p = vim.fn.join(splited, "/")
+        -- add __snapshots__ folder to the path
+        -- e.g. src/app/app.component.spec.ts -> src/app/__snapshots__/app.component.spec.ts.snap
+        local last = splited[#splited]
+        splited[#splited] = "__snapshots__"
+        splited[#splited + 1] = last .. ".spec.ts.snap"
+        local p = table.concat(splited, "/")
         vim.fn.execute(":find " .. p)
     end
 end, { nargs = 1 })
