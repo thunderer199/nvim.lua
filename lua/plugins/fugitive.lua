@@ -7,6 +7,8 @@ return {
         { "<leader>gb", function() vim.cmd.Git("blame") end },
         { "<leader>gB", function() vim.cmd.Git("branch") end },
         { "<leader>ge", vim.cmd.Gedit },
+        -- fugitive diffsplit!
+        { "<leader>gd", function() vim.cmd(':Gdiffsplit!') end },
     },
     config = function()
         -- vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
