@@ -25,6 +25,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         main_path = path:gsub(".spec$", "")
     elseif path:find(".test") then
         main_path = path:gsub(".test$", "")
+    elseif path:find(".module") then
+        main_path = path:gsub(".module$", "")
     end
 
     -- for snapshot move one level up
