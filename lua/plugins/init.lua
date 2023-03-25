@@ -2,7 +2,12 @@ return {
     'nvim-tree/nvim-web-devicons',
     'windwp/nvim-ts-autotag',
     'tpope/vim-sleuth',
-    'github/copilot.vim',
+    {
+        'github/copilot.vim',
+        config = function()
+            vim.g.copilot_filetypes = { ['*'] = true }
+        end
+    },
     {
         'numToStr/Comment.nvim',
         event = "VeryLazy",
