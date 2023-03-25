@@ -24,7 +24,9 @@ return {
             local opts = {} -- define here if you want to define something
             vim.fn.system('git rev-parse --is-inside-work-tree')
             if vim.v.shell_error == 0 then
-                builtin.git_files(opts)
+                builtin.git_files({
+                    show_untracked = true,
+                })
             else
                 builtin.find_files(opts)
             end
