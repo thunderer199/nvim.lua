@@ -4,6 +4,7 @@ return {
         { '<leader>gs', vim.cmd.Git },
         { "<leader>gd", vim.cmd.Gdiff },
         { "<leader>gl", vim.cmd.Gclog },
+        { "<leader>gc", function() vim.cmd.Gclog("%") end },
         { "<leader>gb", function() vim.cmd.Git("blame") end },
         { "<leader>gB", function() vim.cmd.Git("branch") end },
         { "<leader>ge", vim.cmd.Gedit },
