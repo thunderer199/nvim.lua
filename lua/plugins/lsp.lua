@@ -25,9 +25,6 @@ return {
 
         lsp.ensure_installed({
             'tsserver',
-            -- 'sumneko_lua',
-            -- 'eslint',
-            --   'rust_analyzer',
         })
 
         local cmp = require('cmp')
