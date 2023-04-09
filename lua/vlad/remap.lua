@@ -41,7 +41,7 @@ vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>")
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>")
 vim.keymap.set('n', '<leader>q', '<cmd>q<CR>')
 vim.keymap.set('n', '<leader>x', '<cmd>x<CR>')
-vim.keymap.set('n', 'QQ', '<cmd>q<CR>')
+vim.keymap.set('n', 'QQ', '<cmd>q!<CR>')
 
 -- C-w to <leader>e
 vim.keymap.set("n", "<leader>e", "<C-w>")
