@@ -22,6 +22,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set('n', 'QQ', '<cmd>q!<CR>')
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- quick fix navigation
@@ -41,7 +42,6 @@ vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>")
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>")
 vim.keymap.set('n', '<leader>q', '<cmd>q<CR>')
 vim.keymap.set('n', '<leader>x', '<cmd>x<CR>')
-vim.keymap.set('n', 'QQ', '<cmd>q!<CR>')
 
 -- C-w to <leader>e
 vim.keymap.set("n", "<leader>e", "<C-w>")
@@ -50,10 +50,7 @@ vim.keymap.set("n", "<leader>e", "<C-w>")
 vim.keymap.set("n", "ss", ':split<CR><C-w>k')
 vim.keymap.set("n", "sv", ':vsplit<CR><C-w>l')
 
-vim.keymap.set('n', '<leader>sh', '<C-w>h')
-vim.keymap.set('n', '<leader>sk', '<C-w>k')
-vim.keymap.set('n', '<leader>sj', '<C-w>j')
-vim.keymap.set('n', '<leader>sl', '<C-w>l')
 
--- go to last edit 
-vim.keymap.set('n', '<leader>g', '<cmd>normal! `^<CR>')
+-- mapping for diffget
+vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
+vim.keymap.set("n", "<leader>dl", ":diffget //3<CR>")
