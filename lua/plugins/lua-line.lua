@@ -3,7 +3,7 @@ return {
     config = function()
         require('lualine').setup {
             options = {
-                theme = 'ayu_dark',
+                theme = 'modus-vivendi',
             },
             sections = {
                 lualine_a = { 'mode' },
