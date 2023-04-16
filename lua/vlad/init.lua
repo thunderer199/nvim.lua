@@ -4,3 +4,5 @@ require("vlad.autocommand")
 require("vlad.commands")
 require("vlad.lazy")
 require("vlad.colors")
+
+require("vlad.file-jump")
