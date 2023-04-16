@@ -66,13 +66,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     end
 
     if type == 'spec' then
-        -- TODO: better algo
-        local p = try_file(main_path .. ".spec", js_extensions)
-        if vim.loop.fs_stat(p) then
-            vim.fn.execute(":find " .. p)
-        else
-            vim.fn.execute(":find " .. try_file(main_path .. ".test", js_extensions))
-        end
+        local p = try_file(main_path, test_js_extensions)
+        vim.fn.execute(":find " .. p)
     elseif type == 'main' then
         vim.fn.execute(":find " .. try_file(main_path, js_extensions))
     elseif type == 'scss' then
