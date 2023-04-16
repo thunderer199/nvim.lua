@@ -21,6 +21,19 @@ return {
         'NvChad/nvim-colorizer.lua',
         config = true,
     },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = "nvim-lua/plenary.nvim",
+        config = true,
+    },
     'mattn/emmet-vim',
+    {
+        'goolord/alpha-nvim',
+        dependecies = { { 'nvim-tree/nvim-web-devicons' } },
+        config = function()
+            require 'alpha'.setup(require 'alpha.themes.startify'.config)
+        end
+    },
     'tpope/vim-surround',
+    'wakatime/vim-wakatime'
 }
