@@ -66,14 +66,13 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     end
 
     if type == 'spec' then
-        local p = try_file(main_path, test_js_extensions)
-        vim.fn.execute(":find " .. p)
+        vim.fn.execute(":find " .. try_file(main_path, test_js_extensions))
     elseif type == 'main' then
         vim.fn.execute(":find " .. try_file(main_path, js_extensions))
     elseif type == 'scss' then
         vim.fn.execute(":find " .. try_file(main_path, style_extensions))
     elseif type == 'html' then
-        vim.fn.execute(":find " .. main_path .. ".html")
+        vim.fn.execute(":find " .. try_file(main_path, { ".html" }))
     elseif type == 'snapshot' then
         local p;
         for _, ext in ipairs(test_js_extensions) do
@@ -87,9 +86,14 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         print(p)
         if p then
             vim.fn.execute(":find " .. p)
+        else
+            print("Snapshot file not found")
         end
+    else
+        print("Unknown type")
     end
 end, { nargs = 1 })
+
 -- go to spec file
 vim.keymap.set('n', '<leader>at', ':JToFile spec<CR>')
 -- got to componrny file
