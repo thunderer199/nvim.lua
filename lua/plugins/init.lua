@@ -34,6 +34,12 @@ return {
             require 'alpha'.setup(require 'alpha.themes.startify'.config)
         end
     },
+    {
+        'mbbill/undotree',
+        keys = {
+            { "<leader>u", vim.cmd.UndotreeToggle },
+        },
+    },
     'tpope/vim-surround',
     'wakatime/vim-wakatime'
 }
