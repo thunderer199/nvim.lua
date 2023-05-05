@@ -36,7 +36,7 @@ return {
             ['<C-f>'] = cmp.mapping.scroll_docs(4),
             ['<C-e>'] = cmp.mapping.close(),
             ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-            ["<C-/>"] = cmp.mapping.complete(),
+            ["<C-s>"] = cmp.mapping(cmp.mapping.complete(), { "i", "s" }),
         })
 
         -- disable completion with tab
