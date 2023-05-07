@@ -40,6 +40,5 @@ return {
             { "<leader>u", vim.cmd.UndotreeToggle },
         },
     },
-    'tpope/vim-surround',
     'wakatime/vim-wakatime'
 }
