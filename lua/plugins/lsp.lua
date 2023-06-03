@@ -47,7 +47,7 @@ return {
         lsp.setup_nvim_cmp({
             mapping = cmp_mappings,
             sources = {
-                { name = 'luasnip'},
+                { name = 'luasnip', max_item_count = 5, keyword_length = 3 },
                 { name = 'path' },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lua' },
@@ -85,9 +85,6 @@ return {
             vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
             vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
             vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
-
-            -- experimental
-            vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
         end)
 
         lsp.setup()
