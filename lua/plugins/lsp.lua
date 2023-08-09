@@ -98,5 +98,22 @@ return {
 
         vim.keymap.set("n", "<leader>]", function() luaship.jump(1) end)
         vim.keymap.set("n", "<leader>[", function() luaship.jump(-1) end)
+
+        lsp_config.stylelint_lsp.setup {
+            filetypes = {
+                'css',
+                'less',
+                'scss',
+                'sugarss',
+                'vue',
+                'wxss',
+            },
+            settings = {
+                stylelintplus = {
+                    cssInJs = false,
+                },
+            },
+        }
+
     end
 }
