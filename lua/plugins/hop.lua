@@ -3,7 +3,7 @@ return {
     branch = 'v2',
     keys = {
         { '<leader>l', ':HopWord<CR>' },
-        { '<leader>;', ':HopChar2<CR>' },
+        { '<leader>;', ':HopChar1<CR>' },
     },
     config = function()
         local hop = require 'hop'
