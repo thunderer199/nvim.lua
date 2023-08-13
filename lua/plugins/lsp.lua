@@ -12,7 +12,6 @@ return {
         { 'hrsh7th/cmp-path' },
         { 'saadparwaiz1/cmp_luasnip' },
         { 'hrsh7th/cmp-nvim-lsp' },
-        { 'hrsh7th/cmp-nvim-lua' },
 
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
@@ -50,7 +49,6 @@ return {
                 { name = 'luasnip', max_item_count = 5, keyword_length = 3 },
                 { name = 'path' },
                 { name = 'nvim_lsp' },
-                { name = 'nvim_lua' },
                 { name = 'buffer' },
             }
         })
