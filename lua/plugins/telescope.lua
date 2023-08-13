@@ -14,10 +14,10 @@ return {
                     auto_quoting = true, -- enable/disable auto-quoting
                     -- define mappings, e.g.
                     mappings = {
-                           -- extend mappings
+                        -- extend mappings
                         i = {
-                            ["<C-k>"] = lga_actions.quote_prompt(),
-                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                            ["<C-k>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden"})
                         },
                     },
                     -- ... also accepts theme settings, for example:
@@ -46,7 +46,10 @@ return {
         vim.keymap.set('n', '<leader>fc', builtin.colorscheme)
 
         local git_files_fallback_to_find_file = function()
-            local opts = {} -- define here if you want to define something
+            -- define here if you want to define something
+            local opts = {
+                hidden = true,
+            }
             vim.fn.system('git rev-parse --is-inside-work-tree')
             if vim.v.shell_error == 0 then
                 builtin.git_files({
