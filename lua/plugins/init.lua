@@ -21,5 +21,14 @@ return {
         end
     },
     { 'mbbill/undotree', keys = { { "<leader>u", vim.cmd.UndotreeToggle } } },
-    'wakatime/vim-wakatime'
+    'wakatime/vim-wakatime',
+    {
+        'stevearc/oil.nvim',
+        opts = {
+            view_options = {
+                show_hidden = true,
+            }
+        },
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    }
 }
