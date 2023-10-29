@@ -34,6 +34,7 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     local js_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue" }
     local test_postfixes = { ".spec", ".test" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
+    local story_extensions = { ".stories.tsx", ".stories.ts" , ".stories.js" , ".stories.jsx"}
     local test_js_extensions = cartesian_product(test_postfixes, js_extensions)
 
     local type = opts.args
@@ -45,6 +46,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         main_path = path:gsub(".test$", "")
     elseif path:find(".module") then
         main_path = path:gsub(".module$", "")
+    elseif path:find(".stories") then
+        main_path = path:gsub(".stories$", "")
     end
 
     -- for snapshot move one level up
@@ -73,6 +76,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         vim.fn.execute(":find " .. try_file(main_path, style_extensions))
     elseif type == 'html' then
         vim.fn.execute(":find " .. try_file(main_path, { ".html" }))
+    elseif type == 'story' then
+        vim.fn.execute(":find " .. try_file(main_path, story_extensions))
     elseif type == 'snapshot' then
         local p;
         for _, ext in ipairs(test_js_extensions) do
@@ -102,5 +107,7 @@ vim.keymap.set('n', '<leader>am', ':JToFile main<CR>')
 vim.keymap.set('n', '<leader>as', ':JToFile scss<CR>')
 -- go to html file
 vim.keymap.set('n', '<leader>ah', ':JToFile html<CR>')
+-- go to story file
+vim.keymap.set('n', '<leader>aS', ':JToFile story<CR>')
 --  go to snapshot file
 vim.keymap.set('n', '<leader>an', ':JToFile snapshot<CR>')
