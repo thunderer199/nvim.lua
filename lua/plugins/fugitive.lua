@@ -36,6 +36,10 @@ return {
                 vim.keymap.set("n", "<leader>gpu", function()
                     vim.cmd.Git('push -u origin HEAD')
                 end, opts);
+
+                vim.keymap.set("n", "<leader>gpf", function()
+                    vim.cmd.Git('push --force-with-lease')
+                end, opts);
             end
         })
     end
