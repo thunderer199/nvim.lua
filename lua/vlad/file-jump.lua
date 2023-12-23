@@ -29,6 +29,10 @@ local function cartesian_product(t1, t2)
     return result
 end
 
+local function ends_with(str, ending)
+    return str:sub(-#ending) == ending
+end
+
 -- Angular files jump
 vim.api.nvim_create_user_command("JToFile", function(opts)
     local js_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue" }
@@ -40,13 +44,13 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     local type = opts.args
     local path = vim.fn.expand("%:r")
     local main_path = path
-    if path:find(".spec") then
+    if ends_with(path, ".spec") then
         main_path = path:gsub(".spec$", "")
-    elseif path:find(".test") then
+    elseif ends_with(path, ".test") then
         main_path = path:gsub(".test$", "")
-    elseif path:find(".module") then
+    elseif ends_with(path, ".module") then
         main_path = path:gsub(".module$", "")
-    elseif path:find(".stories") then
+    elseif ends_with(path, ".stories") then
         main_path = path:gsub(".stories$", "")
     end
 
