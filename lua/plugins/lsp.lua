@@ -88,6 +88,25 @@ return {
             vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
             vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
             vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
+
+            local function copy_diagnostic_for_current_line()
+                local diagnostics = vim.diagnostic.get(0, {lnum = vim.api.nvim_win_get_cursor(0)[1] - 1})
+                if next(diagnostics) == nil then
+                    print("No diagnostics found on this line")
+                    return
+                end
+
+                local lines = {}
+                for _, diagnostic in ipairs(diagnostics) do
+                    table.insert(lines, diagnostic.message)
+                end
+
+                local joined_lines = table.concat(lines, "\n")
+                vim.fn.setreg('+', joined_lines)
+                print("Diagnostic copied to clipboard")    
+            end
+
+            vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
         end)
 
         lsp.setup()
