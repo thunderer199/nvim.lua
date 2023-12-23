@@ -13,10 +13,10 @@ return {
 
 
         -- map alt + hjkl to navigate between files
-        vim.keymap.set("n", "˙", function() ui.nav_file(1) end)
-        vim.keymap.set("n", "∆", function() ui.nav_file(2) end)
-        vim.keymap.set("n", "˚", function() ui.nav_file(3) end)
-        vim.keymap.set("n", "¬", function() ui.nav_file(4) end)
+        vim.keymap.set("n", "<M-h>", function() ui.nav_file(1) end)
+        vim.keymap.set("n", "<M-j>", function() ui.nav_file(2) end)
+        vim.keymap.set("n", "<M-k>", function() ui.nav_file(3) end)
+        vim.keymap.set("n", "<M-l>", function() ui.nav_file(4) end)
 
         harpoon.setup({
             global_settings = {
