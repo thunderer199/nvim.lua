@@ -40,6 +40,8 @@ return {
                         ['ia'] = '@parameter.inner',
                         ['af'] = '@function.outer',
                         ['if'] = '@function.inner',
+                        ['id'] = '@conditional.inner',
+                        ['ad'] = '@conditional.outer',
                     },
                     include_surrounding_whitespace = true,
                 },
@@ -71,6 +73,5 @@ return {
             vim.fn.setreg('+', vim.fn.join(result, '.'))
         end
         vim.keymap.set('n', '<leader>nn', get_json_path)
-
     end
 }
