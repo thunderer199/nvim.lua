@@ -21,6 +21,7 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.lsp.set_log_level("off")
 
 vim.opt.termguicolors = true
 
