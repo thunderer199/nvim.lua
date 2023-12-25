@@ -90,7 +90,7 @@ return {
             vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
 
             local function copy_diagnostic_for_current_line()
-                local diagnostics = vim.diagnostic.get(0, {lnum = vim.api.nvim_win_get_cursor(0)[1] - 1})
+                local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
                 if next(diagnostics) == nil then
                     print("No diagnostics found on this line")
                     return
@@ -103,7 +103,7 @@ return {
 
                 local joined_lines = table.concat(lines, "\n")
                 vim.fn.setreg('+', joined_lines)
-                print("Diagnostic copied to clipboard")    
+                print("Diagnostic copied to clipboard")
             end
 
             vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
@@ -120,6 +120,5 @@ return {
 
         vim.keymap.set("n", "<leader>]", function() luaship.jump(1) end)
         vim.keymap.set("n", "<leader>[", function() luaship.jump(-1) end)
-
     end
 }
