@@ -1,27 +1,28 @@
 return {
     'theprimeagen/harpoon',
+    branch = "harpoon2",
+    dependecies = { {"nvim-lua/plenary.nvim"} },
     config = function()
-        local mark = require("harpoon.mark")
-        local ui = require("harpoon.ui")
         local harpoon = require("harpoon")
 
-        vim.keymap.set("n", "<leader>a", mark.add_file)
-        vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
-
-        vim.keymap.set("n", "<C-n>", function() ui.nav_next() end)
-        vim.keymap.set("n", "<C-z>", function() ui.nav_prev() end)
-
-
-        -- map alt + hjkl to navigate between files
-        vim.keymap.set("n", "<M-h>", function() ui.nav_file(1) end)
-        vim.keymap.set("n", "<M-j>", function() ui.nav_file(2) end)
-        vim.keymap.set("n", "<M-k>", function() ui.nav_file(3) end)
-        vim.keymap.set("n", "<M-l>", function() ui.nav_file(4) end)
-
-        harpoon.setup({
-            global_settings = {
-                mark_branch = true
+        harpoon:setup({
+            settings = {
+                save_on_toggle = true,
+                sync_on_ui_close = true,
             }
         })
+
+        vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
+        vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+        vim.keymap.set("n", "<C-n>", function() harpoon:list():next() end)
+        vim.keymap.set("n", "<C-z>", function() harpoon:list():prev() end)
+
+        -- map alt + hjkl to navigate between files
+        vim.keymap.set("n", "<M-h>", function() harpoon:list():select(1) end)
+        vim.keymap.set("n", "<M-j>", function() harpoon:list():select(2) end)
+        vim.keymap.set("n", "<M-k>", function() harpoon:list():select(3) end)
+        vim.keymap.set("n", "<M-l>", function() harpoon:list():select(4) end)
+
     end
 }
