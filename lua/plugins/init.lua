@@ -18,6 +18,8 @@ return {
         dependecies = { { 'nvim-tree/nvim-web-devicons' } },
         config = function()
             require 'alpha'.setup(require 'alpha.themes.startify'.config)
+
+            vim.keymap.set('n', '<leader>al', '<cmd>Alpha<cr>')
         end
     },
     { 'mbbill/undotree', keys = { { "<leader>u", vim.cmd.UndotreeToggle } } },
