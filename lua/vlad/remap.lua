@@ -48,8 +48,8 @@ vim.keymap.set('n', '<leader>x', '<cmd>x<CR>')
 vim.keymap.set("n", "<leader>e", "<C-w>")
 
 -- splits
-vim.keymap.set("n", "ss", ':split<CR><C-w>k')
-vim.keymap.set("n", "sv", ':vsplit<CR><C-w>l')
+vim.keymap.set("n", "ws", ':split<CR><C-w>k')
+vim.keymap.set("n", "wv", ':vsplit<CR><C-w>l')
 
 
 -- mapping for diffget
