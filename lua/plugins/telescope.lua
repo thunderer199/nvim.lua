@@ -43,6 +43,7 @@ return {
         vim.keymap.set('n', '<leader>fds', builtin.lsp_document_symbols)
 
         vim.keymap.set('n', '<leader>ft', builtin.treesitter)
+        vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
         vim.keymap.set('n', '<leader>fc', builtin.colorscheme)
 
         local git_files_fallback_to_find_file = function()
