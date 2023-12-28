@@ -6,6 +6,11 @@ return {
         'nvim-treesitter/nvim-treesitter-context',
     },
     config = function()
+        require 'treesitter-context'.setup {
+            enable = true,
+            multiple_threshold = 10,
+        };
+
         require 'nvim-treesitter.configs'.setup {
             -- A list of parser names, or "all"
             ensure_installed = { "help", "javascript", "typescript", "css", "scss", "json", "c", "lua", "rust" },
