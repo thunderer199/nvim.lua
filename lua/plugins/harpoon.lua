@@ -16,7 +16,7 @@ return {
         vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
         vim.keymap.set("n", "<C-n>", function() harpoon:list():next() end)
-        vim.keymap.set("n", "<C-z>", function() harpoon:list():prev() end)
+        vim.keymap.set("n", "<C-x>", function() harpoon:list():prev() end)
 
         -- map alt + hjkl to navigate between files
         vim.keymap.set("n", "<M-h>", function() harpoon:list():select(1) end)
