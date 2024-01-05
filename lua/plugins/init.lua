@@ -15,7 +15,7 @@ return {
     'mattn/emmet-vim',
     {
         'goolord/alpha-nvim',
-        dependecies = { { 'nvim-tree/nvim-web-devicons' } },
+        dependencies = { { 'nvim-tree/nvim-web-devicons' } },
         config = function()
             require 'alpha'.setup(require 'alpha.themes.startify'.config)
 
