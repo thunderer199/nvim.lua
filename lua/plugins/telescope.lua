@@ -17,7 +17,7 @@ return {
                         -- extend mappings
                         i = {
                             ["<C-k>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden"})
+                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden" })
                         },
                     },
                     -- ... also accepts theme settings, for example:

@@ -75,7 +75,6 @@ return {
         lsp.on_attach(function(client, bufnr)
             local opts = { buffer = bufnr, remap = false }
 
-
             vim.keymap.set("n", "<leader>vo", function()
                 vim.lsp.buf.execute_command({
                     command = "_typescript.organizeImports",
