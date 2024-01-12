@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
--- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", ':Oil<CR>')
 vim.keymap.set("n", "-", ":Oil<CR>")
 
@@ -23,7 +22,6 @@ vim.keymap.set({ "n", "v" }, "<leader>D", [["_D]])
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set('n', 'QQ', '<cmd>q!<CR>')
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- quick fix navigation
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
