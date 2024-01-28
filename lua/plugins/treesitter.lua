@@ -66,11 +66,10 @@ return {
         local query = require('vim.treesitter.query')
         query.set("yaml", "injections", "(block_scalar) @sql")
 
-        local ts = require 'vim.treesitter'
-        local function get_json_path()
+        local function get_path_in_file()
             local bufnr = vim.api.nvim_get_current_buf()
 
-            local node = ts.get_node()
+            local node = vim.treesitter.get_node()
 
             local file_extension = vim.fn.expand('%:e')
 
@@ -79,7 +78,7 @@ return {
                 while node do
                     if tostring(node) == '<node pair>' then
                         local key_node = node:named_child(0):named_child(0)
-                        local key = ts.get_node_text(key_node, bufnr)
+                        local key = vim.treesitter.get_node_text(key_node, bufnr)
                         table.insert(result, 1, key)
                     end
                     node = node:parent()
@@ -92,7 +91,7 @@ return {
                 while node do
                     if tostring(node) == '<node block_mapping_pair>' then
                         local key_node = node:named_child(0):named_child(0):named_child(0)
-                        local key = ts.get_node_text(key_node, bufnr)
+                        local key = vim.treesitter.get_node_text(key_node, bufnr)
                         table.insert(result, 1, key)
                     end
                     node = node:parent()
@@ -101,16 +100,9 @@ return {
                 return result
             end
 
-            local json_file_extensions = {
-                'json',
-                'jsonc',
-                'js',
-                'ts',
-                'jsx',
-                'tsx',
-            }
-
             local res;
+
+            local json_file_extensions = { 'json', 'jsonc', 'js', 'ts', 'jsx', 'tsx' }
             if vim.tbl_contains(json_file_extensions, file_extension) then
                 res = json_parser();
             elseif file_extension == 'yaml' then
@@ -123,6 +115,6 @@ return {
                 vim.fn.setreg('+', path)
             end
         end
-        vim.keymap.set('n', '<leader>nn', get_json_path)
+        vim.keymap.set('n', '<leader>nn', get_path_in_file)
     end
 }
