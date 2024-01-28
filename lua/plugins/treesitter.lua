@@ -4,6 +4,7 @@ return {
     dependencies = {
         'nvim-treesitter/nvim-treesitter-textobjects',
         'nvim-treesitter/nvim-treesitter-context',
+        'nvim-treesitter/playground'
     },
     config = function()
         require 'treesitter-context'.setup {
@@ -61,6 +62,8 @@ return {
                 },
             },
         }
+
+        require("vim.treesitter.query").set("yaml", "injections", "(block_scalar) @sql")
 
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local function get_json_path()
