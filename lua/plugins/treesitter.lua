@@ -63,11 +63,15 @@ return {
             },
         }
 
-        require("vim.treesitter.query").set("yaml", "injections", "(block_scalar) @sql")
+        local query = require('vim.treesitter.query')
+        query.set("yaml", "injections", "(block_scalar) @sql")
 
-        local ts_utils = require 'nvim-treesitter.ts_utils'
+        local ts = require 'vim.treesitter'
         local function get_json_path()
-            local node = ts_utils.get_node_at_cursor()
+            local bufnr = vim.api.nvim_get_current_buf()
+
+            local node = ts.get_node()
+
             local file_extension = vim.fn.expand('%:e')
 
             local function json_parser()
@@ -75,7 +79,8 @@ return {
                 while node do
                     if tostring(node) == '<node pair>' then
                         local key_node = node:named_child(0):named_child(0)
-                        table.insert(result, 1, ts_utils.get_node_text(key_node)[1])
+                        local key = ts.get_node_text(key_node, bufnr)
+                        table.insert(result, 1, key)
                     end
                     node = node:parent()
                 end
@@ -87,8 +92,8 @@ return {
                 while node do
                     if tostring(node) == '<node block_mapping_pair>' then
                         local key_node = node:named_child(0):named_child(0):named_child(0)
-                        local key = ts_utils.get_node_text(key_node)
-                        table.insert(result, 1, key[1])
+                        local key = ts.get_node_text(key_node, bufnr)
+                        table.insert(result, 1, key)
                     end
                     node = node:parent()
                 end
