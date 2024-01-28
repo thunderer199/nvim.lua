@@ -3,21 +3,39 @@ return {
         'stevearc/conform.nvim',
         opts = {
             formatters_by_ft = {
-                javascript = { { "prettierd", "prettier" } },
-                typescript = { { "prettierd", "prettier" } },
+                javascript = { { "prettier", "prettierd" } },
+                typescript = { { "prettier", "prettierd" } },
                 typescriptreact = { { "prettier", "prettierd" } },
                 javascriptreact = { { "prettier", "prettierd" } },
-                json = { { "json-lsp", "prettierd", "prettier" } },
-                html = { { "prettierd", "prettier" } },
-                scss = { { "prettierd", "prettier" } },
-                css = { { "prettierd", "prettier" } },
-                less = { { "prettierd", "prettier" } },
-                stylus = { { "prettierd", "prettier" } },
+                json = { { "json-lsp", "prettier", "prettierd" } },
+                html = { { "prettier", "prettierd" } },
+                scss = { { "prettier", "prettierd" } },
+                css = { { "prettier", "prettierd" } },
+                less = { { "prettier", "prettierd" } },
+                stylus = { { "prettier", "prettierd" } },
+                yaml = { { "injected", "prettier", "prettierd" } },
+                sql = { { "sql_formatter" } },
             },
+            formatters = {
+                sql_formatter = {
+                    prepend_args = { "--language", "postgresql" },
+                },
+                injected = {
+                    options = {
+                        ignore_errors = false,
+                        lang_to_formatters = {
+                            sql = { { "sql_formatter" } },
+                        },
+                        lang_to_ext = {
+                            sql = { "sql" },
+                        },
+                    }
+                }
+            }
         },
         init = function()
             -- Set this value to true to silence errors when formatting a block fails
-            require("conform.formatters.injected").options.ignore_errors = false
+            -- require("conform.formatters.injected").options.ignore_errors = false
 
             local conform = require("conform")
 
