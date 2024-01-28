@@ -67,18 +67,56 @@ return {
 
         local ts_utils = require 'nvim-treesitter.ts_utils'
         local function get_json_path()
-            local result = {}
             local node = ts_utils.get_node_at_cursor()
-            while node do
-                if tostring(node) == '<node pair>' then
-                    local key_node = node:named_child(0):named_child(0)
-                    table.insert(result, 1, ts_utils.get_node_text(key_node)[1])
+            local file_extension = vim.fn.expand('%:e')
+
+            local function json_parser()
+                local result = {}
+                while node do
+                    if tostring(node) == '<node pair>' then
+                        local key_node = node:named_child(0):named_child(0)
+                        table.insert(result, 1, ts_utils.get_node_text(key_node)[1])
+                    end
+                    node = node:parent()
                 end
-                node = node:parent()
+                return result
             end
-            print(vim.fn.join(result, '.'))
-            -- copy to clipboard
-            vim.fn.setreg('+', vim.fn.join(result, '.'))
+
+            local function yaml_parser()
+                local result = {}
+                while node do
+                    if tostring(node) == '<node block_mapping_pair>' then
+                        local key_node = node:named_child(0):named_child(0):named_child(0)
+                        local key = ts_utils.get_node_text(key_node)
+                        table.insert(result, 1, key[1])
+                    end
+                    node = node:parent()
+                end
+
+                return result
+            end
+
+            local json_file_extensions = {
+                'json',
+                'jsonc',
+                'js',
+                'ts',
+                'jsx',
+                'tsx',
+            }
+
+            local res;
+            if vim.tbl_contains(json_file_extensions, file_extension) then
+                res = json_parser();
+            elseif file_extension == 'yaml' then
+                res = yaml_parser();
+            end
+
+            if res ~= nil then
+                local path = vim.fn.join(res, '.')
+                print(path)
+                vim.fn.setreg('+', path)
+            end
         end
         vim.keymap.set('n', '<leader>nn', get_json_path)
     end
