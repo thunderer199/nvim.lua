@@ -10,12 +10,41 @@ return {
             require("nvim-dap-virtual-text").setup({
                 enabled = true,
             })
-            -- require('dap-vscode-js').setup()
-            -- local dap, dapui = require("dap"), require("dapui")
             local dap = require("dap")
             local dapui = require("dapui")
 
-            dapui.setup()
+            dapui.setup(
+                {
+                    layouts = {
+                        {
+                            elements = {
+                                { id = "stacks",      size = 0.25 },
+                                { id = "scopes",      size = 0.5 },
+                                { id = "breakpoints", size = 0.25 },
+                            },
+                            position = "left",
+                            size = 0.25
+                        },
+                        {
+                            elements = { id = "watches", size = 0.25 },
+                            position = "bottom",
+                            size = 10,
+                        }
+                    },
+                    mappings = {
+                        edit = "e",
+                        expand = { "<CR>", "<2-LeftMouse>" },
+                        open = "o",
+                        remove = "d",
+                        repl = "r",
+                        toggle = "t"
+                    },
+                    render = {
+                        indent = 1,
+                        max_value_lines = 100
+                    }
+                }
+            );
 
             require("dap-vscode-js").setup({
                 -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
@@ -27,7 +56,7 @@ return {
                 -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
             })
 
-            for _, language in ipairs({ "typescript", "javascript" }) do
+            for _, language in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
                 require("dap").configurations[language] = {
                     {
                         type = "pwa-node",
