@@ -84,7 +84,7 @@ return {
                         skipFiles = { "<node_internals>/**", "**/node_modules/**" },
                         smartStep = true,
                         console = "integratedTerminal",
-                    }
+                    },
                 }
             end
 
@@ -103,9 +103,11 @@ return {
             }
 
             vim.keymap.set('n', '<leader>dx', function() dap.continue() end)
+            vim.keymap.set('n', '<leader>dX', function() dap.terminate() end)
             vim.keymap.set('n', '<leader>dz', function() dap.run_last() end)
-            vim.keymap.set('n', '<leader>dX', function() dap.disconnect() end)
+            vim.keymap.set('n', '<leader>dI', function() dap.run_to_cursor() end)
             vim.keymap.set('n', '<leader>dR', function() dap.repl.open() end)
+            vim.keymap.set('n', '<leader>dC', function() dapui.float_element('console') end)
 
             vim.keymap.set('n', '<leader>db', function() dap.toggle_breakpoint() end)
 
@@ -117,9 +119,7 @@ return {
             vim.keymap.set('n', '<leader>dw', function() dap.step_over() end)
             vim.keymap.set('n', '<leader>de', function() dap.step_into() end)
 
-            vim.keymap.set('n', '<leader>di', function()
-                dapui.eval()
-            end)
+            vim.keymap.set('n', '<leader>di', function() dapui.eval() end)
 
             vim.keymap.set('n', '<leader>do', function()
                 dapui.toggle()
