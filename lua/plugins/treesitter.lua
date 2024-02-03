@@ -67,9 +67,6 @@ return {
             },
         }
 
-        local query = require('vim.treesitter.query')
-        query.set("yaml", "injections", "(block_scalar) @sql")
-
         local function get_path_in_file()
             local bufnr = vim.api.nvim_get_current_buf()
 
