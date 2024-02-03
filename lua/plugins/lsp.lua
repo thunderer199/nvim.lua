@@ -53,6 +53,7 @@ return {
                 { name = 'luasnip', max_item_count = 5, keyword_length = 3 },
                 { name = 'path' },
                 { name = 'nvim_lsp' },
+                { name = "vim-dadbod-completion" },
                 { name = 'buffer' },
             }
         })
