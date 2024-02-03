@@ -1,10 +1,14 @@
 return {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.5',
-    dependencies = { { 'nvim-lua/plenary.nvim' }, { "nvim-telescope/telescope-live-grep-args.nvim" } },
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        "nvim-telescope/telescope-live-grep-args.nvim",
+    },
     config = function()
         local telescope = require('telescope')
         local lga_actions = require("telescope-live-grep-args.actions")
+        local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
         local builtin = require('telescope.builtin')
 
 
@@ -30,9 +34,11 @@ return {
         telescope.load_extension("live_grep_args")
 
         vim.keymap.set('n', '<leader>fg', telescope.extensions.live_grep_args.live_grep_args, {})
+        vim.keymap.set('n', '<leader>fgh', live_grep_args_shortcuts.grep_word_under_cursor, {})
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
         vim.keymap.set('n', '<leader>fd', builtin.diagnostics, {})
+        vim.keymap.set('n', '<leader>fr', builtin.resume, {})
 
         vim.keymap.set('n', '<leader>fo', function()
             builtin.oldfiles({ cwd_only = true, shorten_path = true, })
