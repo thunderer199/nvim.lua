@@ -106,7 +106,7 @@ return {
             local json_file_extensions = { 'json', 'jsonc', 'js', 'ts', 'jsx', 'tsx' }
             if vim.tbl_contains(json_file_extensions, file_extension) then
                 res = json_parser();
-            elseif file_extension == 'yaml' then
+            elseif vim.tbl_contains({ 'yaml', 'yml' }, file_extension) then
                 res = yaml_parser();
             end
 
