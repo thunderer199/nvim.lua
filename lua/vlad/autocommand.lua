@@ -13,10 +13,3 @@ vim.api.nvim_create_autocmd(
     { "FocusLost", "InsertLeave" },
     { command = "silent! wa", group = "AutoSave" }
 )
-
-vim.api.nvim_create_augroup("TransparentColors", { clear = true })
-vim.api.nvim_create_autocmd(
-    { "ColorScheme" },
-    { command = "hi Normal guibg=NONE ctermbg=NONE", group = "TransparentColors" }
-)
-
