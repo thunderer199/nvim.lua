@@ -13,21 +13,20 @@ return {
 
 
         telescope.setup {
+            pickers = {
+                colorscheme = {
+                    enable_preview = true,
+                },
+            },
             extensions = {
                 live_grep_args = {
                     auto_quoting = true, -- enable/disable auto-quoting
-                    -- define mappings, e.g.
                     mappings = {
-                        -- extend mappings
                         i = {
                             ["<C-k>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
                             ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden" })
                         },
                     },
-                    -- ... also accepts theme settings, for example:
-                    -- theme = "dropdown", -- use dropdown theme
-                    -- theme = { }, -- use own theme spec
-                    -- layout_config = { mirror=true }, -- mirror preview pane
                 }
             }
         }
@@ -54,24 +53,9 @@ return {
 
         vim.keymap.set('n', '<leader>ft', builtin.treesitter)
         vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
-        -- vim.keymap.set('n', '<leader>fc', builtin.colorscheme)
-
-        local git_files_fallback_to_find_file = function()
-            -- define here if you want to define something
-            local opts = {
-                hidden = true,
-            }
-            vim.fn.system('git rev-parse --is-inside-work-tree')
-            if vim.v.shell_error == 0 then
-                builtin.git_files({
-                    show_untracked = true,
-                })
-            else
-                builtin.find_files(opts)
-            end
-        end
+        vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
 
         vim.keymap.set('n', '<leader>fs', builtin.git_status)
-        vim.keymap.set('n', '<leader>ff', git_files_fallback_to_find_file, {})
+        vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
     end
 }
