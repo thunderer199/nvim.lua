@@ -11,11 +11,45 @@ return {
         local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
         local builtin = require('telescope.builtin')
 
+        local actions = require('telescope.actions')
+        local actions_state = require('telescope.actions.state')
+
+        local function open_diff_for_selected_commit()
+            -- Open in diffview
+            local entry = actions_state.get_selected_entry()
+            -- close Telescope window properly prior to switching windows
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s^!"):format(entry.value))
+        end
 
         telescope.setup {
             pickers = {
                 colorscheme = {
                     enable_preview = true,
+                },
+                git_commits = {
+                    mappings = {
+                        i = {
+                            ['<CR>'] = function() end,
+                            ["<C-d>"] = open_diff_for_selected_commit,
+                        },
+                    },
+                },
+                git_bcommits = {
+                    mappings = {
+                        i = {
+                            ['<CR>'] = function() end,
+                            ["<C-d>"] = open_diff_for_selected_commit,
+                        },
+                    },
+                },
+                git_bcommits_range = {
+                    mappings = {
+                        i = {
+                            ['<CR>'] = function() end,
+                            ["<C-d>"] = open_diff_for_selected_commit,
+                        },
+                    },
                 },
             },
             extensions = {
@@ -55,7 +89,22 @@ return {
         vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
         vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
 
+        local get_git_cwd = function()
+            local git_dir = require('telescope.utils').get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })
+                [1]
+
+            print(git_dir)
+            return git_dir
+        end
+
         vim.keymap.set('n', '<leader>fs', builtin.git_status)
-        vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+        vim.keymap.set('n', '<leader>ff', function()
+            local git_dir = get_git_cwd()
+            if git_dir == nil then
+                builtin.find_files()
+            else
+                builtin.git_files({ cwd = git_dir })
+            end
+        end)
     end
 }

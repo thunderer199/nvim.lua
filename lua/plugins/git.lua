@@ -1,12 +1,18 @@
 return {
-    { "sindrets/diffview.nvim" },
+    {
+        "sindrets/diffview.nvim",
+        lazy = false,
+        keys = {
+            { "<leader>gl", ":DiffviewFileHistory<CR>" },
+            { "<leader>gc", ":DiffviewFileHistory %<CR>" },
+            { "<leader>gC", ":DiffviewFileHistory<CR>", mode = { "v" } },
+        }
+    },
     {
         'tpope/vim-fugitive',
         keys = {
             { '<leader>gs', vim.cmd.Git },
-            { "<leader>gd", vim.cmd.Gdiff },
-            { "<leader>gl", vim.cmd.Gclog },
-            { "<leader>gc", function() vim.cmd.Gclog("%") end },
+            -- { "<leader>gd", vim.cmd.Gdiff },
             { "<leader>gb", function() vim.cmd.Git("blame") end },
             { "<leader>gB", function() vim.cmd.Git("branch") end },
             { "<leader>ge", vim.cmd.Gedit },
