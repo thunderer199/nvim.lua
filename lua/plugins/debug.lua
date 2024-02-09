@@ -69,7 +69,24 @@ return {
                         type = "pwa-node",
                         request = "attach",
                         name = "Attach",
-                        processId = require 'dap.utils'.pick_process,
+                        processId = function()
+                            require 'dap.utils'.pick_process({
+                                -- filter = '--inspect'
+                                filter = function(p)
+                                    -- return p.name == 'node' and string.find(p.cmd, '--inspect')
+                                    local list = { 'node', 'ts-node', '--inspect', 'vitest' }
+                                    for _, v in ipairs(list) do
+                                        -- print(p.cmd)
+                                        -- print(p.name)
+                                        if string.find(p.name, v) then
+                                            return true
+                                        end
+                                    end
+
+                                    return false
+                                end
+                            })
+                        end,
                         cwd = "${workspaceFolder}",
                     },
                     -- vitest run
