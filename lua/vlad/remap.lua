@@ -50,6 +50,9 @@ vim.keymap.set("n", "<leader>e", "<C-w>")
 vim.keymap.set("n", "ws", ':split<CR><C-w>k')
 vim.keymap.set("n", "wv", ':vsplit<CR><C-w>l')
 
+-- close tab
+vim.keymap.set("n", "gx", "<cmd>tabclose<CR>")
+
 
 -- mapping for diffget
 vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
