@@ -16,9 +16,6 @@ return {
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
         { 'rafamadriz/friendly-snippets' },
-
-        --- emmet
-        { 'mattn/emmet-vim' },
     },
     config = function()
         local lsp = require('lsp-zero')
@@ -50,7 +47,6 @@ return {
         lsp.setup_nvim_cmp({
             mapping = cmp_mappings,
             sources = {
-                { name = 'emmet_vim', max_item_count = 5, keyword_length = 2 },
                 { name = 'luasnip', max_item_count = 5, keyword_length = 3 },
                 { name = 'path' },
                 { name = 'nvim_lsp' },
