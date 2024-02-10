@@ -22,6 +22,8 @@ return {
             vim.cmd((":DiffviewOpen %s^!"):format(entry.value))
         end
 
+        local noop = function() end
+
         telescope.setup {
             pickers = {
                 colorscheme = {
@@ -30,7 +32,7 @@ return {
                 git_commits = {
                     mappings = {
                         i = {
-                            ['<CR>'] = function() end,
+                            ['<CR>'] = noop,
                             ["<C-d>"] = open_diff_for_selected_commit,
                         },
                     },
@@ -38,7 +40,7 @@ return {
                 git_bcommits = {
                     mappings = {
                         i = {
-                            ['<CR>'] = function() end,
+                            ['<CR>'] = noop,
                             ["<C-d>"] = open_diff_for_selected_commit,
                         },
                     },
@@ -46,8 +48,34 @@ return {
                 git_bcommits_range = {
                     mappings = {
                         i = {
-                            ['<CR>'] = function() end,
+                            ['<CR>'] = noop,
                             ["<C-d>"] = open_diff_for_selected_commit,
+                        },
+                    },
+                },
+                git_branches = {
+                    mappings = {
+                        i = {
+                            ['<CR>'] = noop,
+                            ['<C-r>'] = noop,
+                            ['<C-t>'] = noop,
+                            ['<C-a>'] = noop,
+                            ['<C-s>'] = noop,
+                            ['<C-y>'] = noop,
+                            ['<C-d>'] = function()
+                                local entry = actions_state.get_selected_entry()
+                                actions.close(vim.api.nvim_get_current_buf())
+                                vim.cmd((":DiffviewOpen %s"):format(entry.value))
+                            end,
+                            ['<C-f>'] = function()
+                                print(vim.fn.expand('%:p'))
+                                local entry = actions_state.get_selected_entry()
+                                actions.close(vim.api.nvim_get_current_buf())
+                                vim.cmd((":DiffviewOpen %s -- %s"):format(
+                                    entry.value,
+                                    vim.fn.expand('%:p')
+                                ))
+                            end,
                         },
                     },
                 },
@@ -69,6 +97,7 @@ return {
         vim.keymap.set('n', '<leader>fg', telescope.extensions.live_grep_args.live_grep_args, {})
         vim.keymap.set('n', '<leader>fh', live_grep_args_shortcuts.grep_word_under_cursor, {})
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+        vim.keymap.set('n', '<leader>fB', builtin.git_branches, {})
         vim.keymap.set('n', '<leader>fhh', builtin.help_tags, {})
         vim.keymap.set('n', '<leader>fd', builtin.diagnostics, {})
         vim.keymap.set('n', '<leader>fr', builtin.resume, {})
