@@ -131,7 +131,7 @@ return {
             if git_dir == nil then
                 builtin.find_files()
             else
-                builtin.git_files({ cwd = git_dir })
+                builtin.find_files({ cwd = git_dir })
             end
         end)
     end
