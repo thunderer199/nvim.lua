@@ -11,18 +11,7 @@ return {
     vim.g.db_ui_execute_on_save = 0
 
     vim.keymap.set('n', '<leader>du', '<cmd>DBUIToggle<CR>');
-
-    vim.keymap.set(
-      'n',
-      '<leader>dr',
-      ':normal vip<CR><PLUG>(DBUI_ExecuteQuery)'
-    );
-
-    vim.keymap.set(
-      'n',
-      '<leader>ds',
-      '<PLUG>(DBUI_ExecuteQuery)'
-    );
-
+    vim.keymap.set('n', '<leader>dr', ':normal vip<CR><PLUG>(DBUI_ExecuteQuery)');
+    vim.keymap.set('n', '<leader>ds', '<PLUG>(DBUI_ExecuteQuery)');
   end,
 }
