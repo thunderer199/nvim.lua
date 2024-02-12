@@ -98,7 +98,6 @@ return {
         vim.keymap.set('n', '<leader>fh', live_grep_args_shortcuts.grep_word_under_cursor, {})
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fB', builtin.git_branches, {})
-        vim.keymap.set('n', '<leader>fhh', builtin.help_tags, {})
         vim.keymap.set('n', '<leader>fd', builtin.diagnostics, {})
         vim.keymap.set('n', '<leader>fr', builtin.resume, {})
 
