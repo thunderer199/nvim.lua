@@ -33,7 +33,7 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-d>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_diff_for_selected_commit,
                         },
                     },
                 },
@@ -41,7 +41,7 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-d>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_diff_for_selected_commit,
                         },
                     },
                 },
@@ -49,7 +49,7 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-d>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_diff_for_selected_commit,
                         },
                     },
                 },
@@ -62,13 +62,13 @@ return {
                             ['<C-a>'] = noop,
                             ['<C-s>'] = noop,
                             ['<C-y>'] = noop,
-                            ['<C-d>'] = function()
+                            ['<C-d>'] = noop,
+                            ['<C-o>'] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
                                 vim.cmd((":DiffviewOpen %s"):format(entry.value))
                             end,
                             ['<C-f>'] = function()
-                                print(vim.fn.expand('%:p'))
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
                                 vim.cmd((":DiffviewOpen %s -- %s"):format(
