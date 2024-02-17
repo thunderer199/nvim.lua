@@ -11,7 +11,6 @@ return {
     { "windwp/nvim-autopairs",     config = true },
     { 'NvChad/nvim-colorizer.lua', config = true },
     { "folke/todo-comments.nvim",  dependencies = "nvim-lua/plenary.nvim", config = true },
-    'mattn/emmet-vim',
     {
         'goolord/alpha-nvim',
         dependencies = { { 'nvim-tree/nvim-web-devicons' } },

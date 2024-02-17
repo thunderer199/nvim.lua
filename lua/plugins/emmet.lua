@@ -2,8 +2,8 @@ return {
   'mattn/emmet-vim',
   lazy = false,
   config = function()
-    -- vim.g.user_emmet_install_global = 0
-    -- vim.keymap.set('i', '<C-y>', '<plug>(emmet-expand-abbr)');
+    vim.g.user_emmet_install_global = 0
+    -- vim.keymap.set('i', '<C-y>,', '<plug>(emmet-expand-abbr)');
     -- vim.keymap.set('i', '<C-y>u', '<plug>(emmet-update-tag)');
     -- vim.keymap.set('i', '<C-y>;', '<plug>(emmet-expand-word)');
     -- vim.keymap.set('i', '<C-y>d', '<plug>(emmet-balance-tag-inward)');
