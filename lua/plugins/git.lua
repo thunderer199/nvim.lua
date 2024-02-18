@@ -14,7 +14,7 @@ return {
         'tpope/vim-fugitive',
         keys = {
             { '<leader>gs', vim.cmd.Git },
-            { "<leader>gb", function() vim.cmd.Git("blame -w -C -C -C") end },
+            { "<leader>gb", function() vim.cmd.Git("blame -w -M") end },
             { "<leader>gB", function() vim.cmd.Git("blame") end },
             { "<leader>ge", vim.cmd.Gedit },
         },
