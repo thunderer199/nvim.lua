@@ -22,6 +22,12 @@ return {
             vim.cmd((":DiffviewOpen %s^!"):format(entry.value))
         end
 
+        local function copy_commit_hash()
+            local entry = actions_state.get_selected_entry()
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.fn.setreg('+', entry.value)
+        end
+
         local noop = function() end
 
         telescope.setup {
@@ -34,6 +40,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-y>"] = copy_commit_hash,
                         },
                     },
                 },
@@ -42,6 +49,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-y>"] = copy_commit_hash,
                         },
                     },
                 },
@@ -50,6 +58,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-y>"] = copy_commit_hash,
                         },
                     },
                 },
