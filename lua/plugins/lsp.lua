@@ -47,7 +47,7 @@ return {
         lsp.setup_nvim_cmp({
             mapping = cmp_mappings,
             sources = {
-                { name = 'luasnip', max_item_count = 5, keyword_length = 3 },
+                { name = 'luasnip',              max_item_count = 5, keyword_length = 3 },
                 { name = 'path' },
                 { name = 'nvim_lsp' },
                 { name = "vim-dadbod-completion" },
@@ -65,10 +65,19 @@ return {
             }
         })
 
-        local luaship = require('luasnip');
+        local luasnip = require('luasnip');
 
-        vim.keymap.set("n", "<leader>]", function() luaship.jump(1) end)
-        vim.keymap.set("n", "<leader>[", function() luaship.jump(-1) end)
+        -- load snippets
+        require('vlad.snippets')
+
+
+        vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end)
+        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end)
+        vim.keymap.set({ "i", "s" }, "<C-E>", function()
+            if luasnip.choice_active() then
+                luasnip.change_choice(1)
+            end
+        end, { silent = true })
 
         lsp.on_attach(function(client, bufnr)
             local opts = { buffer = bufnr, remap = false }
@@ -122,7 +131,5 @@ return {
         vim.diagnostic.config({
             virtual_text = true,
         })
-
-
     end
 }
