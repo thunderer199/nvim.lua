@@ -165,17 +165,11 @@ return {
         vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
         vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
 
-        local get_git_cwd = function()
-            local git_dir = require('telescope.utils').get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })
-                [1]
-
-            print(git_dir)
-            return git_dir
-        end
+        local util = require('vlad.util')
 
         vim.keymap.set('n', '<leader>fs', builtin.git_status)
         vim.keymap.set('n', '<leader>ff', function()
-            local git_dir = get_git_cwd()
+            local git_dir = util.get_git_cwd()
             if git_dir == nil then
                 builtin.find_files()
             else

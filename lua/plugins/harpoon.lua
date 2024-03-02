@@ -4,20 +4,15 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
         local harpoon = require("harpoon")
+        local util = require("vlad.util")
 
-        local get_git_cwd = function()
-            local git_dir = require('telescope.utils').get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })
-                [1]
-
-            return git_dir
-        end
 
         harpoon:setup({
             settings = {
                 save_on_toggle = true,
                 sync_on_ui_close = true,
                 key = function()
-                    local git_dir = get_git_cwd()
+                    local git_dir = util.get_git_cwd()
                     if git_dir == nil then
                         return vim.loop.cwd()
                     else
