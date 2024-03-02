@@ -7,7 +7,35 @@ return {
         local util = require("vlad.util")
 
 
+        local basepath = require('vlad.util').get_base_path()
         harpoon:setup({
+            default = {
+                create_list_item = function()
+                    local filepath = vim.fn.expand('%:p')
+
+                    local bufnr = vim.fn.bufnr(filepath, false)
+
+                    local pos = { 1, 0 }
+                    if bufnr ~= -1 then
+                        pos = vim.api.nvim_win_get_cursor(0)
+                    end
+
+                    return {
+                        value = filepath,
+                        context = {
+                            row = pos[1],
+                            col = pos[2],
+                        }
+                    }
+                end,
+                display = function(item)
+                    local display_name = item.value
+                    if display_name:find(basepath, 1, true) == 1 then
+                        display_name = display_name:sub(#basepath + 2, -1)
+                    end
+                    return display_name
+                end
+            },
             settings = {
                 save_on_toggle = true,
                 sync_on_ui_close = true,
