@@ -20,6 +20,11 @@ return {
                         pos = vim.api.nvim_win_get_cursor(0)
                     end
 
+                    -- if oil file viewer than set pos to nil
+                    if filepath:find('oil:') ~= nil then
+                        pos = { 1, 0 }
+                    end
+
                     return {
                         value = filepath,
                         context = {
