@@ -6,6 +6,7 @@ return {
         local harpoon = require("harpoon")
         local util = require("vlad.util")
 
+        local isPrevNextMovement = false;
 
         local basepath = require('vlad.util').get_base_path()
         harpoon:setup({
@@ -20,11 +21,6 @@ return {
                         pos = vim.api.nvim_win_get_cursor(0)
                     end
 
-                    -- if oil file viewer than set pos to nil
-                    if filepath:find('oil:') ~= nil then
-                        pos = { 1, 0 }
-                    end
-
                     return {
                         value = filepath,
                         context = {
@@ -32,6 +28,63 @@ return {
                             col = pos[2],
                         }
                     }
+                end,
+                select = function(list_item, list, options)
+                    options = options or {}
+                    if list_item == nil then
+                        return
+                    end
+
+                    -- find index
+                    local index = nil
+                    for i, item in ipairs(list.items) do
+                        if item.value == list_item.value then
+                            index = i
+                            break
+                        end
+                    end
+
+                    if isPrevNextMovement then
+                        isPrevNextMovement = false
+                    elseif index ~= nil then
+                        list._index = index
+                    end
+
+                    local bufnr = vim.fn.bufnr(list_item.value)
+                    local set_position = false
+                    if bufnr == -1 then
+                        set_position = true
+                        bufnr = vim.fn.bufnr(list_item.value, true)
+                    end
+                    if not vim.api.nvim_buf_is_loaded(bufnr) then
+                        vim.fn.bufload(bufnr)
+                        vim.api.nvim_set_option_value("buflisted", true, {
+                            buf = bufnr,
+                        })
+                    end
+                    -- if oil file viewer than set pos to nil
+                    if list_item.value:find('oil:') ~= nil then
+                        set_position = false
+                    end
+
+                    if options.vsplit then
+                        vim.cmd("vsplit")
+                    elseif options.split then
+                        vim.cmd("split")
+                    elseif options.tabedit then
+                        vim.cmd("tabedit")
+                    end
+
+                    vim.api.nvim_set_current_buf(bufnr)
+
+                    if set_position then
+                        vim.api.nvim_win_set_cursor(0, {
+                            list_item.context.row or 1,
+                            list_item.context.col or 0,
+                        })
+                        -- center the cursor
+                        vim.cmd("normal! zz")
+                    end
                 end,
                 display = function(item)
                     local display_name = item.value
@@ -59,9 +112,15 @@ return {
         vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
         -- Alt - n - go to next file
-        vim.keymap.set("n", "<M-n>", function() harpoon:list():next({ ui_nav_wrap = true }) end)
+        vim.keymap.set("n", "<M-n>", function()
+            isPrevNextMovement = true
+            harpoon:list():next({ ui_nav_wrap = true })
+        end)
         -- Alt - b - go to previous file
-        vim.keymap.set("n", "<M-b>", function() harpoon:list():prev({ ui_nav_wrap = true }) end)
+        vim.keymap.set("n", "<M-b>", function()
+            isPrevNextMovement = true
+            harpoon:list():prev({ ui_nav_wrap = true })
+        end)
 
         -- map alt + hjkl to navigate between files
         vim.keymap.set("n", "<M-h>", function() harpoon:list():select(1) end)
