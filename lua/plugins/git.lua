@@ -5,7 +5,7 @@ return {
         config = function()
             vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory<CR>")
             vim.keymap.set("n", "<leader>gc", ":DiffviewFileHistory %<CR>")
-            vim.keymap.set("v", "<leader>gC", function()
+            vim.keymap.set("v", "<leader>gc", function()
                 vim.cmd("'<,'>DiffviewFileHistory")
             end)
         end,
