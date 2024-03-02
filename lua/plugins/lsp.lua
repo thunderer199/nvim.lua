@@ -16,14 +16,30 @@ return {
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
         { 'rafamadriz/friendly-snippets' },
+
+        -- json schemas
+        "b0o/schemastore.nvim",
     },
     config = function()
         local lsp = require('lsp-zero')
 
         lsp.preset('recommended')
 
-        lsp.ensure_installed({
-            'tsserver',
+        require('mason').setup({})
+        require('mason-lspconfig').setup({
+            ensure_installed = { 'tsserver', 'jsonls' },
+            handlers = {
+                lsp.default_setup,
+            }
+        })
+
+        lsp.configure('jsonls', {
+            settings = {
+                json = {
+                    schemas = require('schemastore').json.schemas(),
+                    validate = { enable = true },
+                },
+            },
         })
 
         local cmp = require('cmp')
