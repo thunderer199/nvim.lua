@@ -27,8 +27,10 @@ return {
     {
         'stevearc/oil.nvim',
         opts = {
-            lsp_rename_autosave = false,
-
+            lsp_file_methods = {
+                timeout_ms = 1000,
+                autosave_changes = true,
+            },
             view_options = {
                 show_hidden = true,
             }
