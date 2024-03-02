@@ -11,10 +11,16 @@ return {
         local basepath = require('vlad.util').get_base_path()
         harpoon:setup({
             default = {
-                create_list_item = function(val)
+                create_list_item = function(_, name)
                     local filepath = vim.api.nvim_buf_get_name(
                         vim.api.nvim_get_current_buf()
                     )
+
+                    -- if name appear that is result of editing list in harpoon preview
+                    if name ~= nil then
+                        filepath = basepath .. '/' .. name
+                    end
+                    print(filepath)
 
                     local bufnr = vim.fn.bufnr(filepath, false)
 
