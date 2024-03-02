@@ -32,6 +32,14 @@ return {
         local noop = function() end
 
         telescope.setup {
+            defaults = {
+                mappings = {
+                    i = {
+                        ["<C-s>"] = actions.cycle_previewers_next,
+                        ["<C-a>"] = actions.cycle_previewers_prev,
+                    },
+                },
+            },
             pickers = {
                 colorscheme = {
                     enable_preview = true,
