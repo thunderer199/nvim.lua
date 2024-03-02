@@ -11,8 +11,10 @@ return {
         local basepath = require('vlad.util').get_base_path()
         harpoon:setup({
             default = {
-                create_list_item = function()
-                    local filepath = vim.fn.expand('%:p')
+                create_list_item = function(val)
+                    local filepath = vim.api.nvim_buf_get_name(
+                        vim.api.nvim_get_current_buf()
+                    )
 
                     local bufnr = vim.fn.bufnr(filepath, false)
 
@@ -108,7 +110,29 @@ return {
             }
         })
 
-        vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
+        local function can_append()
+            local filepath = vim.api.nvim_buf_get_name(
+                vim.api.nvim_get_current_buf()
+            )
+
+            if filepath == "" then
+                return false
+            end
+            if filepath:find("fugitive://") ~= nil then
+                return false
+            end
+            if filepath:find(".git/") ~= nil then
+                return false
+            end
+
+            return true
+        end
+
+        vim.keymap.set("n", "<leader>a", function()
+            if can_append() then
+                harpoon:list():append()
+            end
+        end)
         vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
         -- Alt - n - go to next file
