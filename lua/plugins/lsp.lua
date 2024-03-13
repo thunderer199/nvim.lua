@@ -120,8 +120,8 @@ return {
             vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
             vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
             vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
-            vim.keymap.set("n", "<leader>vd", vim.lsp.buf.document_symbol, opts)
-            vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
+            -- vim.keymap.set("n", "<leader>vd", vim.lsp.buf.document_symbol, opts)
+            -- vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
 
             local function copy_diagnostic_for_current_line()
                 local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
