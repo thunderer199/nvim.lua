@@ -142,8 +142,6 @@ return {
         telescope.load_extension("live_grep_args")
         telescope.load_extension("fzf")
 
-        vim.keymap.set('n', '<leader>fg', telescope.extensions.live_grep_args.live_grep_args, {})
-        vim.keymap.set('n', '<leader>fh', live_grep_args_shortcuts.grep_word_under_cursor, {})
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fB', builtin.git_branches, {})
         vim.keymap.set('n', '<leader>fD', builtin.diagnostics, {})
@@ -153,10 +151,6 @@ return {
         vim.keymap.set('n', '<leader>fC', builtin.git_bcommits, {})
         vim.keymap.set('v', '<leader>fC', builtin.git_bcommits_range, {})
 
-        vim.keymap.set('n', '<leader>fo', function()
-            builtin.oldfiles({ cwd_only = true, shorten_path = true, })
-        end)
-
         vim.keymap.set('n', '<leader>fm', builtin.marks)
         vim.keymap.set('n', '<leader>fw', builtin.lsp_workspace_symbols)
         vim.keymap.set('n', '<leader>fd', builtin.lsp_document_symbols)
@@ -164,17 +158,22 @@ return {
         vim.keymap.set('n', '<leader>ft', builtin.treesitter)
         vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
         vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
+        vim.keymap.set('n', '<leader>fs', builtin.git_status)
 
         local util = require('vlad.util')
+        local cwd = util.get_base_path()
 
-        vim.keymap.set('n', '<leader>fs', builtin.git_status)
+        vim.keymap.set('n', '<leader>fg', function()
+            telescope.extensions.live_grep_args.live_grep_args({ cwd = cwd })
+        end, {})
+        vim.keymap.set('n', '<leader>fh', function()
+            live_grep_args_shortcuts.grep_word_under_cursor({ cwd = cwd })
+        end, {})
         vim.keymap.set('n', '<leader>ff', function()
-            local git_dir = util.get_git_cwd()
-            if git_dir == nil then
-                builtin.find_files()
-            else
-                builtin.find_files({ cwd = git_dir })
-            end
+            builtin.find_files({ cwd = cwd })
+        end)
+        vim.keymap.set('n', '<leader>fo', function()
+            builtin.oldfiles({ cwd = cwd, cwd_only = true, shorten_path = true, })
         end)
     end
 }
