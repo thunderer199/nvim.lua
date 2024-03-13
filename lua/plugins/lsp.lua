@@ -47,10 +47,11 @@ return {
         local cmp_mappings = lsp.defaults.cmp_mappings({
             ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
             ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-d>'] = cmp.mapping.scroll_docs(4),
             ['<C-e>'] = cmp.mapping.close(),
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
+            ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
             ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
             ["<C-s>"] = cmp.mapping(cmp.mapping.complete(), { "i", "s" }),
         })
