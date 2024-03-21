@@ -11,6 +11,7 @@ return {
         local lga_actions = require("telescope-live-grep-args.actions")
         local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
         local builtin = require('telescope.builtin')
+        local trouble = require("trouble.providers.telescope")
 
         local actions = require('telescope.actions')
         local actions_state = require('telescope.actions.state')
@@ -37,7 +38,13 @@ return {
                     i = {
                         ["<C-s>"] = actions.cycle_previewers_next,
                         ["<C-a>"] = actions.cycle_previewers_prev,
+                        ["<C-t>"] = trouble.open_with_trouble,
+                        ["<C-y>"] = trouble.open_selected_with_trouble,
                     },
+                    n = {
+                        ["<C-t>"] = trouble.open_with_trouble,
+                        ["<C-y>"] = trouble.open_selected_with_trouble,
+                    }
                 },
             },
             pickers = {
