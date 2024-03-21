@@ -84,8 +84,8 @@ return {
 
         local luasnip = require('luasnip');
 
-        -- load snippets
-        require('vlad.snippets')
+        local snippets = require('vlad.snippets')
+        snippets.register()
 
 
         vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end)
