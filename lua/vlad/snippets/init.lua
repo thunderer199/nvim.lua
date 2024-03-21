@@ -1,5 +1,5 @@
 local typescript = require('vlad.snippets.ft.typescript')
-local ls = require "luasnip"
+local ls = require("luasnip")
 
 return {
     register = function()
