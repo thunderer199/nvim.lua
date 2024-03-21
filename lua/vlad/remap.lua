@@ -11,10 +11,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
--- delete to void buffer
--- vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
--- vim.keymap.set({ "n", "v" }, "<leader>D", [["_D]])
-
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set('n', 'QQ', '<cmd>q!<CR>')
 
