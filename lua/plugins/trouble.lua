@@ -33,7 +33,7 @@ return {
             "lsp_references",
             "lsp_implementations",
             "lsp_type_definitions",
-        }
-
+        },
+        cycle_results = false,
     },
 }
