@@ -96,7 +96,7 @@ return {
             end
         end, { silent = true })
 
-        lsp.on_attach(function(client, bufnr)
+        lsp.on_attach(function(_client, bufnr)
             local opts = { buffer = bufnr, remap = false }
 
             vim.keymap.set("n", "<leader>vo", function()
@@ -106,7 +106,15 @@ return {
                 })
             end)
 
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
             vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+            vim.keymap.set("n", "gI", vim.lsp.buf.implementation, opts)
+            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+            vim.keymap.set("n", "gI", vim.lsp.buf.incoming_calls, opts)
+            vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, opts)
+
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
             vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
             vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
