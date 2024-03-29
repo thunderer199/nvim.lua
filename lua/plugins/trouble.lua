@@ -14,7 +14,7 @@ return {
             mode = "n"
         },
         { "<leader>tw", function() require("trouble").toggle("workspace_diagnostics") end,               mode = "n" },
-        { "<leader>td", function() require("trouble").toggle("document_diagnostics") end,                mode = "n" },
+        { "<leader>te", function() require("trouble").toggle("document_diagnostics") end,                mode = "n" },
         { "gd",         function() require('trouble').toggle("lsp_definitions") end,                     mode = "n" },
         { "gr",         function() require('trouble').toggle("lsp_references") end,                      mode = "n" },
         { "gi",         function() require('trouble').toggle("lsp_implementations") end,                 mode = "n" },
