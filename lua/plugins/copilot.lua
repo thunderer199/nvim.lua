@@ -76,7 +76,7 @@ return {
                 mode = { "n", "v" },
             },
             {
-                "<leader>cR",
+                "<leader>cr",
                 function()
                     local chat = require("CopilotChat")
                     chat.ask("Review changes and provide feedback.",
@@ -89,7 +89,7 @@ return {
                 mode = { "n", "v" },
             },
             {
-                "<leader>cr",
+                "<leader>cR",
                 function()
                     local chat = require("CopilotChat")
                     chat.ask("Review changes and refactor code using the provided suggestions.",
