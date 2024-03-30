@@ -66,16 +66,10 @@ return {
                     local chat = require("CopilotChat")
 
                     chat.ask(
-                        "Write commit message for the change with commitizen convention. It should be a short, imperative tense description of the change, that is less than 100 characters.",
+                        "Write commit message for the change with commitizen convention. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
                         {
                             callback = function(response)
-                                local function split_into_lines(str)
-                                    local t = {}
-                                    for s in str:gmatch("[^\r\n]+") do
-                                        table.insert(t, s)
-                                    end
-                                    return t
-                                end
+                                local util = require("vlad.util")
 
                                 -- find git commit buffer
                                 local bufnr = vim.fn.bufnr("COMMIT_EDITMSG")
@@ -85,19 +79,16 @@ return {
                                     return
                                 end
                                 -- append response to buffer start
-                                local lines = split_into_lines(response)
+                                local lines = util.split_into_lines(response)
                                 -- trim ", ' and whitespace
                                 for i, line in ipairs(lines) do
-                                    lines[i] = line:gsub("^%s*(.-)%s*$", "%1")
-                                    lines[i] = line:gsub("^\"(.-)\"$", "%1")
-                                    lines[i] = line:gsub("^'(.-)'$", "%1")
+                                    lines[i] = util.trim_string(line, '"')
+                                    lines[i] = util.trim_string(line, "'")
+                                    lines[i] = util.trim_string(line, " ")
                                 end
                                 vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, lines)
-                                -- wait 1 second
-                                vim.defer_fn(function()
-                                    -- close current buffer
-                                    vim.cmd("q")
-                                end, 1000)
+                                -- close chat buffer
+                                vim.cmd("q")
                             end,
                             selection = function(source)
                                 return require("CopilotChat.select").gitdiff(source, true)

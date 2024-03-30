@@ -16,7 +16,23 @@ local get_base_path = function()
     end
 end
 
+
+local function split_into_lines(str)
+    local t = {}
+    for s in str:gmatch("[^\r\n]+") do
+        table.insert(t, s)
+    end
+    return t
+end
+
+local function trim_string(s, char)
+    return s:gsub("^" .. char .. "(.-)" .. char .. "$", "%1")
+end
+
+
 M.get_git_cwd = get_git_cwd;
 M.get_base_path = get_base_path;
+M.split_into_lines = split_into_lines;
+M.trim_string = trim_string;
 
 return M;
