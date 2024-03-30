@@ -8,6 +8,7 @@ return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "canary",
+        lazy = false,
         dependencies = {
             -- { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
             { "github/copilot.vim" },
@@ -38,6 +39,15 @@ return {
                 function()
                     local chat = require("CopilotChat")
 
+                    chat.toggle()
+                end,
+                desc = "CopilotChat - Toggle Float",
+            },
+            {
+                "<leader>cf",
+                function()
+                    local chat = require("CopilotChat")
+
                     chat.toggle({
                         window = {
                             layout = 'float',
@@ -45,7 +55,7 @@ return {
                         },
                     })
                 end,
-                desc = "CopilotChat - Toggle",
+                desc = "CopilotChat - Toggle Float",
             },
             {
                 "<leader>cT",
@@ -63,6 +73,32 @@ return {
                 "<leader>cD",
                 ":CopilotChatDocs<CR>",
                 desc = "CopilotChat - Docs",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>cR",
+                function()
+                    local chat = require("CopilotChat")
+                    chat.ask("Review changes and provide feedback.",
+                        {
+                            selection = require("CopilotChat.select").visual,
+                        }
+                    )
+                end,
+                desc = "CopilotChat - Review",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>cr",
+                function()
+                    local chat = require("CopilotChat")
+                    chat.ask("Review changes and refactor code using the provided suggestions.",
+                        {
+                            selection = require("CopilotChat.select").visual,
+                        }
+                    )
+                end,
+                desc = "CopilotChat - Review",
                 mode = { "n", "v" },
             },
             {
@@ -112,7 +148,6 @@ return {
             }
         },
         opts = {
-            -- debug = true, -- Enable debugging
             mappings = {
                 complete = {
                     detail = 'Use @<C-i> or /<C-i> for options.',
