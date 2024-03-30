@@ -55,7 +55,7 @@ return {
             },
             {
                 "<leader>cF",
-                ":CopilotChatFix<CR>",
+                ":CopilotChatFixDiagnostic<CR>",
                 desc = "CopilotChat - Fix",
                 mode = { "n", "v" },
             },
@@ -113,6 +113,40 @@ return {
         },
         opts = {
             -- debug = true, -- Enable debugging
+            mappings = {
+                complete = {
+                    detail = 'Use @<C-i> or /<C-i> for options.',
+                    insert = '<C-i>',
+                },
+                close = {
+                    normal = 'q',
+                    insert = '<C-c>'
+                },
+                reset = {
+                    normal = '<C-l>',
+                    insert = '<C-l>'
+                },
+                submit_prompt = {
+                    normal = '<CR>',
+                    insert = '<C-i>'
+                },
+                accept_diff = {
+                    normal = '<C-y>',
+                    insert = '<C-y>'
+                },
+                yank_diff = {
+                    normal = 'gy',
+                },
+                show_diff = {
+                    normal = 'gd'
+                },
+                show_system_prompt = {
+                    normal = 'gp'
+                },
+                show_user_selection = {
+                    normal = 'gs'
+                },
+            },
         },
     },
 
