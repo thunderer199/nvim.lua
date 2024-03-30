@@ -2,12 +2,6 @@ return {
     'nvim-tree/nvim-web-devicons',
     'windwp/nvim-ts-autotag',
     'tpope/vim-sleuth',
-    {
-        'github/copilot.vim',
-        config = function()
-            vim.g.copilot_filetypes = { ['*'] = true }
-        end
-    },
     { "windwp/nvim-autopairs",     config = true },
     { 'NvChad/nvim-colorizer.lua', config = true },
     { "folke/todo-comments.nvim",  dependencies = "nvim-lua/plenary.nvim", config = true },

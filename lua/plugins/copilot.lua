@@ -81,13 +81,23 @@ return {
                                 local bufnr = vim.fn.bufnr("COMMIT_EDITMSG")
                                 -- if not found, quit
                                 if bufnr == -1 then
+                                    print("Git commit buffer not found")
                                     return
                                 end
                                 -- append response to buffer start
-                                local lines = split_into_lines(response)[2]
-                                vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, {lines})
-                                -- close current buffer
-                                vim.cmd("wq")
+                                local lines = split_into_lines(response)
+                                -- trim ", ' and whitespace
+                                for i, line in ipairs(lines) do
+                                    lines[i] = line:gsub("^%s*(.-)%s*$", "%1")
+                                    lines[i] = line:gsub("^\"(.-)\"$", "%1")
+                                    lines[i] = line:gsub("^'(.-)'$", "%1")
+                                end
+                                vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, lines)
+                                -- wait 1 second
+                                vim.defer_fn(function()
+                                    -- close current buffer
+                                    vim.cmd("q")
+                                end, 1000)
                             end,
                             selection = function(source)
                                 return require("CopilotChat.select").gitdiff(source, true)
