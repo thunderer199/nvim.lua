@@ -71,7 +71,7 @@ return {
                     local chat = require("CopilotChat")
 
                     chat.ask(
-                        "Write commit message for the change, it must be in commitizen convention. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
+                        "Write commit message for the change. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
                         {
                             callback = function(response)
                                 local util = require("vlad.util")
