@@ -1,5 +1,33 @@
 return {
     {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "sindrets/diffview.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        keys = {
+            { "<leader>gg", function() require("neogit").open() end }
+        },
+        enabled = false,
+        config = true,
+        opts = {
+            kind = "split_above",
+            integrations = {
+                telescope = true,
+                fzf_lua = true,
+                diffview = true,
+            },
+            mappings = {
+                status = {
+                    ["="] = "Toggle",
+                    ["+"] = "Stage",
+                    ["-"] = "Unstage",
+                }
+            }
+        }
+    },
+    {
         "sindrets/diffview.nvim",
         lazy = false,
         config = function()
