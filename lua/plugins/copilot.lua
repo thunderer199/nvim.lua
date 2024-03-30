@@ -41,7 +41,7 @@ return {
                     chat.toggle({
                         window = {
                             layout = 'float',
-                            title = 'My Title',
+                            title = 'CopilotChat',
                         },
                     })
                 end,
@@ -60,8 +60,13 @@ return {
                 mode = { "n", "v" },
             },
             {
+                "<leader>cD",
+                ":CopilotChatDocs<CR>",
+                desc = "CopilotChat - Docs",
+                mode = { "n", "v" },
+            },
+            {
                 "<leader>cC",
-                -- ":CopilotChatCommitStaged<CR>",
                 function()
                     local chat = require("CopilotChat")
 
