@@ -66,7 +66,7 @@ return {
                     local chat = require("CopilotChat")
 
                     chat.ask(
-                        "Write commit message for the change with commitizen convention. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
+                        "Write commit message for the change, it must be in commitizen convention. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
                         {
                             callback = function(response)
                                 local util = require("vlad.util")
@@ -82,9 +82,7 @@ return {
                                 local lines = util.split_into_lines(response)
                                 -- trim ", ' and whitespace
                                 for i, line in ipairs(lines) do
-                                    lines[i] = util.trim_string(line, '"')
-                                    lines[i] = util.trim_string(line, "'")
-                                    lines[i] = util.trim_string(line, " ")
+                                    lines[i] = util.trim_quotes(line)
                                 end
                                 vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, lines)
                                 -- close chat buffer

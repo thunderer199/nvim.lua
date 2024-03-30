@@ -26,7 +26,17 @@ local function split_into_lines(str)
 end
 
 local function trim_string(s, char)
-    return s:gsub("^" .. char .. "(.-)" .. char .. "$", "%1")
+    local pattern = "^%" .. char .. "*(.-)%" .. char .. "*$"
+    return (s:gsub(pattern, "%1"))
+end
+
+local function trim_quotes(s)
+    -- trim ", ', ` and whitespace
+    local characters = { "\"", "'", "`", " " }
+    for _, char in ipairs(characters) do
+        s = trim_string(s, char)
+    end
+    return s
 end
 
 
@@ -34,5 +44,6 @@ M.get_git_cwd = get_git_cwd;
 M.get_base_path = get_base_path;
 M.split_into_lines = split_into_lines;
 M.trim_string = trim_string;
+M.trim_quotes = trim_quotes;
 
 return M;
