@@ -76,6 +76,12 @@ return {
                 mode = { "n", "v" },
             },
             {
+                "<leader>cE",
+                ":CopilotChatExplain<CR>",
+                desc = "CopilotChat - Explain",
+                mode = { "n", "v" },
+            },
+            {
                 "<leader>cr",
                 function()
                     local chat = require("CopilotChat")
@@ -120,7 +126,7 @@ return {
                                     return
                                 end
                                 -- append response to buffer start
-                                local lines = util.split_into_lines(response)
+                                local lines = vim.fn.split(response, "\n", true)
                                 -- trim ", ' and whitespace
                                 for i, line in ipairs(lines) do
                                     lines[i] = util.trim_quotes(line)
