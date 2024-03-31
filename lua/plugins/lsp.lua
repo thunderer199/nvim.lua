@@ -42,6 +42,16 @@ return {
             },
         })
 
+        lsp.configure('lua_ls', {
+            settings = {
+                Lua = {
+                    completion = {
+                        callSnippet = "Replace",
+                    },
+                },
+            },
+        })
+
         local cmp = require('cmp')
         local cmp_select = { behavior = cmp.SelectBehavior.Replace }
         local cmp_mappings = lsp.defaults.cmp_mappings({

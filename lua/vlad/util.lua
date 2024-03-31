@@ -1,5 +1,6 @@
 local M = {};
 
+---@return string|nil
 local get_git_cwd = function()
     local utils = require('telescope.utils')
     local git_dir = utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })[1]

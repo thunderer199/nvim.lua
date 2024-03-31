@@ -1,4 +1,9 @@
 return {
+    {
+        "folke/neodev.nvim",
+        priority = 100,
+        opts = {},
+    },
     'nvim-tree/nvim-web-devicons',
     'windwp/nvim-ts-autotag',
     'tpope/vim-sleuth',
