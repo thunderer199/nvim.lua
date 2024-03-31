@@ -156,8 +156,8 @@ return {
         opts = {
             mappings = {
                 complete = {
-                    detail = 'Use @<C-i> or /<C-i> for options.',
-                    insert = '<C-i>',
+                    detail = 'Use @<C-f> or /<C-f> for options.',
+                    insert = '<C-f>',
                 },
                 close = {
                     normal = 'q',
