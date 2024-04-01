@@ -66,6 +66,12 @@ return {
             {
                 "<leader>cF",
                 ":CopilotChatFixDiagnostic<CR>",
+                desc = "CopilotChat - Fix Diagnostic",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>ch",
+                ":CopilotChatFix<CR>",
                 desc = "CopilotChat - Fix",
                 mode = { "n", "v" },
             },
@@ -93,6 +99,19 @@ return {
                 end,
                 desc = "CopilotChat - Review",
                 mode = { "n", "v" },
+            },
+            {
+                "<leader>cS",
+                function()
+                    local chat = require("CopilotChat")
+                    chat.ask("Spellcheck the provided code. Inckuding strings, comments, and identifiers.",
+                        {
+                            selection = require("CopilotChat.select").buffer,
+                        }
+                    )
+                end,
+                desc = "CopilotChat - Spellcheck",
+                mode = "n"
             },
             {
                 "<leader>cR",
