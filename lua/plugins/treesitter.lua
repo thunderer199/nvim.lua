@@ -52,6 +52,8 @@ return {
                         ['if'] = '@function.inner',
                         ['id'] = '@conditional.inner',
                         ['ad'] = '@conditional.outer',
+                        ['ac'] = '@class.outer',
+                        ['ic'] = '@class.inner',
                     },
                     include_surrounding_whitespace = true,
                 },
