@@ -5,7 +5,8 @@ return {
             'mfussenegger/nvim-dap',
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
-            'nvim-neotest/nvim-nio'
+            'nvim-neotest/nvim-nio',
+            'Weissle/persistent-breakpoints.nvim'
         },
         config = function()
             require("nvim-dap-virtual-text").setup({
@@ -13,6 +14,10 @@ return {
             })
             local dap = require("dap")
             local dapui = require("dapui")
+
+            require('persistent-breakpoints').setup {
+                load_breakpoints_event = { "BufReadPost" }
+            }
 
             dapui.setup(
                 {
@@ -120,6 +125,8 @@ return {
                 }
             }
 
+            local breakpoints = require('persistent-breakpoints.api')
+
             vim.keymap.set('n', '<leader>dx', function() dap.continue() end)
             vim.keymap.set('n', '<leader>dX', function() dap.terminate() end)
             vim.keymap.set('n', '<leader>dz', function() dap.run_last() end)
@@ -127,10 +134,11 @@ return {
             vim.keymap.set('n', '<leader>dR', function() dap.repl.open() end)
             vim.keymap.set('n', '<leader>dC', function() dapui.float_element('console') end)
 
-            vim.keymap.set('n', '<leader>db', function() dap.toggle_breakpoint() end)
+            vim.keymap.set('n', '<leader>db', function() breakpoints.toggle_breakpoint() end)
 
             vim.keymap.set('n', '<leader>dB', function()
-                dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+                -- dap.set_breakpoint(vim.fn.input('Breakpoint condition: ))
+                breakpoints.set_conditional_breakpoint(vim.fn.input('Breakpoint condition: '))
             end)
 
             vim.keymap.set('n', '<leader>dq', function() dap.step_out() end)
