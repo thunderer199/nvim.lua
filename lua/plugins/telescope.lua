@@ -16,6 +16,14 @@ return {
         local actions = require('telescope.actions')
         local actions_state = require('telescope.actions.state')
 
+        local function open_diff_for_selected_file()
+            local entry = actions_state.get_selected_entry()
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s -- %s"):format(
+                entry.value,
+                vim.fn.expand('%:p')
+            ))
+        end
         local function open_diff_for_selected_commit()
             -- Open in diffview
             local entry = actions_state.get_selected_entry()
@@ -50,6 +58,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
@@ -66,6 +75,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
@@ -83,6 +93,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
@@ -110,14 +121,7 @@ return {
                                 actions.close(vim.api.nvim_get_current_buf())
                                 vim.cmd((":DiffviewOpen %s"):format(entry.value))
                             end,
-                            ['<C-f>'] = function()
-                                local entry = actions_state.get_selected_entry()
-                                actions.close(vim.api.nvim_get_current_buf())
-                                vim.cmd((":DiffviewOpen %s -- %s"):format(
-                                    entry.value,
-                                    vim.fn.expand('%:p')
-                                ))
-                            end,
+                            ['<C-f>'] = open_diff_for_selected_file,
                         },
                     },
                 },
