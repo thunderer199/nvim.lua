@@ -24,12 +24,21 @@ return {
                 vim.fn.expand('%:p')
             ))
         end
+
         local function open_diff_for_selected_commit()
             -- Open in diffview
             local entry = actions_state.get_selected_entry()
             -- close Telescope window properly prior to switching windows
             actions.close(vim.api.nvim_get_current_buf())
             vim.cmd((":DiffviewOpen %s^!"):format(entry.value))
+        end
+
+        local function open_diff_between_selected_commit_and_head()
+            -- Open in diffview
+            local entry = actions_state.get_selected_entry()
+            -- close Telescope window properly prior to switching windows
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s^..HEAD"):format(entry.value))
         end
 
         local function copy_commit_hash()
@@ -58,6 +67,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
@@ -75,6 +85,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
@@ -93,6 +104,7 @@ return {
                         i = {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-g>"] = function()
                                 local entry = actions_state.get_selected_entry()
