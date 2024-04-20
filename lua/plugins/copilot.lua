@@ -91,7 +91,7 @@ return {
                 "<leader>cr",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Review changes and provide feedback.",
+                    chat.ask("Review code and provide feedback, following best practices.",
                         {
                             selection = require("CopilotChat.select").visual,
                         }
