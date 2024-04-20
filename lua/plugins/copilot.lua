@@ -101,6 +101,12 @@ return {
                 mode = { "n", "v" },
             },
             {
+                "<leader>cs",
+                ":CopilotChatReview<CR>",
+                desc = "CopilotChat - Review (github predefined)",
+                mode = { "n", "v" },
+            },
+            {
                 "<leader>cS",
                 function()
                     local chat = require("CopilotChat")
