@@ -17,7 +17,7 @@ return {
         keys = {
             -- Show help actions with telescope
             {
-                "<leader>ch",
+                "<leader>cH",
                 function()
                     print("Show help actions with telescope")
                     local actions = require("CopilotChat.actions")
@@ -41,7 +41,7 @@ return {
 
                     chat.toggle()
                 end,
-                desc = "CopilotChat - Toggle Float",
+                desc = "CopilotChat - Toggle Panel",
             },
             {
                 "<leader>cf",
