@@ -82,13 +82,6 @@ return {
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
-                            ["<C-g>"] = function()
-                                local entry = actions_state.get_selected_entry()
-                                actions.close(vim.api.nvim_get_current_buf())
-                                vim.cmd((":DiffviewOpen %s"):format(
-                                    entry.value
-                                ))
-                            end,
                             ["<C-p>"] = copy_commit_hash,
                         },
                     },
@@ -100,14 +93,6 @@ return {
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
-                            ["<C-g>"] = function()
-                                local entry = actions_state.get_selected_entry()
-                                actions.close(vim.api.nvim_get_current_buf())
-                                vim.cmd((":DiffviewOpen %s -- %s"):format(
-                                    entry.value,
-                                    vim.fn.expand('%:p')
-                                ))
-                            end,
                             ["<C-p>"] = copy_commit_hash,
                         },
                     },
@@ -119,14 +104,6 @@ return {
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
                             ['<C-f>'] = open_diff_for_selected_file,
-                            ["<C-g>"] = function()
-                                local entry = actions_state.get_selected_entry()
-                                actions.close(vim.api.nvim_get_current_buf())
-                                vim.cmd((":DiffviewOpen %s -- %s"):format(
-                                    entry.value,
-                                    vim.fn.expand('%:p')
-                                ))
-                            end,
                             ["<C-p>"] = copy_commit_hash,
                         },
                     },
