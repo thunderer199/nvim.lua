@@ -21,7 +21,7 @@ return {
         local function open_diff_for_selected_file()
             local entry = actions_state.get_selected_entry()
             actions.close(vim.api.nvim_get_current_buf())
-            vim.cmd((":DiffviewOpen %s -- %s"):format(
+            vim.cmd((":DiffviewOpen %s^..HEAD -- %s"):format(
                 entry.value,
                 vim.fn.expand('%:p')
             ))
