@@ -15,6 +15,8 @@ return {
 
         local actions = require('telescope.actions')
         local actions_state = require('telescope.actions.state')
+        local actions_layout = require('telescope.actions.layout')
+        local actions_set = require('telescope.actions.set')
 
         local function open_diff_for_selected_file()
             local entry = actions_state.get_selected_entry()
@@ -55,6 +57,17 @@ return {
                     i = {
                         ["<C-s>"] = actions.cycle_previewers_next,
                         ["<C-a>"] = actions.cycle_previewers_prev,
+                        ["<C-t>"] = actions_layout.toggle_preview,
+                        ["<M-h>"] = actions.preview_scrolling_left,
+                        ["<M-j>"] = actions.preview_scrolling_down,
+                        ["<M-k>"] = actions.preview_scrolling_up,
+                        ["<M-l>"] = actions.preview_scrolling_right,
+                        ["<M-[>"] = function(prompt_bufnr)
+                            actions_set.scroll_horizontal_results(prompt_bufnr, -1)
+                        end,
+                        ["<M-]>"] = function(prompt_bufnr)
+                            actions_set.scroll_horizontal_results(prompt_bufnr, 1)
+                        end
                     },
                 },
             },
