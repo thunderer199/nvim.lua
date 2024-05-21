@@ -119,12 +119,14 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
+                            ['<C-p>'] = actions.git_switch_branch,
+                            ['<C-a>'] = actions.git_create_branch,
+                            ['<C-d>'] = actions.git_delete_branch,
+                            ['<C-m>'] = actions.git_merge_branch,
                             ['<C-r>'] = noop,
                             ['<C-t>'] = noop,
-                            ['<C-a>'] = noop,
                             ['<C-s>'] = noop,
                             ['<C-y>'] = noop,
-                            ['<C-d>'] = noop,
                             ['<C-o>'] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
