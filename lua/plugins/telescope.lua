@@ -49,6 +49,24 @@ return {
             vim.fn.setreg('+', entry.value)
         end
 
+        local function git_update_selected_branch()
+            local entry = actions_state.get_selected_entry()
+            actions.close(vim.api.nvim_get_current_buf())
+            print(vim.inspect(entry))
+            local upstream = entry.upstream
+            if not upstream or upstream == "" then
+                print("No upstream branch found")
+                return
+            end
+            local local_branch = entry.value
+            -- split the upstream branch into remote and branch name
+            local remote, branch = unpack(vim.split(upstream, "/"))
+            -- fetch the remote branch
+            vim.fn.system(("git fetch %s %s"):format(remote, branch))
+
+            vim.fn.system(("git fetch %s %s:%s"):format(remote, branch, local_branch))
+        end
+
         local noop = function() end
 
         telescope.setup {
@@ -122,11 +140,11 @@ return {
                             ['<C-p>'] = actions.git_switch_branch,
                             ['<C-a>'] = actions.git_create_branch,
                             ['<C-d>'] = actions.git_delete_branch,
-                            ['<C-m>'] = actions.git_merge_branch,
+                            ['<C-y>'] = actions.git_merge_branch,
+                            ['<C-u>'] = git_update_selected_branch,
                             ['<C-r>'] = noop,
                             ['<C-t>'] = noop,
                             ['<C-s>'] = noop,
-                            ['<C-y>'] = noop,
                             ['<C-o>'] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
