@@ -75,6 +75,13 @@ return {
                 colorscheme = {
                     enable_preview = true,
                 },
+                buffers = {
+                    mappings = {
+                        i = {
+                            ['<C-d>'] = actions.delete_buffer,
+                        }
+                    }
+                },
                 git_commits = {
                     mappings = {
                         i = {
