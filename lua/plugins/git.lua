@@ -1,5 +1,13 @@
 return {
     {
+        'ruifm/gitlinker.nvim',
+        config = true,
+        keys = {
+            { '<leader>gy', function() require "gitlinker".get_buf_range_url("n") end },
+            { '<leader>gy', function() require "gitlinker".get_buf_range_url("v") end, mode = 'v' },
+        },
+    },
+    {
         "NeogitOrg/neogit",
         dependencies = {
             "nvim-lua/plenary.nvim",
