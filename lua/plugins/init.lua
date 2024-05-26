@@ -5,7 +5,6 @@ return {
         opts = {},
     },
     'nvim-tree/nvim-web-devicons',
-    'windwp/nvim-ts-autotag',
     'tpope/vim-sleuth',
     { "windwp/nvim-autopairs",     config = true },
     { 'NvChad/nvim-colorizer.lua', config = true },

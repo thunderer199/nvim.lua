@@ -4,7 +4,8 @@ return {
     dependencies = {
         'nvim-treesitter/nvim-treesitter-textobjects',
         'nvim-treesitter/nvim-treesitter-context',
-        'nvim-treesitter/playground'
+        'nvim-treesitter/playground',
+        'windwp/nvim-ts-autotag',
     },
     config = function()
         require 'treesitter-context'.setup {
@@ -22,10 +23,6 @@ return {
             -- Automatically install missing parsers when entering buffer
             -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
             auto_install = true,
-
-            autotag = {
-                enable = true,
-            },
 
             indent = {
                 enable = true,
@@ -68,6 +65,15 @@ return {
                 },
             },
         }
+
+        require('nvim-ts-autotag').setup({
+            opts = {
+                -- Defaults
+                enable_close = true, -- Auto close tags
+                enable_rename = true, -- Auto rename pairs of tags
+                enable_close_on_slash = false -- Auto close on trailing </
+            },
+        })
 
         local function get_path_in_file()
             local bufnr = vim.api.nvim_get_current_buf()
