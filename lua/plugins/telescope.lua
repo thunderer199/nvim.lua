@@ -71,6 +71,9 @@ return {
 
         telescope.setup {
             defaults = {
+                path_display = {
+                    filename_first = true,
+                },
                 mappings = {
                     i = {
                         ["<C-s>"] = actions.cycle_previewers_next,
