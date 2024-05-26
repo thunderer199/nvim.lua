@@ -52,7 +52,6 @@ return {
         local function git_update_selected_branch()
             local entry = actions_state.get_selected_entry()
             actions.close(vim.api.nvim_get_current_buf())
-            print(vim.inspect(entry))
             local upstream = entry.upstream
             if not upstream or upstream == "" then
                 print("No upstream branch found")
@@ -65,6 +64,7 @@ return {
             vim.fn.system(("git fetch %s %s"):format(remote, branch))
 
             vim.fn.system(("git fetch %s %s:%s"):format(remote, branch, local_branch))
+            print(("Updated branch %s with %s"):format(local_branch, upstream))
         end
 
         local noop = function() end
