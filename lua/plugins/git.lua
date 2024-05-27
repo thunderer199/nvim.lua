@@ -40,7 +40,7 @@ return {
         lazy = false,
         config = function()
             vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>")
-            vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory<CR>")
+            vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory --n=25<CR>")
             vim.keymap.set("n", "<leader>gc", ":DiffviewFileHistory %<CR>")
             vim.keymap.set("v", "<leader>gc", function()
                 vim.cmd("'<,'>DiffviewFileHistory")
