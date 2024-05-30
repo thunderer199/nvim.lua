@@ -144,8 +144,8 @@ return {
                             ['<C-a>'] = actions.git_create_branch,
                             ['<C-d>'] = actions.git_delete_branch,
                             ['<C-y>'] = actions.git_merge_branch,
+                            ['<C-r>'] = actions.git_rebase_branch,
                             ['<C-u>'] = git_update_selected_branch,
-                            ['<C-r>'] = noop,
                             ['<C-t>'] = noop,
                             ['<C-s>'] = noop,
                             ['<C-o>'] = function()
