@@ -3,22 +3,22 @@ return {
         'stevearc/conform.nvim',
         opts = {
             formatters_by_ft = {
-                javascript = { { "prettier", "prettierd" } },
-                typescript = { { "prettier", "prettierd" } },
-                typescriptreact = { { "prettier", "prettierd" } },
-                javascriptreact = { { "prettier", "prettierd" } },
+                javascript = { { "prettier", "prettierd" }, "injected" },
+                typescript = { { "prettier", "prettierd" }, "injected" },
+                typescriptreact = { { "prettier", "prettierd" }, "injected" },
+                javascriptreact = { { "prettier", "prettierd" }, "injected" },
                 json = { { "json-lsp", "prettier", "prettierd" } },
                 html = { { "prettier", "prettierd" } },
                 scss = { { "prettier", "prettierd" } },
                 css = { { "prettier", "prettierd" } },
                 less = { { "prettier", "prettierd" } },
                 stylus = { { "prettier", "prettierd" } },
-                yaml = { { "injected", "prettier", "prettierd" } },
+                yaml = { { "injected", { "prettier", "prettierd" } } },
                 sql = { { "sql_formatter" } },
             },
             formatters = {
                 sql_formatter = {
-                    prepend_args = { "--language", "postgresql" },
+                    prepend_args = { "--language", "plsql" },
                 },
                 injected = {
                     options = {
