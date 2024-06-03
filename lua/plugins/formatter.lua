@@ -13,7 +13,7 @@ return {
                 css = { { "prettier", "prettierd" } },
                 less = { { "prettier", "prettierd" } },
                 stylus = { { "prettier", "prettierd" } },
-                yaml = { { "injected", { "prettier", "prettierd" } } },
+                yaml = { { "prettier", "prettierd" }, "injected" },
                 sql = { { "sql_formatter" } },
             },
             formatters = {
