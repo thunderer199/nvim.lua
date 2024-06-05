@@ -110,14 +110,14 @@ return {
                 "<leader>cS",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Spellcheck the provided code. Inckuding strings, comments, and identifiers.",
+                    chat.ask("Spellcheck the provided code. Including strings, comments, and identifiers.",
                         {
                             selection = require("CopilotChat.select").buffer,
                         }
                     )
                 end,
                 desc = "CopilotChat - Spellcheck",
-                mode = "n"
+                mode = { "n", "v" },
             },
             {
                 "<leader>cR",
