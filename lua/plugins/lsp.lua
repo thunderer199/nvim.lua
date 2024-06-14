@@ -42,6 +42,12 @@ return {
             },
         })
 
+        local util = require("lspconfig.util")
+
+        lsp.configure('angularls', {
+            root_dir = util.root_pattern("angular.json", "project.json"),
+        })
+
         lsp.configure('lua_ls', {
             settings = {
                 Lua = {
