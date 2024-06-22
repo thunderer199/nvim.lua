@@ -69,6 +69,9 @@ return {
 
 
         require('neotest').setup({
+            quickfix = {
+                enabled = false,
+            },
             adapters = {
                 require('neotest-jest')({
                     jestCommand = "npx jest",
