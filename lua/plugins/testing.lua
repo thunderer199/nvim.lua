@@ -55,18 +55,7 @@ return {
         }
     },
     config = function()
-        local find_parent_with_package_json = function(path)
-            local current_path = path
-            while current_path ~= "/" do
-                local package_json = current_path .. "/package.json"
-                if vim.fn.filereadable(package_json) == 1 then
-                    return current_path
-                end
-                current_path = vim.fn.fnamemodify(current_path, ":h")
-            end
-            return nil
-        end
-
+        local util = require("vlad.util")
 
         require('neotest').setup({
             quickfix = {
@@ -78,7 +67,7 @@ return {
                     -- jestConfigFile = "custom.jest.config.ts",
                     env = { CI = true },
                     cwd = function(path)
-                        return find_parent_with_package_json(path)
+                        return util.find_parent_with_package_json(path)
                     end,
                 }),
                 require('neotest-vitest')({
