@@ -64,36 +64,50 @@ return {
             adapters = {
                 require('neotest-jest')({
                     jestCommand = "npx jest",
-                    -- jestConfigFile = "custom.jest.config.ts",
                     env = { CI = true },
                     cwd = function(path)
                         return util.find_parent_with_package_json(path)
                     end,
                 }),
                 require('neotest-vitest')({
-                    vitestCommand = "npx vitest",
+                    vitestCommand = function(path)
+                        for _, value in pairs(vim.g.custom_test_config) do
+                            if value.check(path) then
+                                return value.vitest_cmd(path)
+                            end
+                        end
+
+                        return "npx vitest"
+                    end,
                     cwd = function(path)
-                        return find_parent_with_package_json(path)
+                        return util.find_parent_with_package_json(path)
+                    end,
+                    is_test_file = function(path)
+                        if path == nil then
+                            return false
+                        end
+
+                        for _, x in ipairs({ "spec", "test", "api.test" }) do
+                            for _, ext in ipairs({ "js", "jsx", "coffee", "ts", "tsx" }) do
+                                if string.match(path, "%." .. x .. "%." .. ext .. "$") then
+                                    return true
+                                end
+                            end
+                        end
+
+                        return false;
+                    end,
                     filter_dir = function(name)
                         return name ~= "node_modules" or name ~= "dist" or name ~= "build"
                     end,
+                    vitestConfigFile = function(path)
+                        for _, value in pairs(vim.g.custom_test_config) do
+                            if value.check(path) then
+                                return value.cwd(path)
+                            end
+                        end
+                        return vim.fn.getcwd() .. "/vitest.config.js"
                     end,
-                    -- filter_dir = function(name, rel_path, root)
-                    --     return name ~= "node_modules"
-                    -- end,
-                    -- is_test_file = function(path)
-                    --     return true
-                    -- end,
-                    -- vitestConfigFile = function(path)
-                    --     print("CHECKING", path)
-                    --     for key, value in pairs(vim.g.vlad_custom_debug) do
-                    --         if value.check(path) then
-                    --             print('x', key)
-                    --         end
-                    --     end
-                    --     print("CONFIG FILE", find_parent_with_package_json(path))
-                    --     return vim.fn.getcwd() .. "/vitest.config.js"
-                    -- end,
                 })
             }
         })
