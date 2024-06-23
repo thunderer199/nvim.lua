@@ -74,6 +74,9 @@ return {
                     vitestCommand = "npx vitest",
                     cwd = function(path)
                         return find_parent_with_package_json(path)
+                    filter_dir = function(name)
+                        return name ~= "node_modules" or name ~= "dist" or name ~= "build"
+                    end,
                     end,
                     -- filter_dir = function(name, rel_path, root)
                     --     return name ~= "node_modules"
