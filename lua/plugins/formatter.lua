@@ -51,7 +51,7 @@ return {
                         }
                     end
 
-                    conform.format({ async = false, lsp_fallback = true, range = range })
+                    conform.format({ async = false, lsp_format = "fallback", range = range })
                 end,
                 { range = true }
             )
