@@ -6,7 +6,8 @@ return {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
             'nvim-neotest/nvim-nio',
-            'Weissle/persistent-breakpoints.nvim'
+            'Weissle/persistent-breakpoints.nvim',
+            'mfussenegger/nvim-dap-python',
         },
         config = function()
             require("nvim-dap-virtual-text").setup({
@@ -52,6 +53,7 @@ return {
                 }
             );
 
+            require("dap-python").setup("python")
             require("dap-vscode-js").setup({
                 -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
                 -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
