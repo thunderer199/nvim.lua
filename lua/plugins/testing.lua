@@ -71,7 +71,7 @@ return {
                 }),
                 require('neotest-vitest')({
                     vitestCommand = function(path)
-                        if vim.g.custom_test_config ~= nil and not next(vim.g.custom_test_config) then
+                        if vim.g.custom_test_config ~= nil and next(vim.g.custom_test_config) then
                             for _, value in pairs(vim.g.custom_test_config) do
                                 if value.check(path) then
                                     return value.vitest_cmd(path)
@@ -103,7 +103,7 @@ return {
                         return name ~= "node_modules" or name ~= "dist" or name ~= "build"
                     end,
                     vitestConfigFile = function(path)
-                        if vim.g.custom_test_config ~= nil and not next(vim.g.custom_test_config) then
+                        if vim.g.custom_test_config ~= nil and next(vim.g.custom_test_config) then
                             for _, value in pairs(vim.g.custom_test_config) do
                                 if value.check(path) then
                                     return value.cwd(path)
