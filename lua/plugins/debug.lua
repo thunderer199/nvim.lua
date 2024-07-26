@@ -158,6 +158,7 @@ return {
             vim.keymap.set('n', '<leader>de', function() dap.step_into() end)
 
             vim.keymap.set('n', '<leader>di', function() dapui.eval() end)
+            vim.keymap.set('n', '<leader>dW', function() dapui.float_element("watches") end, { desc = "Debug - Watches" })
 
             vim.keymap.set('n', '<leader>do', function()
                 dapui.toggle()
