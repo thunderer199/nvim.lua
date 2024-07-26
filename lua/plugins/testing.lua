@@ -89,7 +89,7 @@ return {
                             return false
                         end
 
-                        for _, x in ipairs({ "spec", "test", "api.test" }) do
+                        for _, x in ipairs({ "spec", "test", "api.test", "it" }) do
                             for _, ext in ipairs({ "js", "jsx", "coffee", "ts", "tsx" }) do
                                 if string.match(path, "%." .. x .. "%." .. ext .. "$") then
                                     return true
