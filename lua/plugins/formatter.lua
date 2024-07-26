@@ -7,6 +7,7 @@ return {
                 typescript = { { "prettier", "prettierd" }, "injected" },
                 typescriptreact = { { "prettier", "prettierd" }, "injected" },
                 javascriptreact = { { "prettier", "prettierd" }, "injected" },
+                vue = { { "prettier", "prettierd" }, "injected" },
                 python = { { "ruff" } },
                 json = { { "json-lsp", "prettier", "prettierd" } },
                 html = { { "prettier", "prettierd" } },
