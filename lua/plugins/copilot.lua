@@ -2,6 +2,9 @@ return {
     {
         "github/copilot.vim",
         config = function()
+            local util = require("vlad.util")
+
+            vim.g.copilot_workspace_folders = { util.get_base_path() }
             vim.g.copilot_filetypes = { ["*"] = true }
         end
     },
@@ -123,7 +126,7 @@ return {
                 "<leader>cR",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Review changes and refactor code using the provided suggestions.",
+                    chat.ask("Review provided code following best industry practices. Refactor code using the provided suggestions.",
                         {
                             selection = require("CopilotChat.select").visual,
                         }
