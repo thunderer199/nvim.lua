@@ -25,7 +25,7 @@ return {
         local dir = util.find_parent_with_package_json(vim.fn.expand("%:p"))
         lint.try_lint(nil, {
           ignore_errors = true,
-          cwd = dir,
+          -- cwd = dir,
         })
       end,
     })
