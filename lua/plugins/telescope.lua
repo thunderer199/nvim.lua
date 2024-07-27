@@ -193,8 +193,8 @@ return {
         vim.keymap.set('n', '<leader>fw', builtin.lsp_workspace_symbols)
         vim.keymap.set('n', '<leader>fd', builtin.lsp_document_symbols)
 
-        vim.keymap.set('n', '<leader>fT', builtin.treesitter)
-        vim.keymap.set('n', '<leader>ftt', ':TodoTelescope<CR>')
+        vim.keymap.set('n', '<leader>ftt', builtin.treesitter)
+        vim.keymap.set('n', '<leader>fT', ':TodoTelescope<CR>')
         vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
         vim.keymap.set('n', '<leader>fs', builtin.git_status)
 
