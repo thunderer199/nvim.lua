@@ -124,6 +124,6 @@ return {
                 vim.fn.setreg('+', path)
             end
         end
-        vim.keymap.set('n', '<leader>nn', get_path_in_file)
+        vim.keymap.set('n', '<leader>nn', get_path_in_file, { desc = 'Copy path in file' })
     end
 }

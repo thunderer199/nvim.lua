@@ -8,13 +8,13 @@ return {
             vim.keymap.set('n', '<leader>vo', function()
                 ts.actions.organizeImports()
                 ts.actions.removeUnused()
-            end)
+            end, { desc = 'Typescript Organize Imports' })
             vim.keymap.set('n', '<leader>vf', function()
                 ts.actions.fixAll()
-            end)
+            end, { desc = 'Typescript Fix All' })
             vim.keymap.set('n', '<leader>vi', function()
                 ts.actions.addMissingImports()
-            end)
+            end, { desc = 'Typescript Add Missing Imports' })
         end
     },
     {

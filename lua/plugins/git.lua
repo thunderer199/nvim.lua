@@ -3,8 +3,8 @@ return {
         'ruifm/gitlinker.nvim',
         config = true,
         keys = {
-            { '<leader>gy', function() require "gitlinker".get_buf_range_url("n") end },
-            { '<leader>gy', function() require "gitlinker".get_buf_range_url("v") end, mode = 'v' },
+            { '<leader>gy', function() require "gitlinker".get_buf_range_url("n") end, desc = "GH - Copy link" },
+            { '<leader>gy', function() require "gitlinker".get_buf_range_url("v") end, mode = 'v', "GH - Copy link" },
         },
     },
     {
@@ -39,21 +39,21 @@ return {
         "sindrets/diffview.nvim",
         lazy = false,
         config = function()
-            vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>")
-            vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory --n=25<CR>")
-            vim.keymap.set("n", "<leader>gc", ":DiffviewFileHistory %<CR>")
+            vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>", { desc = "Diffview Open" })
+            vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory --n=25<CR>", { desc = "Diffview Git History" })
+            vim.keymap.set("n", "<leader>gc", ":DiffviewFileHistory %<CR>", { desc = "Diffview File History" })
             vim.keymap.set("v", "<leader>gc", function()
                 vim.cmd("'<,'>DiffviewFileHistory")
-            end)
+            end, { desc = "Diffview Selection History" })
         end,
     },
     {
         'tpope/vim-fugitive',
         keys = {
-            { '<leader>gs', vim.cmd.Git },
-            { "<leader>gb", function() vim.cmd.Git("blame -w -M") end },
-            { "<leader>gB", function() vim.cmd.Git("blame") end },
-            { "<leader>ge", vim.cmd.Gedit },
+            { '<leader>gs', vim.cmd.Git, desc = "Git Status" },
+            { "<leader>gb", function() vim.cmd.Git("blame -w -M") end, desc = "Git Blame move and ignore whitespace" },
+            { "<leader>gB", function() vim.cmd.Git("blame") end, desc = "Git Blame" },
+            { "<leader>ge", vim.cmd.Gedit, desc = "Gedit" },
         },
         config = function()
             local fugitive_cmd_group = vim.api.nvim_create_augroup("fugitive_cmd_group", {})
@@ -108,31 +108,31 @@ return {
                         if vim.wo.diff then return ']h' end
                         vim.schedule(function() gs.next_hunk() end)
                         return '<Ignore>'
-                    end, { expr = true })
+                    end, { expr = true, desc = "Next Hunk" })
 
                     map('n', '[h', function()
                         if vim.wo.diff then return '[h' end
                         vim.schedule(function() gs.prev_hunk() end)
                         return '<Ignore>'
-                    end, { expr = true })
+                    end, { expr = true, desc = "Previous Hunk" })
 
                     -- Actions
-                    map('n', '<leader>hs', gs.stage_hunk)
-                    map('n', '<leader>hr', gs.reset_hunk)
+                    map('n', '<leader>hs', gs.stage_hunk, { desc = "Stage Hunk" })
+                    map('n', '<leader>hr', gs.reset_hunk, { desc = "Reset Hunk" })
                     map('v', '<leader>hs', function()
                         gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') }
-                    end)
+                    end, { desc = "Stage Hunk" })
                     map('v', '<leader>hr', function()
                         gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
-                    end)
-                    map('n', '<leader>hS', gs.stage_buffer)
-                    map('n', '<leader>hu', gs.undo_stage_hunk)
-                    map('n', '<leader>hR', gs.reset_buffer)
-                    map('n', '<leader>hp', gs.preview_hunk)
+                    end, { desc = "Reset Hunk" })
+                    map('n', '<leader>hS', gs.stage_buffer, { desc = "Stage Buffer" })
+                    map('n', '<leader>hu', gs.undo_stage_hunk, { desc = "Undo Stage Hunk" })
+                    map('n', '<leader>hR', gs.reset_buffer, { desc = "Reset Buffer" })
+                    map('n', '<leader>hp', gs.preview_hunk, { desc = "Preview Hunk" })
 
-                    map('n', '<leader>hb', function() gs.blame_line { full = true } end)
-                    map('n', '<leader>tb', gs.toggle_current_line_blame)
-                    map('n', '<leader>td', gs.toggle_deleted)
+                    map('n', '<leader>hb', function() gs.blame_line { full = true } end, { desc = "Blame Line" })
+                    map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = "Toggle Blame" })
+                    map('n', '<leader>td', gs.toggle_deleted, { desc = "Toggle Deleted" })
 
                     -- Text object
                     map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')

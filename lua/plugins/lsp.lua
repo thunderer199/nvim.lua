@@ -104,13 +104,13 @@ return {
         snippets.register()
 
 
-        vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end)
-        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end)
+        vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end, { desc = "Luasnip jump forward" })
+        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end , { desc = "Luasnip jump backward" })
         vim.keymap.set({ "i", "s" }, "<C-E>", function()
             if luasnip.choice_active() then
                 luasnip.change_choice(1)
             end
-        end, { silent = true })
+        end, { silent = true, desc = "Luasnip change choice" })
 
         lsp.on_attach(function(_client, bufnr)
             local opts = { buffer = bufnr, remap = false }

@@ -131,38 +131,44 @@ return {
             -- vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef', bg = '#31353f' })
             -- vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379', bg = '#31353f' })
 
-            vim.fn.sign_define('DapBreakpoint', { text='', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl='DapBreakpoint' })
-            vim.fn.sign_define('DapBreakpointCondition', { text='ﳁ', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl='DapBreakpoint' })
-            vim.fn.sign_define('DapBreakpointRejected', { text='', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl= 'DapBreakpoint' })
-            vim.fn.sign_define('DapLogPoint', { text='', texthl='DapLogPoint', linehl='DapLogPoint', numhl= 'DapLogPoint' })
-            vim.fn.sign_define('DapStopped', { text='', texthl='DapStopped', linehl='DapStopped', numhl= 'DapStopped' })
+            vim.fn.sign_define('DapBreakpoint',
+                { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+            vim.fn.sign_define('DapBreakpointCondition',
+                { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+            vim.fn.sign_define('DapBreakpointRejected',
+                { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+            vim.fn.sign_define('DapLogPoint',
+                { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
+            vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl =
+            'DapStopped' })
 
             local breakpoints = require('persistent-breakpoints.api')
 
-            vim.keymap.set('n', '<leader>dx', function() dap.continue() end)
-            vim.keymap.set('n', '<leader>dX', function() dap.terminate() end)
-            vim.keymap.set('n', '<leader>dz', function() dap.run_last() end)
-            vim.keymap.set('n', '<leader>dI', function() dap.run_to_cursor() end)
-            vim.keymap.set('n', '<leader>dR', function() dap.repl.open() end)
-            vim.keymap.set('n', '<leader>dC', function() dapui.float_element('console') end)
+            vim.keymap.set('n', '<leader>dx', function() dap.continue() end, { desc = "Debug - Continue" })
+            vim.keymap.set('n', '<leader>dX', function() dap.terminate() end, { desc = "Debug - Terminate" })
+            vim.keymap.set('n', '<leader>dz', function() dap.run_last() end, { desc = "Debug - Run last" })
+            vim.keymap.set('n', '<leader>dI', function() dap.run_to_cursor() end, { desc = "Debug - Run to cursor" })
+            vim.keymap.set('n', '<leader>dR', function() dap.repl.open() end, { desc = "Debug - REPL" })
+            vim.keymap.set('n', '<leader>dC', function() dapui.float_element('console') end, { desc = "Debug - Console" })
 
-            vim.keymap.set('n', '<leader>db', function() breakpoints.toggle_breakpoint() end)
+            vim.keymap.set('n', '<leader>db', function() breakpoints.toggle_breakpoint() end,
+                { desc = "Debug - Toggle breakpoint" })
 
             vim.keymap.set('n', '<leader>dB', function()
                 -- dap.set_breakpoint(vim.fn.input('Breakpoint condition: ))
                 breakpoints.set_conditional_breakpoint(vim.fn.input('Breakpoint condition: '))
-            end)
+            end, {
+                desc = "Debug - Set breakpoint with condition"
+            })
 
-            vim.keymap.set('n', '<leader>dq', function() dap.step_out() end)
-            vim.keymap.set('n', '<leader>dw', function() dap.step_over() end)
-            vim.keymap.set('n', '<leader>de', function() dap.step_into() end)
+            vim.keymap.set('n', '<leader>dq', function() dap.step_out() end, { desc = "Debug - Step out" })
+            vim.keymap.set('n', '<leader>dw', function() dap.step_over() end, { desc = "Debug - Step over" })
+            vim.keymap.set('n', '<leader>de', function() dap.step_into() end, { desc = "Debug - Step into" })
 
-            vim.keymap.set('n', '<leader>di', function() dapui.eval() end)
+            vim.keymap.set('n', '<leader>di', function() dapui.eval() end, { desc = "Debug - Evaluate" })
             vim.keymap.set('n', '<leader>dW', function() dapui.float_element("watches") end, { desc = "Debug - Watches" })
 
-            vim.keymap.set('n', '<leader>do', function()
-                dapui.toggle()
-            end)
+            vim.keymap.set('n', '<leader>do', function() dapui.toggle() end, { desc = "Debug - Toggle UI" })
 
             dap.listeners.before.attach.dapui_config = function()
                 dapui.open()

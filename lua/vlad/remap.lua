@@ -18,31 +18,31 @@ vim.keymap.set('n', 'QQ', '<cmd>qa!<CR>')
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- quick fix navigation
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
 
 -- buffer navigation
-vim.keymap.set("n", "<leader>bn", "<cmd>bn<CR>")
-vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>")
-vim.keymap.set("n", "<leader>bl", ":buffers<CR>")
+vim.keymap.set("n", "<leader>bn", "<cmd>bn<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<leader>bl", ":buffers<CR>", { desc = "List buffers" })
 
 -- save file faster
-vim.keymap.set("n", "<leader>w", "<cmd>w<CR>")
-vim.keymap.set('n', '<leader>q', '<cmd>q<CR>')
-vim.keymap.set('n', '<leader>x', '<cmd>x<CR>')
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'Quit' })
+vim.keymap.set('n', '<leader>x', '<cmd>x<CR>', { desc = 'Save and Quit' })
 
 -- gF to cteate a new file
-vim.keymap.set("n", "gF", ":e <cfile><CR>")
+vim.keymap.set("n", "gF", ":e <cfile><CR>", { desc = "Create a new file under cursor" })
 
 -- C-w to <leader>e
 vim.keymap.set("n", "<leader>e", "<C-w>")
 
 -- splits
-vim.keymap.set("n", "ws", ':split<CR><C-w>k')
-vim.keymap.set("n", "wv", ':vsplit<CR><C-w>l')
+vim.keymap.set("n", "ws", ':split<CR><C-w>k', { desc = "Split window horizontally" })
+vim.keymap.set("n", "wv", ':vsplit<CR><C-w>l', { desc = "Split window vertically" })
 
 -- close tab
-vim.keymap.set("n", "gx", "<cmd>tabclose<CR>")
+vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 
 
 -- mapping for diffget

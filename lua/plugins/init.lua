@@ -20,7 +20,12 @@ return {
             require 'alpha'.setup(require 'alpha.themes.startify'.config)
         end
     },
-    { 'mbbill/undotree', keys = { { "<leader>u", vim.cmd.UndotreeToggle } } },
+    {
+        'mbbill/undotree',
+        keys = {
+            { "<leader>u", vim.cmd.UndotreeToggle, desc = "Toggle Undotree" },
+        }
+    },
     'wakatime/vim-wakatime',
     {
         'stevearc/oil.nvim',
@@ -34,5 +39,21 @@ return {
             }
         },
         dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {
+            delay = 2000,
+        },
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
     }
 }
