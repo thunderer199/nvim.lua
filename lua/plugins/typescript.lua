@@ -7,8 +7,10 @@ return {
 
             vim.keymap.set('n', '<leader>vo', function()
                 ts.actions.organizeImports()
-                ts.actions.removeUnused()
             end, { desc = 'Typescript Organize Imports' })
+            vim.keymap.set('n', '<leader>vO', function()
+                ts.actions.removeUnused()
+            end, { desc = 'Typescript Remove Unused' })
             vim.keymap.set('n', '<leader>vf', function()
                 ts.actions.fixAll()
             end, { desc = 'Typescript Fix All' })
