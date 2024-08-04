@@ -158,5 +158,10 @@ return {
         vim.keymap.set("n", "<M-j>", function() harpoon:list():select(2) end)
         vim.keymap.set("n", "<M-k>", function() harpoon:list():select(3) end)
         vim.keymap.set("n", "<M-l>", function() harpoon:list():select(4) end)
+        -- map alt + shift + hjkl to navigate between files
+        vim.keymap.set("n", "<M-S-h>", function() harpoon:list():select(5) end)
+        vim.keymap.set("n", "<M-S-j>", function() harpoon:list():select(6) end, { noremap = true })
+        vim.keymap.set("n", "<M-S-k>", function() harpoon:list():select(7) end)
+        vim.keymap.set("n", "<M-S-l>", function() harpoon:list():select(8) end)
     end
 }
