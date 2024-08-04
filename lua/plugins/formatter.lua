@@ -1,45 +1,71 @@
 return {
     {
         'stevearc/conform.nvim',
-        opts = {
-            formatters_by_ft = {
-                javascript = { { "prettier", "prettierd" }, "injected" },
-                typescript = { { "prettier", "prettierd" }, "injected" },
-                typescriptreact = { { "prettier", "prettierd" }, "injected" },
-                javascriptreact = { { "prettier", "prettierd" }, "injected" },
-                vue = { { "prettier", "prettierd" }, "injected" },
-                python = { { "ruff" } },
-                json = { { "json-lsp", "prettier", "prettierd" } },
-                html = { { "prettier", "prettierd" } },
-                scss = { { "prettier", "prettierd" } },
-                css = { { "prettier", "prettierd" } },
-                less = { { "prettier", "prettierd" } },
-                stylus = { { "prettier", "prettierd" } },
-                yaml = { { "prettier", "prettierd" }, "injected" },
-                sql = { { "sql_formatter" } },
-            },
-            formatters = {
-                sql_formatter = {
-                    prepend_args = { "--language", "plsql" },
+        config = function()
+            local conform = require("conform")
+
+            ---@param bufnr integer
+            ---@param ... string
+            ---@return string
+            local function first(bufnr, ...)
+                local conform = require("conform")
+                for i = 1, select("#", ...) do
+                    local formatter = select(i, ...)
+                    if conform.get_formatter_info(formatter, bufnr).available then
+                        return formatter
+                    end
+                end
+                return select(1, ...)
+            end
+
+            local function prettier(bufnr)
+                return first(bufnr, "prettier", "prettierd")
+            end
+            local function json(bufnr)
+                return first(bufnr, "prettier", "prettierd")
+            end
+
+            local function with_injected(fn)
+                return function(bufnr)
+                    return { fn(bufnr), "injected" }
+                end
+            end
+
+            conform.setup({
+                formatters_by_ft = {
+                    javascript = with_injected(prettier),
+                    typescript = with_injected(prettier),
+                    typescriptreact = with_injected(prettier),
+                    javascriptreact = with_injected(prettier),
+                    vue = with_injected(prettier),
+                    python = { "ruff" },
+                    json = with_injected(json),
+                    html = with_injected(prettier),
+                    scss = with_injected(prettier),
+                    css = with_injected(prettier),
+                    less = with_injected(prettier),
+                    stylus = with_injected(prettier),
+                    yaml = with_injected(prettier),
+                    sql = { "sql_formatter" },
                 },
-                injected = {
-                    options = {
-                        ignore_errors = false,
-                        lang_to_formatters = {
-                            sql = { { "sql_formatter" } },
-                        },
-                        lang_to_ext = {
-                            sql = { "sql" },
-                        },
+                formatters = {
+                    sql_formatter = {
+                        prepend_args = { "--language", "plsql" },
+                    },
+                    injected = {
+                        options = {
+                            ignore_errors = false,
+                            lang_to_formatters = {
+                                sql = {  "sql_formatter"  },
+                            },
+                            lang_to_ext = {
+                                sql = { "sql" },
+                            },
+                        }
                     }
                 }
-            }
-        },
-        init = function()
-            -- Set this value to true to silence errors when formatting a block fails
-            -- require("conform.formatters.injected").options.ignore_errors = false
+            })
 
-            local conform = require("conform")
 
             vim.api.nvim_create_user_command(
                 "Format",
