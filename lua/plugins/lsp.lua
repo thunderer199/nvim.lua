@@ -131,8 +131,8 @@ return {
             vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, opts)
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev({ _highest = true }) end, opts)
+            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next({ _highest = true }) end, opts)
             vim.keymap.set({ "n", "v" }, "<leader>va", vim.lsp.buf.code_action, opts)
             vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
             vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
