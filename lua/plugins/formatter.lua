@@ -22,7 +22,7 @@ return {
                 return first(bufnr, "prettier", "prettierd")
             end
             local function json(bufnr)
-                return first(bufnr, "prettier", "prettierd")
+                return first(bufnr, "json-lsp", "prettier", "prettierd")
             end
 
             local function with_injected(fn)
@@ -56,7 +56,7 @@ return {
                         options = {
                             ignore_errors = false,
                             lang_to_formatters = {
-                                sql = {  "sql_formatter"  },
+                                sql = { "sql_formatter" },
                             },
                             lang_to_ext = {
                                 sql = { "sql" },
