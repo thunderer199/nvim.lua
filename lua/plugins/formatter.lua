@@ -38,7 +38,7 @@ return {
                     typescriptreact = with_injected(prettier),
                     javascriptreact = with_injected(prettier),
                     vue = with_injected(prettier),
-                    python = { "ruff" },
+                    python = { "ruff_format" },
                     json = with_injected(json),
                     html = with_injected(prettier),
                     scss = with_injected(prettier),
