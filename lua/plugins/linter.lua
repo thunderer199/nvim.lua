@@ -22,10 +22,17 @@ return {
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lint_augroup,
       callback = function()
-        local dir = util.find_parent_with_package_json(vim.fn.expand("%:p"))
+        local cwd = vim.fn.getcwd()
+        local dir = cwd;
+
+        local rootDir =  cwd  .. '/package.json'
+        if vim.fn.filereadable(rootDir) ~= 1 then
+          local localDir = util.find_parent_with_package_json(vim.fn.expand("%:p"))
+          dir = localDir or cwd
+        end
         lint.try_lint(nil, {
           ignore_errors = true,
-          -- cwd = dir,
+          cwd = dir,
         })
       end,
     })
