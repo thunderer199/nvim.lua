@@ -61,22 +61,22 @@ return {
                         goto_next_start = {
                             [']m'] = '@function.outer',
                             [']]'] = '@class.outer',
-                            [']d'] = '@conditional.outer',
+                            [']f'] = '@conditional.outer',
                         },
                         goto_next_end = {
                             [']M'] = '@function.outer',
                             [']['] = '@class.outer',
-                            ['[D'] = '@conditional.outer',
+                            ['[F'] = '@conditional.outer',
                         },
                         goto_previous_start = {
                             ['[m'] = '@function.outer',
                             ['[['] = '@class.outer',
-                            ['[d'] = '@conditional.outer',
+                            ['[f'] = '@conditional.outer',
                         },
                         goto_previous_end = {
                             ['[M'] = '@function.outer',
                             ['[]'] = '@class.outer',
-                            ['[d'] = '@conditional.outer',
+                            ['[F'] = '@conditional.outer',
                         },
 
                     },
