@@ -43,6 +43,22 @@ return {
             vim.cmd((":DiffviewOpen %s^..HEAD"):format(entry.value))
         end
 
+        local function open_diff_between_selected_commit_and_current()
+            -- Open in diffview
+            local entry = actions_state.get_selected_entry()
+            -- close Telescope window properly prior to switching windows
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s^"):format(entry.value))
+        end
+
+        local function open_diff_between_selected_commit_and_current_for_file()
+            -- Open in diffview
+            local entry = actions_state.get_selected_entry()
+            -- close Telescope window properly prior to switching windows
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s^ -- %s"):format(entry.value, vim.fn.expand('%:p')))
+        end
+
         local function copy_commit_hash()
             local entry = actions_state.get_selected_entry()
             actions.close(vim.api.nvim_get_current_buf())
@@ -109,6 +125,8 @@ return {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-u>"] = open_diff_between_selected_commit_and_current,
+                            ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-p>"] = copy_commit_hash,
                         },
@@ -120,6 +138,8 @@ return {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-u>"] = open_diff_between_selected_commit_and_current,
+                            ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-p>"] = copy_commit_hash,
                         },
@@ -131,6 +151,8 @@ return {
                             ['<CR>'] = noop,
                             ["<C-o>"] = open_diff_for_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-u>"] = open_diff_between_selected_commit_and_current,
+                            ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
                             ["<C-p>"] = copy_commit_hash,
                         },
