@@ -10,6 +10,7 @@ return {
         -- adapters
         "marilari88/neotest-vitest",
         "nvim-neotest/neotest-jest",
+        "nvim-neotest/neotest-python",
     },
     keys = {
         {
@@ -117,7 +118,13 @@ return {
             },
             adapters = {
                 require('neotest-jest')(jestConfig),
-                require('neotest-vitest')(vitestConfig)
+                require('neotest-vitest')(vitestConfig),
+                require("neotest-python")({
+                    dap = { justMyCode = true },
+                    args = { "--log-level", "DEBUG" },
+                    runner = "pytest",
+                })
+
             }
         })
     end

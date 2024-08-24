@@ -35,8 +35,8 @@ end
 
 -- Angular files jump
 vim.api.nvim_create_user_command("JToFile", function(opts)
-    local js_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue" }
-    local test_postfixes = { ".spec", ".test" }
+    local js_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue", ".py" }
+    local test_postfixes = { ".spec", ".test", "_test" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     local story_extensions = { ".stories.tsx", ".stories.ts" , ".stories.js" , ".stories.jsx"}
     local test_js_extensions = cartesian_product(test_postfixes, js_extensions)
@@ -48,6 +48,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         main_path = path:gsub(".spec$", "")
     elseif ends_with(path, ".test") then
         main_path = path:gsub(".test$", "")
+    elseif ends_with(path, "_test") then
+        main_path = path:gsub("_test$", "")
     elseif ends_with(path, ".module") then
         main_path = path:gsub(".module$", "")
     elseif ends_with(path, ".stories") then

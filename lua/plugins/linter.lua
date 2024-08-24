@@ -13,6 +13,7 @@ return {
       scss = { "stylelint" },
       less = { "stylelint" },
       stylus = { "stylelint" },
+      python = { "mypy" },
     }
 
     local util = require("vlad.util")
