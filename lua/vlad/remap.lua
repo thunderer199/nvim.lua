@@ -22,9 +22,8 @@ vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
 
 -- buffer navigation
-vim.keymap.set("n", "<leader>bn", "<cmd>bn<CR>", { desc = "Next buffer" })
-vim.keymap.set("n", "<leader>bp", "<cmd>bp<CR>", { desc = "Previous buffer" })
-vim.keymap.set("n", "<leader>bl", ":buffers<CR>", { desc = "List buffers" })
+vim.keymap.set("n", "]b", "<cmd>bn<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "[b", "<cmd>bp<CR>", { desc = "Previous buffer" })
 
 -- save file faster
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
