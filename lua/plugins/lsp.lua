@@ -105,7 +105,7 @@ return {
 
 
         vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end, { desc = "Luasnip jump forward" })
-        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end , { desc = "Luasnip jump backward" })
+        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end, { desc = "Luasnip jump backward" })
         vim.keymap.set({ "i", "s" }, "<C-E>", function()
             if luasnip.choice_active() then
                 luasnip.change_choice(1)
@@ -122,6 +122,14 @@ return {
             --     })
             -- end)
 
+            local diagnostic_goto = function(next, severity)
+                local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+                severity = severity and vim.diagnostic.severity[severity] or nil
+                return function()
+                    go({ severity = severity })
+                end
+            end
+
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
             vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
             vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
@@ -131,8 +139,10 @@ return {
             vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, opts)
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev({ _highest = true }) end, opts)
-            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next({ _highest = true }) end, opts)
+            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+            vim.keymap.set("n", "[e", diagnostic_goto(false, vim.diagnostic.severity.ERROR), opts);
+            vim.keymap.set("n", "]e", diagnostic_goto(true, vim.diagnostic.severity.ERROR), opts);
             vim.keymap.set({ "n", "v" }, "<leader>va", vim.lsp.buf.code_action, opts)
             vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
             vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
