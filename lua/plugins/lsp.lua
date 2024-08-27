@@ -59,24 +59,22 @@ return {
         })
 
         local cmp = require('cmp')
-        local cmp_select = { behavior = cmp.SelectBehavior.Replace }
-        local cmp_mappings = lsp.defaults.cmp_mappings({
-            ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
-            ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
+        local cmp_mappings = ({
+            ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Replace }),
+            ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Replace }),
             ['<C-f>'] = cmp.mapping.scroll_docs(-4),
             ['<C-d>'] = cmp.mapping.scroll_docs(4),
-            ['<C-e>'] = cmp.mapping.close(),
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-            ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
             ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
-            ["<C-s>"] = cmp.mapping(cmp.mapping.complete(), { "i", "s" }),
+            ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
+            ['<C-s>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.abort()
+                else
+                    cmp.complete()
+                end
+            end, { "i", "s" })
         })
-
-        -- disable completion with tab
-        -- this helps with copilot setup
-        cmp_mappings['<Tab>'] = nil
-        cmp_mappings['<S-Tab>'] = nil
-
         lsp.setup_nvim_cmp({
             mapping = cmp_mappings,
             sources = {
@@ -100,15 +98,27 @@ return {
 
         local luasnip = require('luasnip');
 
-        require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/lua/vlad/snippets"} })
+        require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/lua/vlad/snippets" } })
+        require("luasnip.loaders.from_vscode").load({ paths = { "~/.config/nvim/lua/vlad/vscode_snippets" } })
 
-        vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end, { desc = "Luasnip jump forward" })
-        vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end, { desc = "Luasnip jump backward" })
-        vim.keymap.set({ "i", "s" }, "<C-E>", function()
+
+        vim.keymap.set({ "i", "n" }, "<C-m>", function()
             if luasnip.choice_active() then
                 luasnip.change_choice(1)
             end
-        end, { silent = true, desc = "Luasnip change choice" })
+        end, { desc = "Luasnip change choice" })
+        vim.keymap.set({ "i", "n" }, "<C-n>", function()
+            if luasnip.expandable() then
+                luasnip.expand()
+            elseif luasnip.jumpable(1) then
+                luasnip.jump(1)
+            end
+        end, { desc = "Luasnip jump forward" })
+        vim.keymap.set({ "i", "n" }, "<C-b>", function()
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            end
+        end, { desc = "Luasnip jump backward" })
 
         lsp.on_attach(function(_client, bufnr)
             local opts = { buffer = bufnr, remap = false }
