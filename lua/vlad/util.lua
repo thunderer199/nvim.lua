@@ -93,6 +93,14 @@ local find_parent_with_package_json = function(path)
     return nil
 end
 
+local function snippet_fmts(str, args, opts)
+    local fmt = require("luasnip.extras.fmt").fmt
+    if not opts then
+        opts = {}
+    end
+    return fmt(str, args, vim.tbl_extend("force", { delimiters = "[]" }, opts))
+end
+
 
 M.find_parent_with_package_json = find_parent_with_package_json;
 M.find_parent_with_file = find_parent_with_file;
@@ -102,5 +110,6 @@ M.get_base_path = get_base_path;
 M.split_into_lines = split_into_lines;
 M.trim_string = trim_string;
 M.trim_quotes = trim_quotes;
+M.snippet_fmts = snippet_fmts;
 
 return M;

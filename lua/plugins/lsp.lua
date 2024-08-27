@@ -100,9 +100,7 @@ return {
 
         local luasnip = require('luasnip');
 
-        local snippets = require('vlad.snippets')
-        snippets.register()
-
+        require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/lua/vlad/snippets"} })
 
         vim.keymap.set("n", "<leader>]", function() luasnip.jump(1) end, { desc = "Luasnip jump forward" })
         vim.keymap.set("n", "<leader>[", function() luasnip.jump(-1) end, { desc = "Luasnip jump backward" })
