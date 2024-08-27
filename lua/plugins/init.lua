@@ -7,6 +7,15 @@ return {
     'nvim-tree/nvim-web-devicons',
     'tpope/vim-sleuth',
     'machakann/vim-swap',
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = "cd app && npm install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
+    },
     { "windwp/nvim-autopairs",     config = true },
     { 'NvChad/nvim-colorizer.lua', config = true },
     { "folke/todo-comments.nvim",  dependencies = "nvim-lua/plenary.nvim", config = true },
