@@ -66,6 +66,8 @@ return {
             ['<C-d>'] = cmp.mapping.scroll_docs(4),
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
             ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
+            ['<Down>'] = cmp.mapping.close(),
+            ['<Up>'] = cmp.mapping.close(),
             ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
             ['<C-s>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
