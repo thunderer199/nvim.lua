@@ -6,6 +6,17 @@ return {
     },
     'nvim-tree/nvim-web-devicons',
     'tpope/vim-sleuth',
+    {
+        'jinh0/eyeliner.nvim',
+        config = function()
+            require 'eyeliner'.setup {
+                highlight_on_key = true,
+                dim = true,
+                max_length = 9999,
+                default_keymaps = true,
+            }
+        end
+    },
     'machakann/vim-swap',
     {
         "iamcco/markdown-preview.nvim",
