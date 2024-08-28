@@ -173,7 +173,7 @@ return {
                             ['<C-o>'] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
-                                vim.cmd((":DiffviewOpen %s^..HEAD"):format(entry.value))
+                                vim.cmd((":DiffviewOpen %s..HEAD"):format(entry.value))
                             end,
                             ['<C-f>'] = open_diff_for_selected_file,
                         },
