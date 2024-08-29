@@ -66,6 +66,7 @@ return {
             ['<C-d>'] = cmp.mapping.scroll_docs(4),
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
             ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
+            ['<C-e>'] = cmp.mapping.abort(),
             ['<Down>'] = cmp.mapping.close(),
             ['<Up>'] = cmp.mapping.close(),
             ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
@@ -87,6 +88,59 @@ return {
                 { name = 'buffer' },
             }
         })
+
+        local cmd_mapping = {
+            ['<C-j>'] = {
+                c = function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    else
+                        fallback()
+                    end
+                end,
+            },
+            ['<C-k>'] = {
+                c = function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item()
+                    else
+                        fallback()
+                    end
+                end,
+            },
+            ['<C-e>'] = {
+                c = cmp.mapping.abort()
+            },
+            ['<C-l>'] = {
+                c = cmp.mapping.confirm({ select = false }),
+            },
+            ['<C-s>'] = {
+                c = function()
+                    if cmp.visible() then
+                        cmp.abort()
+                    else
+                        cmp.complete()
+                    end
+                end,
+            },
+
+        }
+        cmp.setup.cmdline({ '/', '?' }, {
+            mapping = cmd_mapping,
+            sources = {
+                { name = 'buffer' }
+            }
+        })
+
+        cmp.setup.cmdline(':', {
+            mapping = cmd_mapping,
+            sources = cmp.config.sources(
+                { { name = 'path' } },
+                { { name = 'cmdline' } }
+            ),
+            matching = { disallow_symbol_nonprefix_matching = false }
+        })
+
 
         lsp.set_preferences({
             -- suggest_lsp_servers = false,
@@ -124,13 +178,6 @@ return {
 
         lsp.on_attach(function(_client, bufnr)
             local opts = { buffer = bufnr, remap = false }
-
-            -- vim.keymap.set("n", "<leader>vo", function()
-            --     vim.lsp.buf.execute_command({
-            --         command = "_typescript.organizeImports",
-            --         arguments = { vim.fn.expand("%:p") }
-            --     })
-            -- end)
 
             local diagnostic_goto = function(next, severity)
                 local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
