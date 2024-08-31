@@ -9,7 +9,7 @@ return {
 
         local isPrevNextMovement = false;
 
-        local basepath = require('vlad.util').get_base_path()
+        local basepath = util.get_base_path()
         harpoon:setup({
             default = {
                 create_list_item = function(_, name)
@@ -107,12 +107,7 @@ return {
                 save_on_toggle = true,
                 sync_on_ui_close = true,
                 key = function()
-                    local git_dir = util.get_git_cwd()
-                    if git_dir == nil then
-                        return vim.loop.cwd()
-                    else
-                        return git_dir
-                    end
+                    return util.get_base_path()
                 end
             }
         })
