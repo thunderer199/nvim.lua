@@ -1,18 +1,29 @@
 return {
-    'rareitems/printer.nvim',
-    config = function()
-        local printer = require('printer')
-
-        printer.setup({
-            keymap = "gp",
-            formatters = {
-                vue = function(text_inside, text_var)
-                    return string.format('console.log("%s = ", %s)', text_inside, text_var)
-                end,
-                typescriptreact = function(text_inside, text_var)
-                    return string.format('console.log("%s = ", %s)', text_inside, text_var)
-                end,
+    {
+        "andrewferrier/debugprint.nvim",
+        opts = {
+            keymaps = {
+                normal = {
+                    plain_below = "gpp",
+                    plain_above = "gpP",
+                    variable_below = "gpv",
+                    variable_above = "gpV",
+                    variable_below_alwaysprompt = nil,
+                    variable_above_alwaysprompt = nil,
+                    textobj_below = "gpo",
+                    textobj_above = "gpO",
+                    toggle_comment_debug_prints = nil,
+                    delete_debug_prints = nil,
+                },
+                visual = {
+                    variable_below = "gpv",
+                    variable_above = "gpV",
+                },
             },
-        })
-    end
+            commands = {
+                toggle_comment_debug_prints = "ToggleCommentDebugPrints",
+                delete_debug_prints = "DeleteDebugPrints",
+            },
+        },
+    }
 }
