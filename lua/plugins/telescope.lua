@@ -21,13 +21,13 @@ return {
         local function open_diff_for_selected_file()
             local entry = actions_state.get_selected_entry()
             actions.close(vim.api.nvim_get_current_buf())
-            vim.cmd((":DiffviewOpen %s^..HEAD -- %s"):format(
+            vim.cmd((":DiffviewOpen %s^! -- %s"):format(
                 entry.value,
                 vim.fn.expand('%:p')
             ))
         end
 
-        local function open_diff_for_selected_commit()
+        local function open_selected_commit()
             -- Open in diffview
             local entry = actions_state.get_selected_entry()
             -- close Telescope window properly prior to switching windows
@@ -41,6 +41,14 @@ return {
             -- close Telescope window properly prior to switching windows
             actions.close(vim.api.nvim_get_current_buf())
             vim.cmd((":DiffviewOpen %s^..HEAD"):format(entry.value))
+        end
+
+        local function open_diff_between_selected_commit_and_head_for_file()
+            -- Open in diffview
+            local entry = actions_state.get_selected_entry()
+            -- close Telescope window properly prior to switching windows
+            actions.close(vim.api.nvim_get_current_buf())
+            vim.cmd((":DiffviewOpen %s^..HEAD -- %s"):format(entry.value, vim.fn.expand('%:p')))
         end
 
         local function open_diff_between_selected_commit_and_current()
@@ -123,8 +131,9 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-e>"] = open_diff_between_selected_commit_and_head_for_file,
                             ["<C-u>"] = open_diff_between_selected_commit_and_current,
                             ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
@@ -136,8 +145,9 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-e>"] = open_diff_between_selected_commit_and_head_for_file,
                             ["<C-u>"] = open_diff_between_selected_commit_and_current,
                             ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
@@ -149,8 +159,9 @@ return {
                     mappings = {
                         i = {
                             ['<CR>'] = noop,
-                            ["<C-o>"] = open_diff_for_selected_commit,
+                            ["<C-o>"] = open_selected_commit,
                             ["<C-w>"] = open_diff_between_selected_commit_and_head,
+                            ["<C-e>"] = open_diff_between_selected_commit_and_head_for_file,
                             ["<C-u>"] = open_diff_between_selected_commit_and_current,
                             ["<C-y>"] = open_diff_between_selected_commit_and_current_for_file,
                             ['<C-f>'] = open_diff_for_selected_file,
