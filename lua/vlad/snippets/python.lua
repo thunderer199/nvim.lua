@@ -9,13 +9,15 @@ local post = require("luasnip.extras.postfix").postfix
 return {
   post('.if', {
     d(1, function(_, parent)
-      return sn(
-        1,
-        fmts(
-          "if "..parent.snippet.env.POSTFIX_MATCH ..":\n\t[condition]",
-          { condition = i(1) }
-        )
-      )
+      return sn(1, fmts("if [condition]:\n\t[code]", { condition = parent.snippet.env.POSTFIX_MATCH, code = i(1) }))
+    end)
+  }),
+  post('.try', {
+    d(1, function(_, parent)
+      return sn(1, fmts("try:\n\t[tryBlock]\nexcept Exception as e:\n\t[catchBlock]", {
+        tryBlock = parent.snippet.env.POSTFIX_MATCH,
+        catchBlock = i(1),
+      }))
     end)
   }),
 }

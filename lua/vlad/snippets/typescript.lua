@@ -46,7 +46,18 @@ return {
   s("itvitest", itvitest),
   post('.if', {
     d(1, function(_, parent)
-      return sn(1, fmts("if ("..parent.snippet.env.POSTFIX_MATCH ..") {\n\t[condition]\n}", { condition = i(1, "condition") }))
+      return sn(1, fmts("if ([condition]) {\n\t[code]\n}", {
+        condition = parent.snippet.env.POSTFIX_MATCH,
+        code = i(1, "code"),
+      }))
+    end)
+  }),
+  post('.try', {
+    d(1, function(_, parent)
+      return sn(1, fmts("try {\n\t[tryBlock]\n} catch (error) {\n\t[catchBlock]\n}", {
+        tryBlock = parent.snippet.env.POSTFIX_MATCH,
+        catchBlock = i(1, "catchBlock"),
+      }))
     end)
   }),
 }
