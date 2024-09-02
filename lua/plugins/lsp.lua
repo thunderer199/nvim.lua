@@ -60,8 +60,20 @@ return {
 
         local cmp = require('cmp')
         local cmp_mappings = ({
-            ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Replace }),
-            ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Replace }),
+            ['<C-k>'] = cmp.mapping(function()
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Replace })
+                else
+                    cmp.complete()
+                end
+            end, { "i", "s" }),
+            ['<C-j>'] = cmp.mapping(function()
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Replace })
+                else
+                    cmp.complete()
+                end
+            end, { "i", "s" }),
             ['<C-f>'] = cmp.mapping.scroll_docs(-4),
             ['<C-d>'] = cmp.mapping.scroll_docs(4),
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
@@ -70,7 +82,7 @@ return {
             ['<Down>'] = cmp.mapping.close(),
             ['<Up>'] = cmp.mapping.close(),
             ['<C-p>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert }),
-            ['<C-s>'] = cmp.mapping(function(fallback)
+            ['<C-s>'] = cmp.mapping(function()
                 if cmp.visible() then
                     cmp.abort()
                 else
