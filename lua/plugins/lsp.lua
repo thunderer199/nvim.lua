@@ -42,6 +42,19 @@ return {
             },
         })
 
+        lsp.configure('basedpyright', {
+            settings = {
+                basedpyright = {
+                    analysis = {
+                        typeCheckingMode = "standard",
+                        logLevel = "Trace",
+                        autoSearchPaths = true,
+                        useLibraryCodeForTypes = true
+                    }
+                },
+            }
+        })
+
         local util = require("lspconfig.util")
 
         lsp.configure('angularls', {
