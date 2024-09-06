@@ -1,10 +1,11 @@
 return {
     {
         'jose-elias-alvarez/typescript.nvim',
+        dependencies = {
+            'VonHeikemen/lsp-zero.nvim',
+        },
         config = function()
             local ts = require('typescript')
-            ts.setup({})
-
             vim.keymap.set('n', '<leader>vo', function()
                 ts.actions.organizeImports()
             end, { desc = 'Typescript Organize Imports' })
