@@ -47,6 +47,91 @@ return {
             vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
         end
 
+        local actions = {
+            tsserver = {
+                {
+                    '<leader>vo',
+                    function()
+                        vim.lsp.buf.code_action {
+                            apply = true,
+                            context = {
+                                only = { 'source.organizeImports.ts' },
+                                diagnostics = {},
+                            },
+                        }
+                    end,
+                    { desc = 'Typescript Organize Imports' },
+                },
+                {
+                    '<leader>vi',
+                    function()
+                        vim.lsp.buf.code_action {
+                            apply = true,
+                            context = {
+                                only = { 'source.addMissingImports.ts' },
+                                diagnostics = {},
+                            },
+                        }
+                    end,
+                    { desc = 'Typescript Add Missing Imports' },
+                },
+                {
+                    '<leader>vf',
+                    function()
+                        vim.lsp.buf.code_action {
+                            apply = true,
+                            context = {
+                                only = { 'source.fixAll.ts' },
+                                diagnostics = {},
+                            },
+                        }
+                    end,
+                    { desc = 'Typescript Fix All' },
+                },
+                {
+                    '<leader>vO',
+                    function()
+                        vim.lsp.buf.code_action {
+                            apply = true,
+                            context = {
+                                only = { 'source.removeUnused.ts' },
+                                diagnostics = {},
+                            },
+                        }
+                    end,
+                    { desc = 'Typescript Remove Unused' },
+                },
+            },
+            ruff = {
+                {
+                    '<leader>vo',
+                    function()
+                        vim.lsp.buf.code_action({
+                            apply = true,
+                            context = {
+                                only = { 'source.organizeImports' },
+                                diagnostics = {},
+                            }
+                        })
+                    end,
+                    { desc = 'Ruff Organize Imports' },
+                },
+                {
+                    '<leader>vf',
+                    function()
+                        vim.lsp.buf.code_action({
+                            apply = true,
+                            context = {
+                                only = { 'source.fixAll' },
+                                diagnostics = {},
+                            }
+                        })
+                    end,
+                    { desc = 'Ruff Fix All' },
+                },
+            }
+        }
+
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
             callback = function(event)
@@ -58,6 +143,12 @@ return {
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
 
                 lsp_on_attach(event.buf)
+
+                if client and actions[client.name] then
+                    for _, action in ipairs(actions[client.name]) do
+                        vim.keymap.set('n', action[1], action[2], { buffer = event.buf, desc = action[3].desc })
+                    end
+                end
 
                 if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
                     local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
