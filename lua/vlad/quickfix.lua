@@ -21,3 +21,12 @@ end
 
 
 vim.keymap.set("n", "<leader>tq", toggle_quickfix, { desc = 'Toggle quickfix' })
+
+-- Autocmd to set keymap only in quickfix window
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, 'n', '<leader>o', ':.cc<CR>', { noremap = true, silent = true })
+  end,
+})
+
