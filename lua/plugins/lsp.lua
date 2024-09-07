@@ -35,8 +35,8 @@ return {
             vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, opts)
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+            vim.keymap.set("n", "[d", diagnostic_goto(false), opts)
+            vim.keymap.set("n", "]d", diagnostic_goto(true), opts)
             vim.keymap.set("n", "[e", diagnostic_goto(false, vim.diagnostic.severity.ERROR), opts);
             vim.keymap.set("n", "]e", diagnostic_goto(true, vim.diagnostic.severity.ERROR), opts);
             vim.keymap.set({ "n", "v" }, "<leader>va", vim.lsp.buf.code_action, opts)
@@ -45,25 +45,6 @@ return {
             vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
             vim.keymap.set("n", "<leader>vd", vim.lsp.buf.document_symbol, opts)
             vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
-
-            local function copy_diagnostic_for_current_line()
-                local diagnostics = vim.diagnostic.get(bufnr, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
-                if next(diagnostics) == nil then
-                    print("No diagnostics found on this line")
-                    return
-                end
-
-                local lines = {}
-                for _, diagnostic in ipairs(diagnostics) do
-                    table.insert(lines, diagnostic.message)
-                end
-
-                local joined_lines = table.concat(lines, "\n")
-                vim.fn.setreg('+', joined_lines)
-                print("Diagnostic copied to clipboard")
-            end
-
-            vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
         end
 
         vim.api.nvim_create_autocmd('LspAttach', {
@@ -113,12 +94,6 @@ return {
                 end
             end,
         })
-
-        -- lsp.extend_lspconfig({
-        --     sign_text = true,
-        --     lsp_attach = lsp_on_attach,
-        --     capabilities = require('cmp_nvim_lsp').default_capabilities(),
-        -- })
 
         local util = require("lspconfig.util")
         local servers = {
@@ -192,5 +167,24 @@ return {
         vim.diagnostic.config({
             virtual_text = true,
         })
+
+        local function copy_diagnostic_for_current_line()
+            local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+            if next(diagnostics) == nil then
+                print("No diagnostics found on this line")
+                return
+            end
+
+                local lines = {}
+                for _, diagnostic in ipairs(diagnostics) do
+                    table.insert(lines, diagnostic.message)
+                end
+
+                local joined_lines = table.concat(lines, "\n")
+                vim.fn.setreg('+', joined_lines)
+                print("Diagnostic copied to clipboard")
+            end
+
+            vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
     end
 }
