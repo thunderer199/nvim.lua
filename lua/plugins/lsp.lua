@@ -192,11 +192,11 @@ return {
                 format = function(entry, item)
                     local n = entry.source.name
                     if n == 'nvim_lsp' then
-                        item.menu = '[LSP]'
+                        item.menu = '[LSP] ' .. (item.menu or '')
                     elseif n == 'nvim_lua' then
-                        item.menu = '[nvim]'
+                        item.menu = '[nvim] ' .. (item.menu or '')
                     else
-                        item.menu = string.format('[%s]', n)
+                        item.menu =  string.format('[%s] ', n) .. (item.menu or '')
                     end
                     return item
                 end,
