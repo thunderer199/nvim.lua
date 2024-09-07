@@ -5,7 +5,6 @@ return {
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
             'nvim-treesitter/nvim-treesitter-context',
-            'nvim-treesitter/playground',
             'windwp/nvim-ts-autotag',
         },
         config = function()
