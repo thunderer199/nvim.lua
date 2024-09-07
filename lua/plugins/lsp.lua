@@ -180,16 +180,16 @@ return {
                 return
             end
 
-                local lines = {}
-                for _, diagnostic in ipairs(diagnostics) do
-                    table.insert(lines, diagnostic.message)
-                end
-
-                local joined_lines = table.concat(lines, "\n")
-                vim.fn.setreg('+', joined_lines)
-                print("Diagnostic copied to clipboard")
+            local lines = {}
+            for _, diagnostic in ipairs(diagnostics) do
+                table.insert(lines, diagnostic.message)
             end
 
-            vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
+            local joined_lines = table.concat(lines, "\n")
+            vim.fn.setreg('+', joined_lines)
+            print("Diagnostic copied to clipboard")
+        end
+
+        vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
     end
 }
