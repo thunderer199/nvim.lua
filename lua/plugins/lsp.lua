@@ -1,11 +1,11 @@
 return {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v4.x',
+    'neovim/nvim-lspconfig',
     dependencies = {
         -- LSP Support
-        { 'neovim/nvim-lspconfig' },
-        { 'williamboman/mason.nvim' },
+        { 'williamboman/mason.nvim',          config = true },
         { 'williamboman/mason-lspconfig.nvim' },
+
+        'WhoIsSethDaniel/mason-tool-installer.nvim',
 
         -- Autocompletion
         { 'hrsh7th/nvim-cmp' },
@@ -15,9 +15,7 @@ return {
         "b0o/schemastore.nvim",
     },
     config = function()
-        local lsp = require('lsp-zero')
-
-        local lsp_on_attach = function(_client, bufnr)
+        local lsp_on_attach = function(bufnr)
             local opts = { buffer = bufnr, remap = false }
 
             local diagnostic_goto = function(next, severity)
@@ -49,7 +47,7 @@ return {
             vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
 
             local function copy_diagnostic_for_current_line()
-                local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+                local diagnostics = vim.diagnostic.get(bufnr, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
                 if next(diagnostics) == nil then
                     print("No diagnostics found on this line")
                     return
@@ -68,74 +66,127 @@ return {
             vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
         end
 
+        vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+            callback = function(event)
+                -- The following two autocommands are used to highlight references of the
+                -- word under your cursor when your cursor rests there for a little while.
+                --    See `:help CursorHold` for information about when this is executed
+                --
+                -- When you move your cursor, the highlights will be cleared (the second autocommand).
+                local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-        lsp.extend_lspconfig({
-            sign_text = true,
-            lsp_attach = lsp_on_attach,
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                lsp_on_attach(event.buf)
+
+                if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                    local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+                    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                        buffer = event.buf,
+                        group = highlight_augroup,
+                        callback = vim.lsp.buf.document_highlight,
+                    })
+
+                    vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                        buffer = event.buf,
+                        group = highlight_augroup,
+                        callback = vim.lsp.buf.clear_references,
+                    })
+
+                    vim.api.nvim_create_autocmd('LspDetach', {
+                        group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+                        callback = function(event2)
+                            vim.lsp.buf.clear_references()
+                            vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+                        end,
+                    })
+                end
+
+                if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                    vim.keymap.set(
+                        'n',
+                        '<leader>ih',
+                        function()
+                            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+                        end,
+                        { buffer = event.buf, desc = 'Toggle Inlay Hints' }
+                    );
+                end
+            end,
         })
 
-        require('mason').setup({})
+        -- lsp.extend_lspconfig({
+        --     sign_text = true,
+        --     lsp_attach = lsp_on_attach,
+        --     capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        -- })
+
+        local util = require("lspconfig.util")
+        local servers = {
+            jsonls = {
+                settings = {
+                    json = {
+                        schemas = require('schemastore').json.schemas(),
+                        validate = { enable = true },
+                    },
+                },
+            },
+            tsserver = {
+                settings = {
+                    typescript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = "all",
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                }
+            },
+            basedpyright = {
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            typeCheckingMode = "standard",
+                            logLevel = "Trace",
+                            autoSearchPaths = true,
+                            useLibraryCodeForTypes = true
+                        }
+                    },
+                }
+            },
+            angularls = {
+                root_dir = util.root_pattern("angular.json", "project.json"),
+            },
+            lua_ls = {
+                settings = {
+                    Lua = {
+                        completion = {
+                            callSnippet = "Replace",
+                        },
+                    },
+                },
+            }
+        }
+
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
         require('mason-lspconfig').setup({
             ensure_installed = { 'tsserver', 'jsonls' },
             handlers = {
-                lsp.default_setup,
+                function(server_name)
+                    local server = servers[server_name] or {}
+                    -- This handles overriding only values explicitly passed
+                    -- by the server configuration above. Useful when disabling
+                    -- certain features of an LSP (for example, turning off formatting for tsserver)
+                    server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+                    require('lspconfig')[server_name].setup(server)
+                end,
             }
-        })
-
-        require('lspconfig').jsonls.setup({
-            settings = {
-                json = {
-                    schemas = require('schemastore').json.schemas(),
-                    validate = { enable = true },
-                },
-            },
-        })
-
-        require('lspconfig').tsserver.setup({
-            settings = {
-                typescript = {
-                    inlayHints = {
-                        includeInlayParameterNameHints = "all",
-                        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                },
-            }
-        })
-
-        require('lspconfig').basedpyright.setup({
-            settings = {
-                basedpyright = {
-                    analysis = {
-                        typeCheckingMode = "standard",
-                        logLevel = "Trace",
-                        autoSearchPaths = true,
-                        useLibraryCodeForTypes = true
-                    }
-                },
-            }
-        })
-
-        local util = require("lspconfig.util")
-
-        require('lspconfig').angularls.setup({
-            root_dir = util.root_pattern("angular.json", "project.json"),
-        })
-
-        require('lspconfig').lua_ls.setup({
-            settings = {
-                Lua = {
-                    completion = {
-                        callSnippet = "Replace",
-                    },
-                },
-            },
         })
 
         vim.diagnostic.config({

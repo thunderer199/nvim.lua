@@ -2,7 +2,7 @@ return {
     {
         'jose-elias-alvarez/typescript.nvim',
         dependencies = {
-            'VonHeikemen/lsp-zero.nvim',
+            { 'neovim/nvim-lspconfig' }
         },
         config = function()
             local ts = require('typescript')
