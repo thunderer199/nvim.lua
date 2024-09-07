@@ -144,7 +144,12 @@ return {
                         },
                     },
                 },
-            }
+            },
+            typos_lsp = {
+                init_options = {
+                    diagnosticSeverity = "Information",
+                },
+            },
         }
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
