@@ -144,8 +144,13 @@ return {
 
                 lsp_on_attach(event.buf)
 
-                if client and actions[client.name] then
-                    for _, action in ipairs(actions[client.name]) do
+                local actions_aliases = {
+                    volar = 'ts_ls',
+                }
+                local action_name = client and (actions_aliases[client.name] or client.name)
+                if actions[action_name] then
+
+                    for _, action in ipairs(actions[action_name]) do
                         vim.keymap.set('n', action[1], action[2], { buffer = event.buf, desc = action[3].desc })
                     end
                 end
