@@ -1,7 +1,7 @@
 return {
     {
         "github/copilot.vim",
-        config = function()
+        init = function()
             local util = require("vlad.util")
 
             vim.g.copilot_workspace_folders = { util.get_base_path() }
