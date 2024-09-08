@@ -241,6 +241,14 @@ return {
                     diagnosticSeverity = "Information",
                 },
             },
+            volar = {
+                filetypes = { 'vue' },
+                init_options = {
+                    vue = {
+                        hybridMode = false,
+                    },
+                },
+            },
         }
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
