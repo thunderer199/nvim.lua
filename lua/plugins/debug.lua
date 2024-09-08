@@ -6,7 +6,6 @@ return {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
             'nvim-neotest/nvim-nio',
-            'Weissle/persistent-breakpoints.nvim',
             'mfussenegger/nvim-dap-python',
         },
         config = function()
@@ -16,17 +15,13 @@ return {
             local dap = require("dap")
             local dapui = require("dapui")
 
-            require('persistent-breakpoints').setup {
-                load_breakpoints_event = { "BufReadPost" }
-            }
-
             dapui.setup(
                 {
                     layouts = {
                         {
                             elements = {
-                                { id = "stacks",      size = 0.25 },
-                                { id = "scopes",      size = 0.5 },
+                                { id = "stacks",  size = 0.25 },
+                                { id = "scopes",  size = 0.5 },
                                 { id = "watches", size = 0.25 },
                             },
                             position = "left",
@@ -79,13 +74,10 @@ return {
                         name = "Attach",
                         processId = function()
                             require 'dap.utils'.pick_process({
-                                -- filter = '--inspect'
                                 filter = function(p)
                                     -- return p.name == 'node' and string.find(p.cmd, '--inspect')
                                     local list = { 'node', 'ts-node', '--inspect', 'vitest' }
                                     for _, v in ipairs(list) do
-                                        -- print(p.cmd)
-                                        -- print(p.name)
                                         if string.find(p.name, v) then
                                             return true
                                         end
@@ -127,23 +119,6 @@ return {
                 }
             }
 
-            -- vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939', bg = '#31353f' })
-            -- vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef', bg = '#31353f' })
-            -- vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379', bg = '#31353f' })
-
-            vim.fn.sign_define('DapBreakpoint',
-                { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
-            vim.fn.sign_define('DapBreakpointCondition',
-                { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
-            vim.fn.sign_define('DapBreakpointRejected',
-                { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
-            vim.fn.sign_define('DapLogPoint',
-                { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
-            vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl =
-            'DapStopped' })
-
-            local breakpoints = require('persistent-breakpoints.api')
-
             vim.keymap.set('n', '<leader>dx', function() dap.continue() end, { desc = "Debug - Continue" })
             vim.keymap.set('n', '<leader>dX', function() dap.terminate() end, { desc = "Debug - Terminate" })
             vim.keymap.set('n', '<leader>dz', function() dap.run_last() end, { desc = "Debug - Run last" })
@@ -151,19 +126,11 @@ return {
             vim.keymap.set('n', '<leader>dR', function() dap.repl.open() end, { desc = "Debug - REPL" })
             vim.keymap.set('n', '<leader>dC', function() dapui.float_element('console') end, { desc = "Debug - Console" })
 
-            vim.keymap.set('n', '<leader>db', function() breakpoints.toggle_breakpoint() end,
-                { desc = "Debug - Toggle breakpoint" })
+            vim.keymap.set('n', '<leader>db', function() dap.toggle_breakpoint() end, { desc = "Debug - Toggle breakpoint" })
 
-            vim.keymap.set('n', '<leader>dn', function()
-                breakpoints.set_log_point()
-            end, { desc = "Debug - Logpoint" })
-            -- vim.keymap.set('n', '<Leader>dn', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+            vim.keymap.set('n', '<leader>dn', function() dap.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true) end, { desc = "Debug - Logpoint" })
 
-
-            vim.keymap.set('n', '<leader>dB', function()
-                -- dap.set_breakpoint(vim.fn.input('Breakpoint condition: ))
-                breakpoints.set_conditional_breakpoint(vim.fn.input('Breakpoint condition: '))
-            end, { desc = "Debug - Set breakpoint with condition" })
+            vim.keymap.set('n', '<leader>dB', function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, { desc = "Debug - Set breakpoint with condition" })
 
             vim.keymap.set('n', '<leader>dq', function() dap.step_out() end, { desc = "Debug - Step out" })
             vim.keymap.set('n', '<leader>dw', function() dap.step_over() end, { desc = "Debug - Step over" })
@@ -171,7 +138,7 @@ return {
 
             vim.keymap.set('n', '<leader>di', function() dapui.eval() end, { desc = "Debug - Evaluate" })
             vim.keymap.set('n', '<leader>dl', function() dapui.float_element("breakpoints") end, { desc = "Debug - breakpoints list" })
-            vim.keymap.set('n', '<leader>dL', function() breakpoints.clear_all_breakpoints() end, { desc = "Debug - Clear all breakpoints" })
+            vim.keymap.set('n', '<leader>dL', function() dap.clear_breakpoints() end, { desc = "Debug - Clear all breakpoints" })
 
             vim.keymap.set('n', '<leader>do', function() dapui.toggle() end, { desc = "Debug - Toggle UI" })
 
