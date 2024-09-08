@@ -4,7 +4,7 @@ return {
         ft = { "javascript", "javascriptreact", "json", "jsonc", "typescript", "typescriptreact" },
         opts = {
             debug = true,
-            mode = "quickfix", -- "quickfix" | "trouble"
+            mode = "trouble", -- "quickfix" | "trouble"
         },
     }
 }

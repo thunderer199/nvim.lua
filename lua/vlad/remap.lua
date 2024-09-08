@@ -22,8 +22,22 @@ vim.keymap.set('n', 'QQ', '<cmd>qa!<CR>')
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- quick fix navigation
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
+vim.keymap.set(
+    "n",
+    "<C-k>",
+    function ()
+        require('trouble').next({ jump = true })
+    end,
+    { desc = "Next quickfix" }
+)
+vim.keymap.set(
+    "n",
+    "<C-j>",
+    function ()
+        require('trouble').prev({ jump = true })
+    end,
+    { desc = "Previous quickfix" }
+)
 
 -- buffer navigation
 vim.keymap.set("n", "]b", "<cmd>bn<CR>", { desc = "Next buffer" })
