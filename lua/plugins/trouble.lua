@@ -9,6 +9,16 @@ return {
                 "<cmd>Trouble qflist toggle<cr>",
                 desc = "Quickfix List (Trouble)",
             },
+            {
+                "<leader>ty",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostic List (Trouble)",
+            },
+            {
+                "<leader>o",
+                "<cmd>Trouble symbols toggle<cr>",
+                desc = "Outline (Trouble)",
+            }
         },
         config = function()
             vim.api.nvim_create_autocmd("BufRead", {
