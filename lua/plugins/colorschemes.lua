@@ -43,10 +43,40 @@ return {
         lazy = false,
         config = function()
             local transparent = require('transparent')
+            transparent.setup({
+                groups = {
+                    'Normal',
+                    'NormalNC',
+                    'Comment',
+                    'Constant',
+                    'Special',
+                    'Identifier',
+                    'Statement',
+                    'PreProc',
+                    'Type',
+                    'Underlined',
+                    'Todo',
+                    'String',
+                    'Function',
+                    'Conditional',
+                    'Repeat',
+                    'Operator',
+                    'Structure',
+                    'LineNr',
+                    'NonText',
+                    'SignColumn',
+                    -- 'CursorLine',
+                    -- 'CursorLineNr',
+                    'StatusLine',
+                    'StatusLineNC',
+                    'EndOfBuffer',
+                },
+            })
             transparent.clear_prefix('lualine_b')
             transparent.clear_prefix('lualine_c')
             transparent.clear_prefix('lualine_x')
             transparent.clear_prefix('lualine_y')
+            transparent.clear_prefix('trouble')
         end
     },
     -- Lua
