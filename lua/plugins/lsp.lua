@@ -48,7 +48,7 @@ return {
         end
 
         local actions = {
-            tsserver = {
+            ts_ls = {
                 {
                     '<leader>vo',
                     function()
@@ -196,7 +196,7 @@ return {
                     },
                 },
             },
-            tsserver = {
+            ts_ls = {
                 settings = {
                     typescript = {
                         inlayHints = {
@@ -255,13 +255,10 @@ return {
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
         require('mason-lspconfig').setup({
-            ensure_installed = { 'tsserver', 'jsonls' },
+            ensure_installed = { 'ts_ls', 'jsonls' },
             handlers = {
                 function(server_name)
                     local server = servers[server_name] or {}
-                    -- This handles overriding only values explicitly passed
-                    -- by the server configuration above. Useful when disabling
-                    -- certain features of an LSP (for example, turning off formatting for tsserver)
                     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
                     require('lspconfig')[server_name].setup(server)
                 end,
