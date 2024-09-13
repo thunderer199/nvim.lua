@@ -16,7 +16,7 @@ return {
             },
             {
                 "<leader>o",
-                "<cmd>Trouble symbols toggle<cr>",
+                "<cmd>Trouble symbols toggle focus=true<cr>",
                 desc = "Outline (Trouble)",
             }
         },
