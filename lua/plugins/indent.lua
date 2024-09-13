@@ -21,12 +21,14 @@ return {
 
 
             require("ibl").setup({
+                indent = {
+                    char = '┊',
+                },
                 scope = {
                     highlight = highlight,
                     enabled = true,
                     show_end = false,
                     show_start = false,
-                    -- show_exact_scope = true,
                     include = {
                         node_type = {
                             ["*"] = { "*" },
