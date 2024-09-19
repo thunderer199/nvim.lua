@@ -210,7 +210,8 @@ return {
                     mappings = {
                         i = {
                             ["<C-l>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden" })
+                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden" }),
+                            ["<C-h>"] = lga_actions.quote_prompt({ postfix = " -F" })
                         },
                     },
                 }
