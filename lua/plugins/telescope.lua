@@ -251,10 +251,10 @@ return {
             telescope.extensions.live_grep_args.live_grep_args({ cwd = cwd })
         end, {})
         vim.keymap.set('n', '<leader>fh', function()
-            telescope.extensions.live_grep_args.live_grep_args({
-                cwd = cwd,
-                default_text = "'" .. vim.fn.expand("<cword>") .. "' -F",
-            })
+            live_grep_args_shortcuts.grep_word_under_cursor({ cwd = cwd })
+        end, {})
+        vim.keymap.set('v', '<leader>fh', function()
+            live_grep_args_shortcuts.grep_visual_selection({ cwd = cwd })
         end, {})
         vim.keymap.set('n', '<leader>ff', function()
             builtin.find_files({ cwd = cwd })
