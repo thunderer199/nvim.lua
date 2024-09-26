@@ -6,7 +6,13 @@
 				"language": [
 					"angular", "typescript"
 				],
-				"path": "./snippets/angular.json"
+				"path": "./snippets/angular/angular.json"
+			},
+			{
+				"language": [
+					"angular", "typescript"
+				],
+				"path": "./snippets/angular/spectator.json"
 			},
 			{
 				"language": [
