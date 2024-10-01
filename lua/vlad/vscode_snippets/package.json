@@ -3,6 +3,14 @@
   "contributes": {
     "snippets": [
       {
+        "language": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+        "path": "./snippets/jsdoc.json"
+      },
+      {
+        "language": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+        "path": "./snippets/javascript.json"
+      },
+      {
         "language": ["typescript", "typescriptreact"],
         "path": "./snippets/typescript.json"
       },
@@ -47,7 +55,7 @@
         "path": "./snippets/python/unittest.json"
       },
       {
-        "language": "pydoc",
+        "language": "python",
         "path": "./snippets/python/pydoc.json"
       }
     ]

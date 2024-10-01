@@ -1,0 +1,166 @@
+{
+  "await": {
+    "prefix": "a",
+    "body": "await ${0}"
+  },
+  "await sleep": {
+    "prefix": "sleep",
+    "body": "await new Promise((r) => setTimeout(r, ${0}))"
+  },
+  "describe": {
+    "prefix": "desc",
+    "body": "describe('${1:description}', () => {\n\t${0}\n})"
+  },
+  "describe top level": {
+    "prefix": "dt",
+    "body": "describe('${TM_FILENAME_BASE}', () => {\n\t${0}\n})"
+  },
+  "it asynchronous": {
+    "prefix": "it",
+    "body": "it('${1:description}', async () => {\n\t${0}\n})"
+  },
+  "it.todo": {
+    "prefix": "itt",
+    "body": "it.todo('${1:description}')"
+  },
+  "Constructor": {
+    "prefix": "ctor",
+    "body": ["/**", " *", " */", "constructor() {", "\tsuper();", "\t$0", "}"],
+    "description": "Constructor"
+  },
+  "class": {
+    "prefix": "cs",
+    "body": "class ${1:name} {\n\tconstructor (${2:arguments}) {\n\t\t${0}\n\t}\n}"
+  },
+  "class extends": {
+    "prefix": "csx",
+    "body": "class ${1:name} extends ${2:base} {\n\tconstructor (${3:arguments}) {\n\t\tsuper(${3:arguments})\n\t\t${0}\n\t}\n}"
+  },
+  "Import external module.": {
+    "prefix": "imp",
+    "body": ["import { $0 } from \"${1:module}\";"],
+    "description": "Import external module."
+  },
+  "import default": {
+    "prefix": "imd",
+    "body": ["import ${1:name} from \"${2:module}\";"],
+    "description": "import default"
+  },
+  "import as": {
+    "prefix": "ima",
+    "body": ["import { ${1:name} as ${2:alias} } from \"${3:module}\";"],
+    "description": "import as"
+  },
+  "async arrow function": {
+    "prefix": "funa",
+    "body": "async (${1:arguments}) => {\n\t${0}\n}"
+  },
+  "arrow function": {
+    "prefix": "fun",
+    "body": "(${1:arguments}) => ${2:statement}"
+  },
+  "arrow function with destructuring": {
+    "prefix": "fund",
+    "body": "({${1:arguments}}) => ${2:statement}"
+  },
+  "ternary": {
+    "prefix": "te",
+    "body": "${1:cond} ? ${2:true} : ${3:false}"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-In Loop": {
+    "prefix": "forin",
+    "body": [
+      "for (const ${1:key} in ${2:object}) {",
+      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "For-In Loop"
+  },
+  "For-Of Loop": {
+    "prefix": "forof",
+    "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+    "description": "For-Of Loop"
+  },
+  "For-Await-Of Loop": {
+    "prefix": "forawaitof",
+    "body": ["for await (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+    "description": "For-Await-Of Loop"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": ["if (${1:condition}) {", "\t$0", "}"],
+    "description": "If Statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ifelse",
+    "body": ["if (${1:condition}) {", "\t$0", "} else {", "\t", "}"],
+    "description": "If-Else Statement"
+  },
+  "New Statement": {
+    "prefix": "new",
+    "body": ["const ${1:name} = new ${2:type}(${3:arguments});$0"],
+    "description": "New Statement"
+  },
+  "Switch Statement": {
+    "prefix": "switch",
+    "body": [
+      "switch (${1:key}) {",
+      "\tcase ${2:value}:",
+      "\t\t$0",
+      "\t\tbreak;",
+      "",
+      "\tdefault:",
+      "\t\tbreak;",
+      "}"
+    ],
+    "description": "Switch Statement"
+  },
+  "While Statement": {
+    "prefix": "while",
+    "body": ["while (${1:condition}) {", "\t$0", "}"],
+    "description": "While Statement"
+  },
+  "Do-While Statement": {
+    "prefix": "dowhile",
+    "body": ["do {", "\t$0", "} while (${1:condition});"],
+    "description": "Do-While Statement"
+  },
+  "Try-Catch Statement": {
+    "prefix": "try",
+    "body": ["try {", "\t$0", "} catch (${1:error}) {", "\t", "}"],
+    "description": "Try-Catch Statement"
+  },
+  "Throw Exception": {
+    "prefix": "throw",
+    "body": ["throw \"$1\";", "$0"],
+    "description": "Throw Exception"
+  },
+  "Set Timeout Function": {
+    "prefix": "settimeout",
+    "body": ["setTimeout(() => {", "\t$0", "}, ${1:timeout});"],
+    "description": "Set Timeout Function"
+  },
+  "Set Interval Function": {
+    "prefix": "setinterval",
+    "body": ["setInterval(() => {", "\t$0", "}, ${1:interval});"],
+    "description": "Set Interval Function"
+  },
+  "Request Animation Frame Function": {
+    "prefix": "raf",
+    "body": ["requestAnimationFrame(() => {", "\t$0", "});"],
+    "description": "Request Animation Frame Function"
+  }
+}
