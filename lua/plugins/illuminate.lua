@@ -23,9 +23,15 @@ return {
             min_count_to_highlight = 2,
         })
 
-        vim.keymap.set('n', ']]', illuminate.goto_next_reference,
+        vim.keymap.set('n', ']]', function()
+                illuminate.goto_next_reference()
+                vim.cmd('normal! zz') -- center the screen on the highlighted word
+            end,
             { noremap = true, silent = true, desc = 'Go to next reference' })
-        vim.keymap.set('n', '[[', illuminate.goto_prev_reference,
+        vim.keymap.set('n', '[[', function()
+                illuminate.goto_prev_reference()
+                vim.cmd('normal! zz') -- center the screen on the highlighted word
+            end,
             { noremap = true, silent = true, desc = 'Go to previous reference' })
 
         vim.api.nvim_set_hl(0, 'IlluminatedWordText', { link = 'Visual' })
