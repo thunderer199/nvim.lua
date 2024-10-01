@@ -55,8 +55,8 @@ vim.keymap.set("n", "gF", ":e <cfile><CR>", { desc = "Create a new file under cu
 vim.keymap.set("n", "<leader>e", "<C-w>")
 
 -- splits
-vim.keymap.set("n", "ws", ':split<CR><C-w>k', { desc = "Split window horizontally" })
-vim.keymap.set("n", "wv", ':vsplit<CR><C-w>l', { desc = "Split window vertically" })
+vim.keymap.set("n", "Ws", ':split<CR><C-w>k', { desc = "Split window horizontally" })
+vim.keymap.set("n", "Wv", ':vsplit<CR><C-w>l', { desc = "Split window vertically" })
 
 -- close tab
 vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
