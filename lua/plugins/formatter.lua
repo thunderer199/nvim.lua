@@ -50,7 +50,7 @@ return {
                 },
                 formatters = {
                     sql_formatter = {
-                        prepend_args = { "--language", "plsql" },
+                        prepend_args = { "--language", "postgresql" },
                     },
                     injected = {
                         options = {
