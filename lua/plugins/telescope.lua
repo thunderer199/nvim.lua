@@ -244,6 +244,12 @@ return {
         vim.keymap.set('n', '<leader>fS', builtin.colorscheme)
         vim.keymap.set('n', '<leader>fs', builtin.git_status)
 
+        vim.keymap.set('n', 'gs', function()
+            builtin.lsp_document_symbols({
+                symbols = { "function", "method", "class" }
+            })
+        end, {})
+
         local util = require('vlad.util')
         local cwd = util.get_base_path()
 
