@@ -45,10 +45,10 @@ return {
             'tpope/vim-rhubarb',
         },
         keys = {
-            { '<leader>gs', vim.cmd.Git, desc = "Git Status" },
-            { "<leader>gb", function() vim.cmd.Git("blame -w -M") end, desc = "Git Blame move and ignore whitespace" },
+            { '<leader>gs', vim.cmd.Git,                                  desc = "Git Status" },
+            { "<leader>gb", function() vim.cmd.Git("blame -w -M") end,    desc = "Git Blame move and ignore whitespace" },
             { "<leader>gB", function() vim.cmd.Git("blame -w -M -C") end, desc = "Git Blame move and copy" },
-            { "<leader>ge", vim.cmd.Gedit, desc = "Gedit" },
+            { "<leader>ge", vim.cmd.Gedit,                                desc = "Gedit" },
         },
         cmd = {
             "GBrowse",
