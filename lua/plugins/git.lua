@@ -31,6 +31,11 @@ return {
         "sindrets/diffview.nvim",
         lazy = false,
         config = function()
+            require('diffview').setup({
+                default = {
+                    layout = 'diff3_mixed'
+                }
+            })
             vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>", { desc = "Diffview Open" })
             vim.keymap.set("n", "<leader>gl", ":DiffviewFileHistory --n=25<CR>", { desc = "Diffview Git History" })
             vim.keymap.set("n", "<leader>gc", ":DiffviewFileHistory %<CR>", { desc = "Diffview File History" })
