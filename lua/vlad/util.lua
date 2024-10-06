@@ -8,6 +8,19 @@ local get_git_cwd = function()
     return git_dir
 end
 
+-- Define a function to read the contents of a file
+local function read_file(filepath)
+    local file, err = io.open(filepath, "r")  -- Open the file in read mode
+    if not file then
+        print("Could not open file: " .. filepath .. " - " .. err)
+        return nil
+    end
+
+    local content = file:read("*all")    -- Read the entire content of the file
+    file:close()                         -- Close the file
+    return content
+end
+
 local get_base_path = function()
     local git_dir = get_git_cwd()
     if git_dir == nil then
@@ -111,5 +124,6 @@ M.split_into_lines = split_into_lines;
 M.trim_string = trim_string;
 M.trim_quotes = trim_quotes;
 M.snippet_fmts = snippet_fmts;
+M.read_file = read_file;
 
 return M;

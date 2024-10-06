@@ -1,13 +1,5 @@
 return {
     {
-        'ruifm/gitlinker.nvim',
-        config = true,
-        keys = {
-            { '<leader>gy', function() require "gitlinker".get_buf_range_url("n") end, desc = "GH - Copy link" },
-            { '<leader>gy', function() require "gitlinker".get_buf_range_url("v") end, mode = 'v', "GH - Copy link" },
-        },
-    },
-    {
         "NeogitOrg/neogit",
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -62,10 +54,17 @@ return {
             "GBrowse",
         },
         config = function()
+            -- vim read txt file
+            local util = require('vlad.util')
+            local file = util.read_file(os.getenv('HOME') .. '/.github-enterprise')
+            if file then
+                local lines = util.split_into_lines(file)
+                vim.g.github_enterprise_urls = lines
+            end
+
             local fugitive_cmd_group = vim.api.nvim_create_augroup("fugitive_cmd_group", {})
 
-            local autocmd = vim.api.nvim_create_autocmd
-            autocmd("BufWinEnter", {
+            vim.api.nvim_create_autocmd("BufWinEnter", {
                 group = fugitive_cmd_group,
                 pattern = "*",
                 callback = function()
