@@ -15,6 +15,14 @@
         "path": "./snippets/typescript.json"
       },
       {
+        "language": ["ejs", "typescript", "javascript", "html"],
+        "path": "./snippets/ejs.json"
+      },
+      {
+        "language": ["typescript", "javascript", "html"],
+        "path": "./snippets/handlebars.json"
+      },
+      {
         "language": [
           "angular",
           "typescript"

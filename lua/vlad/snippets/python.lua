@@ -20,4 +20,9 @@ return {
       }))
     end)
   }),
+  post('.len', {
+    d(1, function(_, parent)
+      return sn(1, fmts("len([iterable])", { iterable = parent.snippet.env.POSTFIX_MATCH }))
+    end)
+  }),
 }
