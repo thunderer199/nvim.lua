@@ -17,7 +17,17 @@ return {
             }
         end
     },
-    'machakann/vim-swap',
+    {
+        'machakann/vim-swap',
+        keys = {
+            { "g<", "<Plug>(swap-prev)", desc = "Swap to previous buffer" },
+            { "g>", "<Plug>(swap-next)", desc = "Swap to next buffer" },
+            { "gS", "<Plug>(swap-interactive)", desc = "Interactive buffer swap" },
+        },
+        init = function()
+            vim.g.swap_no_default_key_mappings = 1
+        end
+    },
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
