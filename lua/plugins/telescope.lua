@@ -246,7 +246,7 @@ return {
 
         vim.keymap.set('n', 'gs', function()
             builtin.lsp_document_symbols({
-                symbols = { "function", "method", "class" }
+                symbols = { "function", "method", "class", "constructor" },
             })
         end, {})
 
