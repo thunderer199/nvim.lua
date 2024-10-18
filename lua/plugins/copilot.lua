@@ -126,7 +126,8 @@ return {
                 "<leader>cR",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Review provided code following best industry practices. Refactor code using the provided suggestions.",
+                    chat.ask(
+                        "Review provided code following best industry practices. Refactor code using the provided suggestions.",
                         {
                             selection = require("CopilotChat.select").visual,
                         }
@@ -181,11 +182,12 @@ return {
                 desc = "CopilotChat - Quick chat",
             }
         },
+        ---@type CopilotChat.config
         opts = {
             mappings = {
                 complete = {
-                    detail = 'Use @<C-f> or /<C-f> for options.',
-                    insert = '<C-f>',
+                    detail = 'Use @<Tab> or /<Tab> for options.',
+                    insert = '<Tab>',
                 },
                 close = {
                     normal = 'q',
@@ -197,7 +199,7 @@ return {
                 },
                 submit_prompt = {
                     normal = '<CR>',
-                    insert = '<C-i>'
+                    insert = '<C-p>'
                 },
                 accept_diff = {
                     normal = '<C-y>',
@@ -205,6 +207,7 @@ return {
                 },
                 yank_diff = {
                     normal = 'gy',
+                    register = '"',
                 },
                 show_diff = {
                     normal = 'gd'
