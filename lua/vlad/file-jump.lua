@@ -8,6 +8,31 @@ local function try_file(main_path, extensions)
     return main_path
 end
 
+local function combine_parts(basepath, filename, postfixes, prefixes, extensions)
+    local result = {}
+    for _, postfix in ipairs(postfixes) do
+        table.insert(result, basepath .. filename .. postfix)
+    end
+
+    for _, prefix in ipairs(prefixes) do
+        for _, ext in ipairs(extensions) do
+            table.insert(result, basepath .. prefix .. filename .. ext)
+        end
+    end
+
+    return result
+end
+
+local function get_first_existing_file(files)
+    for _, file in ipairs(files) do
+        if vim.uv.fs_stat(file) then
+            return file
+        end
+    end
+
+    return nil
+end
+
 local function path_to_snapshot(main_path, extension)
     local splited = vim.split(main_path, "/")
     -- add __snapshots__ folder to the path
@@ -35,15 +60,21 @@ end
 
 -- Angular files jump
 vim.api.nvim_create_user_command("JToFile", function(opts)
-    local js_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue", ".py" }
-    local test_postfixes = { ".spec", ".test", "_test" }
+    local main_file_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue", ".py" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     local story_extensions = { ".stories.tsx", ".stories.ts" , ".stories.js" , ".stories.jsx"}
-    local test_js_extensions = cartesian_product(test_postfixes, js_extensions)
+
+    local test_prefixes = { "test_" }
+    local test_postfixes = { ".spec", ".test", "_test" }
+    local test_file_extensions = cartesian_product(test_postfixes, main_file_extensions)
 
     local type = opts.args
     local path = vim.fn.expand("%:r")
     local main_path = path
+    local filename = path:match("([^/]+)$")
+    local filename_index = path:find(filename)
+    -- folder is path without filename
+    local folder = path:sub(1, filename_index - 1)
     if ends_with(path, ".spec") then
         main_path = path:gsub(".spec$", "")
     elseif ends_with(path, ".test") then
@@ -54,6 +85,8 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         main_path = path:gsub(".module$", "")
     elseif ends_with(path, ".stories") then
         main_path = path:gsub(".stories$", "")
+    elseif filename:find("^test_") then
+        main_path = path:gsub("/test_", "/")
     end
 
     -- for snapshot move one level up
@@ -67,7 +100,7 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
         -- main_path = main_path:gsub("%.spec%.ts$", "")
         -- main_path = main_path:gsub("%.test%.ts$", "")
 
-        for _, ext in ipairs(test_js_extensions) do
+        for _, ext in ipairs(test_file_extensions) do
             -- replace . with %. to escape it
             ext = ext:gsub("%.", "%%.")
             main_path = main_path:gsub(ext .. "$", "")
@@ -75,9 +108,15 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     end
 
     if type == 'spec' then
-        vim.fn.execute(":find " .. try_file(main_path, test_js_extensions))
+        local possible_files = combine_parts(folder, filename, test_file_extensions, test_prefixes, main_file_extensions)
+        local file = get_first_existing_file(possible_files)
+        if not file then
+            print("Spec file not found")
+        else
+            vim.fn.execute(":find " .. file)
+        end
     elseif type == 'main' then
-        vim.fn.execute(":find " .. try_file(main_path, js_extensions))
+        vim.fn.execute(":find " .. try_file(main_path, main_file_extensions))
     elseif type == 'scss' then
         vim.fn.execute(":find " .. try_file(main_path, style_extensions))
     elseif type == 'html' then
@@ -85,23 +124,22 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     elseif type == 'story' then
         vim.fn.execute(":find " .. try_file(main_path, story_extensions))
     elseif type == 'snapshot' then
-        local p;
-        for _, ext in ipairs(test_js_extensions) do
-            local f = path_to_snapshot(main_path, ext)
-            if vim.loop.fs_stat(f) then
-                p = f
+        local snap_path;
+        for _, ext in ipairs(test_file_extensions) do
+            local _path = path_to_snapshot(main_path, ext)
+            if vim.loop.fs_stat(_path) then
+                snap_path = _path
                 break
             end
         end
 
-        print(p)
-        if p then
-            vim.fn.execute(":find " .. p)
+        if snap_path then
+            vim.fn.execute(":find " .. snap_path)
         else
             print("Snapshot file not found")
         end
     else
-        print("Unknown type")
+        print("Unknown type", type)
     end
 end, { nargs = 1 })
 
