@@ -3,6 +3,10 @@
   "contributes": {
     "snippets": [
       {
+        "language": ["yaml", "html", "markdown"],
+        "path": "./snippets/jinja.json"
+      },
+      {
         "language": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
         "path": "./snippets/jsdoc.json"
       },
