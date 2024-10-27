@@ -34,6 +34,21 @@
         "body": "{% set $1 = $2 %}",
         "description": "set"
     },
+    "set_clean_after": {
+        "prefix": "jjsetca",
+        "body": "{% set $1 = $2 -%}",
+        "description": "set and clean after"
+    },
+    "set_clean_before": {
+        "prefix": "jjsetcb",
+        "body": "{%- set $1 = $2 %}",
+        "description": "set and clean before"
+    },
+    "set_clean_both": {
+        "prefix": "jjsetcA",
+        "body": "{%- set $1 = $2 -%}",
+        "description": "set and clean both"
+    },
     "filter": {
         "prefix": "jjfilter",
         "body": "{{ $1 | $2 }}",
