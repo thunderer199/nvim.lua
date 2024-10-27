@@ -1,5 +1,8 @@
 return {
     {
+        import =  'plugins.languages' ,
+    },
+    {
         "folke/lazydev.nvim",
         priority = 100,
         opts = {},
