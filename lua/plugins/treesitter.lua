@@ -13,6 +13,7 @@ return {
                 multiple_threshold = 10,
             };
 
+            ---@diagnostic disable-next-line: missing-fields
             require 'nvim-treesitter.configs'.setup {
                 -- A list of parser names, or "all"
                 ensure_installed = { "help", "javascript", "typescript", "css", "scss", "json", "c", "lua", "rust" },
