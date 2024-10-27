@@ -27,6 +27,10 @@
         "path": "./snippets/handlebars.json"
       },
       {
+        "language": ["angular", "html"],
+        "path": "./snippets/angular/angular-html.json"
+      },
+      {
         "language": [
           "angular",
           "typescript"
