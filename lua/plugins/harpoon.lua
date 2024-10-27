@@ -87,8 +87,17 @@ return {
                     vim.api.nvim_set_current_buf(bufnr)
 
                     if set_position then
+                        -- get number of rows in the buffer
+                        local rows_count = vim.api.nvim_buf_line_count(bufnr)
+
+                        local desired_row = list_item.context.row
+                        -- if the row is nil or out of bounds, set it to 1
+                        if desired_row == nil or desired_row > rows_count then
+                            desired_row = 1
+                        end
+
                         vim.api.nvim_win_set_cursor(0, {
-                            list_item.context.row or 1,
+                            desired_row or 1,
                             list_item.context.col or 0,
                         })
                         -- center the cursor
