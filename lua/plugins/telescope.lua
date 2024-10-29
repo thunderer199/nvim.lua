@@ -231,7 +231,22 @@ return {
         vim.keymap.set('n', '<leader>fQ', builtin.quickfixhistory, {})
 
         vim.keymap.set('n', '<leader>fc', builtin.git_commits, {})
-        vim.keymap.set('n', '<leader>fC', builtin.git_bcommits, {})
+        vim.keymap.set('n', '<leader>fC', function(...)
+            -- if current_path starts with oil:// then we need to remove it
+            local current_path = vim.fn.expand('%:p:h')
+            if string.find(current_path, "oil://") == 1 then
+                current_path = string.sub(current_path, 7)
+            else
+                builtin.git_bcommits(...)
+                return
+            end
+
+            -- remove git_base from current_path
+            current_path = string.sub(current_path, string.len(require('vlad.util').get_git_cwd() or '/') + 2)
+            builtin.git_commits({
+                git_command = { "git", "log", "--pretty=oneline", "--", current_path }
+            })
+        end, {})
         vim.keymap.set('v', '<leader>fC', builtin.git_bcommits_range, {})
 
         vim.keymap.set('n', '<leader>fm', builtin.marks)
