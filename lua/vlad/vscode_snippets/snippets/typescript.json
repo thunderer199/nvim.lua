@@ -1,4 +1,11 @@
 {
+  "Expand Type": {
+    "prefix": "tsexpand",
+    "body": [
+      "type ExpandRecursively<T> = T extends object \n? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never \n: T;"
+    ],
+    "description": "Expand Type"
+  },
   "Interface Definition": {
     "prefix": "iface",
     "body": ["interface ${1:name} {", "\t$0", "}"],
