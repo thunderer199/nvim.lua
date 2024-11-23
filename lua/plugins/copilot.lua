@@ -184,6 +184,10 @@ return {
         },
         ---@type CopilotChat.config
         opts = {
+            selection = function(source)
+                local select = require("CopilotChat.select")
+                return select.visual(source) or select.buffer(source)
+            end,
             mappings = {
                 complete = {
                     detail = 'Use @<Tab> or /<Tab> for options.',
