@@ -72,7 +72,7 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     local path = vim.fn.expand("%:r")
     local main_path = path
     local filename = path:match("([^/]+)$")
-    local filename_index = path:find(filename, 1, true)
+    local filename_index = #path - #filename + 1
     -- folder is path without filename
     local folder = path:sub(1, filename_index - 1)
     if ends_with(path, ".spec") then
