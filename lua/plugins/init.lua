@@ -8,6 +8,7 @@ return {
         opts = {},
     },
     'nvim-tree/nvim-web-devicons',
+    'AndrewRadev/linediff.vim',
     'tpope/vim-sleuth',
     {
         'machakann/vim-swap',
