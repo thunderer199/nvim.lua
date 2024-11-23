@@ -184,6 +184,7 @@ return {
         },
         ---@type CopilotChat.config
         opts = {
+            model = 'claude-3.5-sonnet',
             selection = function(source)
                 local select = require("CopilotChat.select")
                 return select.visual(source) or select.buffer(source)
