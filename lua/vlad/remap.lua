@@ -51,9 +51,6 @@ vim.keymap.set('n', '<leader>x', '<cmd>x<CR>', { desc = 'Save and Quit' })
 -- gF to cteate a new file
 vim.keymap.set("n", "gF", ":e <cfile><CR>", { desc = "Create a new file under cursor" })
 
--- C-w to <leader>e
-vim.keymap.set("n", "<leader>e", "<C-w>")
-
 -- splits
 vim.keymap.set("n", "Ws", ':split<CR><C-w>k', { desc = "Split window horizontally" })
 vim.keymap.set("n", "Wv", ':vsplit<CR><C-w>l', { desc = "Split window vertically" })
