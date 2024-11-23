@@ -3,8 +3,7 @@ return {
         "rest-nvim/rest.nvim",
         lazy = false,
         keys = {
-            { "<leader>R", ':Rest run<CR>' },
-           -- { "<leader>Rz", ':Rest last' },
+            { "<leader>R", ':Rest run<CR>', ft = { "http" } },
         },
         cmd = { "Rest" },
         init = function ()
