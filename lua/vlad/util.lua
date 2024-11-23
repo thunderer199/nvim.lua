@@ -114,7 +114,18 @@ local function snippet_fmts(str, args, opts)
     return fmt(str, args, vim.tbl_extend("force", { delimiters = "[]" }, opts))
 end
 
+local function find_from_end(str, pattern)
+    local reversed_str = str:reverse()
+    local reversed_pattern = pattern:reverse()
+    local idx = reversed_str:reverse():find(reversed_pattern:reverse(), 1, true)
+    if idx == nil then
+        return nil
+    end
+    return #str - idx - #pattern + 1
+end
 
+
+M.find_from_end = find_from_end;
 M.find_parent_with_package_json = find_parent_with_package_json;
 M.find_parent_with_file = find_parent_with_file;
 M.starts_with = starts_with;
