@@ -162,5 +162,11 @@
     "prefix": "raf",
     "body": ["requestAnimationFrame(() => {", "\t$0", "});"],
     "description": "Request Animation Frame Function"
+  },
+  "React Custom Hook": {
+    "prefix": "rhook",
+    "body": ["export function use${1:TM_FILENAME_BASE}(${2:arguments}) {", "\t$0", "}"],
+    "description": "React Hook"
+
   }
 }

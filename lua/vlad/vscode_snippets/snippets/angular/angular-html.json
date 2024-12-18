@@ -1,4 +1,12 @@
 {
+  "@let": {
+    "prefix": "ng-@let",
+    "body": [
+      "@let $1 = $2;",
+      "$3"
+    ],
+    "description": "Angular @let"
+  },
   "@for": {
     "prefix": "ng-@for",
     "body": [
