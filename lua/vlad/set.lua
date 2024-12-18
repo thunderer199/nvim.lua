@@ -4,6 +4,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- fold opened by default
 vim.opt.foldlevelstart = 99
 
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -42,5 +43,6 @@ vim.opt.colorcolumn = "80"
 vim.g.mapleader = " "
 
 vim.g.no_python_maps = 1
+vim.o.fixendofline = false
 
 
