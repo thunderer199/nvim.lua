@@ -60,22 +60,22 @@ return {
                         set_jumps = true, -- whether to set jumps in the jumplist
                         goto_next_start = {
                             [']m'] = '@function.outer',
-                            [']c'] = '@class.outer',
+                            [']o'] = '@class.outer',
                             [']f'] = '@conditional.outer',
                         },
                         goto_next_end = {
                             [']M'] = '@function.outer',
-                            [']C'] = '@class.outer',
+                            [']O'] = '@class.outer',
                             ['[F'] = '@conditional.outer',
                         },
                         goto_previous_start = {
                             ['[m'] = '@function.outer',
-                            ['[c'] = '@class.outer',
+                            ['[o'] = '@class.outer',
                             ['[f'] = '@conditional.outer',
                         },
                         goto_previous_end = {
                             ['[M'] = '@function.outer',
-                            ['[C'] = '@class.outer',
+                            ['[O'] = '@class.outer',
                             ['[F'] = '@conditional.outer',
                         },
                     },
