@@ -116,6 +116,10 @@ return {
             quickfix = {
                 enabled = false,
             },
+            diagnostic = {
+                enabled = true,
+                severity = vim.diagnostic.severity.ERROR,
+            },
             adapters = {
                 require('neotest-jest')(jestConfig),
                 require('neotest-vitest')(vitestConfig),
