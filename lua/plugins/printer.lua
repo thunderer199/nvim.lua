@@ -10,8 +10,6 @@ return {
                     variable_above = "gpV",
                     variable_below_alwaysprompt = nil,
                     variable_above_alwaysprompt = nil,
-                    textobj_below = "gpo",
-                    textobj_above = "gpO",
                     toggle_comment_debug_prints = nil,
                     delete_debug_prints = nil,
                 },
