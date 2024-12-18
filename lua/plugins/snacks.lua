@@ -21,8 +21,9 @@ return {
             function()
                 ---@class snacks
                 Snacks.bufdelete.other()
+                print("Other Buffers Deleted")
             end,
-            desc = "Delete Buffer"
+            desc = "Delete other buffers",
         },
     }
 }
