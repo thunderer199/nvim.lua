@@ -260,6 +260,7 @@ return {
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
         require('mason-lspconfig').setup({
+            automatic_installation = false,
             ensure_installed = { 'ts_ls', 'jsonls' },
             handlers = {
                 function(server_name)
@@ -291,6 +292,6 @@ return {
             print("Diagnostic copied to clipboard")
         end
 
-        vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line, opts)
+        vim.keymap.set("n", "<leader>cd", copy_diagnostic_for_current_line)
     end
 }
