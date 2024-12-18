@@ -1,16 +1,19 @@
 return {
     {
         "github/copilot.vim",
+        -- cond = false,
         init = function()
             local util = require("vlad.util")
 
-            vim.g.copilot_workspace_folders = { util.get_base_path() }
+            local v = util.get_base_path()
+            print("Copilot workspace: " .. v)
+            vim.g.copilot_workspace_folders = { v }
             vim.g.copilot_filetypes = { ["*"] = true }
         end
     },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "canary",
+        branch = "main",
         lazy = false,
         dependencies = {
             -- { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
@@ -94,11 +97,7 @@ return {
                 "<leader>cr",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Review code and provide feedback, following best practices.",
-                        {
-                            selection = require("CopilotChat.select").visual,
-                        }
-                    )
+                    chat.ask("Review code and provide feedback, following best practices.")
                 end,
                 desc = "CopilotChat - Review",
                 mode = { "n", "v" },
@@ -113,11 +112,7 @@ return {
                 "<leader>cS",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask("Spellcheck the provided code. Including strings, comments, and identifiers.",
-                        {
-                            selection = require("CopilotChat.select").buffer,
-                        }
-                    )
+                    chat.ask("Spellcheck the provided code and check grammar. Including strings, comments, and identifiers.")
                 end,
                 desc = "CopilotChat - Spellcheck",
                 mode = { "n", "v" },
@@ -126,50 +121,10 @@ return {
                 "<leader>cR",
                 function()
                     local chat = require("CopilotChat")
-                    chat.ask(
-                        "Review provided code following best industry practices. Refactor code using the provided suggestions.",
-                        {
-                            selection = require("CopilotChat.select").visual,
-                        }
-                    )
+                    chat.ask("Review provided code following best industry practices. Refactor code using the provided suggestions.")
                 end,
                 desc = "CopilotChat - Review",
                 mode = { "n", "v" },
-            },
-            {
-                "<leader>cC",
-                function()
-                    local chat = require("CopilotChat")
-
-                    chat.ask(
-                        "Write commit message for the change. It should be a short, imperative tense description of the change, that is less than 100 characters. Format in a way that your output goes straight into the commit message.",
-                        {
-                            callback = function(response)
-                                local util = require("vlad.util")
-
-                                -- find git commit buffer
-                                local bufnr = vim.fn.bufnr("COMMIT_EDITMSG")
-                                -- if not found, quit
-                                if bufnr == -1 then
-                                    print("Git commit buffer not found")
-                                    return
-                                end
-                                -- append response to buffer start
-                                local lines = vim.fn.split(response, "\n", true)
-                                -- trim ", ' and whitespace
-                                for i, line in ipairs(lines) do
-                                    lines[i] = util.trim_quotes(line)
-                                end
-                                vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, lines)
-                                -- close chat buffer
-                                vim.cmd("q")
-                            end,
-                            selection = function(source)
-                                return require("CopilotChat.select").gitdiff(source, true)
-                            end,
-                        })
-                end,
-                desc = "CopilotChat - Commit staged",
             },
             {
                 "<leader>cq",
@@ -217,10 +172,10 @@ return {
                 show_diff = {
                     normal = 'gd'
                 },
-                show_system_prompt = {
+                show_info = {
                     normal = 'gp'
                 },
-                show_user_selection = {
+                show_context = {
                     normal = 'gs'
                 },
             },
