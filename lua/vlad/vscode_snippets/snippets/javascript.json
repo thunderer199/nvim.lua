@@ -51,6 +51,14 @@
     "body": ["import { ${1:name} as ${2:alias} } from \"${3:module}\";"],
     "description": "import as"
   },
+  "async function": {
+    "prefix": "fna",
+    "body": "async function ${1:name}(${2:arguments}) {\n\t${0}\n}"
+  },
+  "function": {
+    "prefix": "fn",
+    "body": "function ${1:name}(${2:arguments}) {\n\t${0}\n}"
+  },
   "async arrow function": {
     "prefix": "funa",
     "body": "async (${1:arguments}) => {\n\t${0}\n}"
@@ -165,7 +173,7 @@
   },
   "React Custom Hook": {
     "prefix": "rhook",
-    "body": ["export function use${1:TM_FILENAME_BASE}(${2:arguments}) {", "\t$0", "}"],
+    "body": ["export function use${TM_FILENAME_BASE}(${1:arguments}) {", "\t$0", "}"],
     "description": "React Hook"
 
   }
