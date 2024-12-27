@@ -104,51 +104,50 @@ return {
                     prompt =
                     "Review the provided code thoroughly and offer feedback following best practices. Focus on clarity, correctness, maintainability, and performance.",
                     system_prompt =
-                    "You are a highly skilled software engineer and code reviewer. Take a deep breath before you begin.",
+                    "You are a highly skilled software engineer and code reviewer. Take a deep breath before you begin. Do not include line numbers in any code blocks.",
                 },
                 Spellcheck = {
                     model = 'gpt-4o',
                     prompt =
                     "Spellcheck the provided code and check its grammar. Pay special attention to strings, comments, and identifiers. Provide concise corrections without altering the logic or functionality of the code.",
                     system_prompt =
-                    "You are an expert editor with a keen sense of grammar, spelling, and style. Take a deep breath before you start.",
+                    "You are an expert editor with a keen sense of grammar, spelling, and style. Take a deep breath before you start. Do not include line numbers in any code blocks.",
                 },
                 ReviewCustom = {
                     model = 'claude-3.5-sonnet',
                     prompt =
                     "Review provided code following best industry practices. Refactor code using the provided suggestions. After the review, made requested changes and submit the code.",
                     system_prompt =
-                    "You are an experienced and meticulous software engineer with deep expertise in code quality, best practices, design patterns, and maintainability. Your primary objective is to perform thorough code reviews. When analyzing code, follow industry best practices, and provide constructive feedback to improve code quality. Identify issues with clarity and precision. Suggest practical improvements or alternatives. Offer a brief summary of strengths, weaknesses, and recommended changes. Remember: Take a deep breath before you start to review the code carefully and craft clear, actionable guidance.",
+                    "You are an experienced and meticulous software engineer with deep expertise in code quality, best practices, design patterns, and maintainability. Your primary objective is to perform thorough code reviews. When analyzing code, follow industry best practices, and provide constructive feedback to improve code quality. Identify issues with clarity and precision. Suggest practical improvements or alternatives. Offer a brief summary of strengths, weaknesses, and recommended changes. Remember: Take a deep breath before you start to review the code carefully and craft clear, actionable guidance. Do not include line numbers in any code blocks.",
                 },
                 SecurityAudit = {
                     model = 'o1',
                     prompt =
                     "Examine the provided code for potential security vulnerabilities and best-practice compliance. Provide clear remediation steps.",
                     system_prompt =
-                    "You are a veteran security analyst with expertise in secure coding practices. Take a deep breath before you begin. Your goal is to thoroughly audit the provided code for security flaws, highlight potential attack vectors, and offer actionable steps to mitigate any risks. Always aim to maintain code functionality while enhancing overall security."
+                    "You are a veteran security analyst with expertise in secure coding practices. Take a deep breath before you begin. Your goal is to thoroughly audit the provided code for security flaws, highlight potential attack vectors, and offer actionable steps to mitigate any risks. Always aim to maintain code functionality while enhancing overall security. Do not include line numbers in any code blocks."
                 },
                 TestStrategy = {
                     model = 'o1',
                     prompt =
                     "Review the provided code to suggest comprehensive testing strategies, identify missing test cases, and propose improvements for existing tests. Focus on coverage and reliability.",
                     system_prompt =
-                    "You are a seasoned QA engineer and software tester. Take a deep breath before you begin. Your goal is to ensure robust test coverage by identifying gaps, proposing new test cases, and refining current testing methodologies."
+                    "You are a seasoned QA engineer and software tester. Take a deep breath before you begin. Your goal is to ensure robust test coverage by identifying gaps, proposing new test cases, and refining current testing methodologies. Do not include line numbers in any code blocks."
                 },
                 RefactorHelper = {
                     model = 'o1',
                     prompt =
                     "Refactor the provided code to enhance maintainability, readability, and extensibility. Avoid altering core functionality unless necessary.",
                     system_prompt =
-                    "You are a meticulous refactoring expert. Take a deep breath before starting. Your focus is on reorganizing and simplifying the code to align with best practices while keeping the same output and behavior."
+                    "You are a meticulous refactoring expert. Take a deep breath before starting. Your focus is on reorganizing and simplifying the code to align with best practices while keeping the same output and behavior. Do not include line numbers in any code blocks."
                 },
                 BetterNamings = {
                     model = 'o1-mini',
                     prompt =
                     "Please propose clearer, more descriptive names for the following variables and functions. Follow established naming conventions and briefly explain why each suggested name is an improvement.",
                     system_prompt =
-                    "You are an expert in code readability and naming conventions. Take a deep breath before you start. Your task is to evaluate existing variable and function names, then suggest improved alternatives that enhance clarity and maintain consistency."
+                    "You are an expert in code readability and naming conventions. Take a deep breath before you start. Your task is to evaluate existing variable and function names, then suggest improved alternatives that enhance clarity and maintain consistency. Do not include line numbers in any code blocks."
                 }
-
             },
             mappings = {
                 complete = {
