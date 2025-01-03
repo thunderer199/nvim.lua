@@ -1,10 +1,11 @@
 return {
     {
-        import =  'plugins.languages' ,
+        import = 'plugins.languages',
     },
     {
         "folke/lazydev.nvim",
         priority = 100,
+        ---@type lazydev.Config
         opts = {},
     },
     'nvim-tree/nvim-web-devicons',
@@ -13,8 +14,8 @@ return {
     {
         'machakann/vim-swap',
         keys = {
-            { "g<", "<Plug>(swap-prev)", desc = "Swap to previous buffer" },
-            { "g>", "<Plug>(swap-next)", desc = "Swap to next buffer" },
+            { "g<", "<Plug>(swap-prev)",        desc = "Swap to previous buffer" },
+            { "g>", "<Plug>(swap-next)",        desc = "Swap to next buffer" },
             { "gS", "<Plug>(swap-interactive)", desc = "Interactive buffer swap" },
         },
         init = function()
@@ -30,14 +31,14 @@ return {
         end,
         ft = { "markdown" },
     },
-    { "windwp/nvim-autopairs",     config = true },
+    { "windwp/nvim-autopairs",    config = true },
     {
         'norcalli/nvim-colorizer.lua',
         config = function()
-            require'colorizer'.setup()
+            require 'colorizer'.setup()
         end
     },
-    { "folke/todo-comments.nvim",  dependencies = "nvim-lua/plenary.nvim", config = true },
+    { "folke/todo-comments.nvim", dependencies = "nvim-lua/plenary.nvim", config = true },
     {
         'goolord/alpha-nvim',
         dependencies = { { 'nvim-tree/nvim-web-devicons' } },
@@ -87,13 +88,12 @@ return {
     },
     {
         "kr40/nvim-macros",
-        cmd = {"MacroSave", "MacroYank", "MacroSelect", "MacroDelete"},
+        cmd = { "MacroSave", "MacroYank", "MacroSelect", "MacroDelete" },
         opts = {
 
             json_file_path = vim.fs.normalize(vim.fn.stdpath("config") .. "/macros.json"), -- Location where the macros will be stored
-            default_macro_register = "q", -- Use as default register for :MacroYank and :MacroSave and :MacroSelect Raw functions
-            json_formatter = "jq", -- can be "none" | "jq" | "yq" used to pretty print the json file (jq or yq must be installed!)
-
+            default_macro_register = "q",                                                  -- Use as default register for :MacroYank and :MacroSave and :MacroSelect Raw functions
+            json_formatter = "jq",                                                         -- can be "none" | "jq" | "yq" used to pretty print the json file (jq or yq must be installed!)
         }
     }
 }
