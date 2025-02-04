@@ -121,28 +121,28 @@ return {
                     "You are an experienced and meticulous software engineer with deep expertise in code quality, best practices, design patterns, and maintainability. Your primary objective is to perform thorough code reviews. When analyzing code, follow industry best practices, and provide constructive feedback to improve code quality. Identify issues with clarity and precision. Suggest practical improvements or alternatives. Offer a brief summary of strengths, weaknesses, and recommended changes. Remember: Take a deep breath before you start to review the code carefully and craft clear, actionable guidance. Do not include line numbers in any code blocks.",
                 },
                 SecurityAudit = {
-                    model = 'o1',
+                    model = 'o3-mini',
                     prompt =
                     "Examine the provided code for potential security vulnerabilities and best-practice compliance. Provide clear remediation steps.",
                     system_prompt =
                     "You are a veteran security analyst with expertise in secure coding practices. Take a deep breath before you begin. Your goal is to thoroughly audit the provided code for security flaws, highlight potential attack vectors, and offer actionable steps to mitigate any risks. Always aim to maintain code functionality while enhancing overall security. Do not include line numbers in any code blocks."
                 },
                 TestStrategy = {
-                    model = 'o1',
+                    model = 'o3-mini',
                     prompt =
                     "Review the provided code to suggest comprehensive testing strategies, identify missing test cases, and propose improvements for existing tests. Focus on coverage and reliability.",
                     system_prompt =
                     "You are a seasoned QA engineer and software tester. Take a deep breath before you begin. Your goal is to ensure robust test coverage by identifying gaps, proposing new test cases, and refining current testing methodologies. Do not include line numbers in any code blocks."
                 },
                 RefactorHelper = {
-                    model = 'o1',
+                    model = 'o3-mini',
                     prompt =
                     "Refactor the provided code to enhance maintainability, readability, and extensibility. Avoid altering core functionality unless necessary.",
                     system_prompt =
                     "You are a meticulous refactoring expert. Take a deep breath before starting. Your focus is on reorganizing and simplifying the code to align with best practices while keeping the same output and behavior. Do not include line numbers in any code blocks."
                 },
                 BetterNamings = {
-                    model = 'o1-mini',
+                    model = 'o3-mini',
                     prompt =
                     "Please propose clearer, more descriptive names for the following variables and functions. Follow established naming conventions and briefly explain why each suggested name is an improvement.",
                     system_prompt =
