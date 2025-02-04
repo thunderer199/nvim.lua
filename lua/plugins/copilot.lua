@@ -147,6 +147,19 @@ return {
                     "Please propose clearer, more descriptive names for the following variables and functions. Follow established naming conventions and briefly explain why each suggested name is an improvement.",
                     system_prompt =
                     "You are an expert in code readability and naming conventions. Take a deep breath before you start. Your task is to evaluate existing variable and function names, then suggest improved alternatives that enhance clarity and maintain consistency. Do not include line numbers in any code blocks."
+                },
+                MemoryLeakSearch = {
+                    model = 'o3-mini',
+                    prompt = "Identify potential memory leaks in the provided code and suggest remediation steps.",
+                    system_prompt =
+                    "You are a memory management expert. Take a deep breath before you start. Your goal is to identify potential memory leaks in the provided code and suggest remediation steps. Do not include line numbers in any code blocks."
+                },
+                PerformanceImprovements = {
+                    model = 'o3-mini',
+                    prompt =
+                    "Identify performance bottlenecks in the provided code and suggest improvements to enhance speed and efficiency.",
+                    system_prompt =
+                    "You are a performance optimization expert. Take a deep breath before you start. Your goal is to identify performance bottlenecks in the provided code and suggest improvements to enhance speed and efficiency. Do not include line numbers in any code blocks."
                 }
             },
             mappings = {
