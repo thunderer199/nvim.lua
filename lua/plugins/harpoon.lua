@@ -21,7 +21,7 @@ return {
                     if name ~= nil then
                         filepath = basepath .. '/' .. name
                     end
-                    print(filepath)
+                    print('File added:', filepath)
 
                     local bufnr = vim.fn.bufnr(filepath, false)
 
@@ -139,7 +139,7 @@ return {
             return true
         end
 
-        vim.keymap.set("n", "<leader>a", function()
+        vim.keymap.set("n", "<leader>A", function()
             if can_append() then
                 harpoon:list():append()
             end
