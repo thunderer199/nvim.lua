@@ -37,10 +37,8 @@ return {
     },
     { "windwp/nvim-autopairs",    config = true },
     {
-        'norcalli/nvim-colorizer.lua',
-        config = function()
-            require 'colorizer'.setup()
-        end
+        'brenoprata10/nvim-highlight-colors',
+        config = true
     },
     { "folke/todo-comments.nvim", dependencies = "nvim-lua/plenary.nvim", config = true },
     {
