@@ -22,6 +22,10 @@ return {
                 toggle_comment_debug_prints = "ToggleCommentDebugPrints",
                 delete_debug_prints = "DeleteDebugPrints",
             },
+            key = function()
+                local util = require("vlad.util")
+                return util.path_to_key(util.get_base_path())
+            end,
         },
     }
 }

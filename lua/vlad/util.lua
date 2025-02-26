@@ -8,6 +8,10 @@ local get_git_cwd = function()
     return git_dir
 end
 
+local path_to_key = function(path)
+    return path:gsub("/", "_")
+end
+
 -- Define a function to read the contents of a file
 local function read_file(filepath)
     local file, err = io.open(filepath, "r")  -- Open the file in read mode
@@ -136,5 +140,6 @@ M.trim_string = trim_string;
 M.trim_quotes = trim_quotes;
 M.snippet_fmts = snippet_fmts;
 M.read_file = read_file;
+M.path_to_key = path_to_key;
 
 return M;
