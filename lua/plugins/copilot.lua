@@ -96,14 +96,14 @@ return {
         end,
         ---@type CopilotChat.config
         opts = {
-            model = 'claude-3.5-sonnet',
+            model = 'claude-3.7-sonnet',
             selection = function(source)
                 local select = require("CopilotChat.select")
                 return select.visual(source) or select.buffer(source)
             end,
             prompts = {
                 BestPracticeFeedback = {
-                    model = 'claude-3.5-sonnet',
+                    model = 'claude-3.7-sonnet',
                     prompt =
                     "Review the provided code thoroughly and offer feedback following best practices. Focus on clarity, correctness, maintainability, and performance.",
                     system_prompt =
@@ -117,14 +117,14 @@ return {
                     "You are an expert editor with a keen sense of grammar, spelling, and style. Take a deep breath before you start. Do not include line numbers in any code blocks.",
                 },
                 ReviewCustom = {
-                    model = 'claude-3.5-sonnet',
+                    model = 'claude-3.7-sonnet-thought',
                     prompt =
                     "Review provided code following best industry practices. Refactor code using the provided suggestions. After the review, made requested changes and submit the code.",
                     system_prompt =
                     "You are an experienced and meticulous software engineer with deep expertise in code quality, best practices, design patterns, and maintainability. Your primary objective is to perform thorough code reviews. When analyzing code, follow industry best practices, and provide constructive feedback to improve code quality. Identify issues with clarity and precision. Suggest practical improvements or alternatives. Offer a brief summary of strengths, weaknesses, and recommended changes. Remember: Take a deep breath before you start to review the code carefully and craft clear, actionable guidance. Do not include line numbers in any code blocks.",
                 },
                 SecurityAudit = {
-                    model = 'o3-mini',
+                    model = 'claude-3.7-sonnet-thought',
                     prompt =
                     "Examine the provided code for potential security vulnerabilities and best-practice compliance. Provide clear remediation steps.",
                     system_prompt =
@@ -152,13 +152,13 @@ return {
                     "You are an expert in code readability and naming conventions. Take a deep breath before you start. Your task is to evaluate existing variable and function names, then suggest improved alternatives that enhance clarity and maintain consistency. Do not include line numbers in any code blocks."
                 },
                 MemoryLeakSearch = {
-                    model = 'o3-mini',
+                    model = 'claude-3.7-sonnet-thought',
                     prompt = "Identify potential memory leaks in the provided code and suggest remediation steps.",
                     system_prompt =
                     "You are a memory management expert. Take a deep breath before you start. Your goal is to identify potential memory leaks in the provided code and suggest remediation steps. Do not include line numbers in any code blocks."
                 },
                 PerformanceImprovements = {
-                    model = 'o3-mini',
+                    model = 'claude-3.7-sonnet-thought',
                     prompt =
                     "Identify performance bottlenecks in the provided code and suggest improvements to enhance speed and efficiency.",
                     system_prompt =
