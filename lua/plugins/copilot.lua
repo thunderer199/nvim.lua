@@ -9,6 +9,9 @@ return {
             print("Copilot workspace: " .. v)
             vim.g.copilot_workspace_folders = { v }
             vim.g.copilot_filetypes = { ["*"] = true }
+
+            -- meta and right arrow
+            vim.keymap.set('i', '<M-\\>', '<Plug>(copilot-accept-word)')
         end
     },
     {
