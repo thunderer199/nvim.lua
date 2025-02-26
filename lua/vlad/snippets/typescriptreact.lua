@@ -7,17 +7,23 @@ local ts = require("vlad.snippets.typescript")
 local i = ls.insert_node
 local s = ls.snippet
 local f = ls.function_node
+local c = ls.choice_node
 
+local function getComponentName()
+  local filename = vim.fn.expand("%:t:r")
+  return filename:gsub("^%l", string.upper)                   -- capitalize first letter
+      :gsub("%-(%l)", string.upper):gsub("%-", "")            -- kebab to PascalCase, remove hyphens
+end
 
 local reactFuncComp = fmts(
   [[
-import React from 'react';
+import { FC } from 'react';
 
 export interface [ComponentName]Props {
   [types]
 }
 
-export const [ComponentName]: React.FC<[ComponentName]Props> = ({ [props] }) => {
+export const [ComponentName]: FC<[ComponentName]Props> = ({ [props] }) => {
   return (
     <div>
       [cursor]
@@ -26,7 +32,7 @@ export const [ComponentName]: React.FC<[ComponentName]Props> = ({ [props] }) => 
 };
   ]],
   {
-    ComponentName = i(1, "Component"),
+    ComponentName = c(1, { f(getComponentName, {}), i(nil, "Component") }),
     types = i(2),
     props = i(3),
     cursor = i(4),
@@ -39,13 +45,13 @@ export const [ComponentName]: React.FC<[ComponentName]Props> = ({ [props] }) => 
 
 local reactFuncCompProp = fmts(
   [[
-import React from 'react';
+import { FC } from 'react';
 
 export interface [ComponentName]Props {
   [types]
 }
 
-export const [ComponentName]: React.FC<[ComponentName]Props> = (props) => {
+export const [ComponentName]: FC<[ComponentName]Props> = (props) => {
   const { [props] } = props;
   return (
     <div>
@@ -55,7 +61,7 @@ export const [ComponentName]: React.FC<[ComponentName]Props> = (props) => {
 };
   ]],
   {
-    ComponentName = i(1, "Component"),
+    ComponentName = c(1, { f(getComponentName, {}), i(nil, "Component") }),
     types = i(2),
     props = i(3),
     cursor = i(4),
