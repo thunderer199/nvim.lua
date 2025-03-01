@@ -128,6 +128,19 @@ local function find_from_end(str, pattern)
     return #str - idx - #pattern + 1
 end
 
+local function read_env_config()
+    local env_vars = vim.fn.environ()
+    local vars = {}
+    for key, value in pairs(env_vars) do
+        if key:match("^NVIM_") then
+            vars[key] = value
+        end
+    end
+    
+    print('DEBUGPRINT[11]: util.lua:140: vars=' .. vim.inspect(vars))
+    return vars
+end
+
 
 M.find_from_end = find_from_end;
 M.find_parent_with_package_json = find_parent_with_package_json;
@@ -141,5 +154,6 @@ M.trim_quotes = trim_quotes;
 M.snippet_fmts = snippet_fmts;
 M.read_file = read_file;
 M.path_to_key = path_to_key;
+M.read_env_config = read_env_config;
 
 return M;

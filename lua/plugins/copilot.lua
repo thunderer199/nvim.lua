@@ -1,10 +1,11 @@
+local util = require("vlad.util")
+local envs = util.read_env_config()
+
 return {
     {
         "github/copilot.vim",
-        -- cond = false,
+        cond = envs['NVIM_COPILOT_STATE'] ~= 'off',
         init = function()
-            local util = require("vlad.util")
-
             local v = util.get_base_path()
             print("Copilot workspace: " .. v)
             vim.g.copilot_workspace_folders = { v }
