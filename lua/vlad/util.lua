@@ -137,7 +137,6 @@ local function read_env_config()
         end
     end
     
-    print('DEBUGPRINT[11]: util.lua:140: vars=' .. vim.inspect(vars))
     return vars
 end
 
