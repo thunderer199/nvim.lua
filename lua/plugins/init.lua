@@ -62,28 +62,30 @@ return {
     {
         'stevearc/oil.nvim',
         opts = {
-             keymaps = {
+            keymaps = {
                 ['yp'] = {
                     desc = 'Copy full filepath to register',
                     callback = function ()
                         local val = require('oil').get_cursor_entry()
-                        if val and val.type == 'file' then
-                            local base_path = require('oil').get_current_dir()
-                            vim.fn.setreg('0', base_path ..  val.name)
+                        if not val then
+                            return
                         end
+                        local base_path = require('oil').get_current_dir()
+                        vim.fn.setreg('0', base_path ..  val.name)
                     end,
                 },
                 ['ga'] = {
                     desc = 'Git add file to staging area',
                     callback = function ()
                         local val = require('oil').get_cursor_entry()
-                        if val and val.type == 'file' then
-                            local base_path = require('oil').get_current_dir()
-                            local full_path = base_path ..  val.name
-
-                            vim.cmd('!Git add ' .. full_path)
-                            print('Added ' .. val.name .. ' to git staging area')
+                        if not val then
+                            return
                         end
+                        local base_path = require('oil').get_current_dir()
+                        local full_path = base_path ..  val.name
+
+                        vim.cmd('!Git add ' .. full_path)
+                        print('Added ' .. val.name .. ' to git staging area')
                     end,
                 }
             },
