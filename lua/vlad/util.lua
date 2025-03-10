@@ -14,14 +14,14 @@ end
 
 -- Define a function to read the contents of a file
 local function read_file(filepath)
-    local file, err = io.open(filepath, "r")  -- Open the file in read mode
+    local file, err = io.open(filepath, "r") -- Open the file in read mode
     if not file then
         print("Could not open file: " .. filepath .. " - " .. err)
         return nil
     end
 
-    local content = file:read("*all")    -- Read the entire content of the file
-    file:close()                         -- Close the file
+    local content = file:read("*all") -- Read the entire content of the file
+    file:close()                      -- Close the file
     return content
 end
 
@@ -62,7 +62,7 @@ local function starts_with(full_string, prefix)
 end
 
 -- Find the parent directory that contains a file
----@param path string 
+---@param path string
 ---@param file_name string
 local find_parent_with_file = function(path, file_name)
     if path == "" then
@@ -136,7 +136,7 @@ local function read_env_config()
             vars[key] = value
         end
     end
-    
+
     return vars
 end
 
