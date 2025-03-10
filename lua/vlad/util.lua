@@ -140,6 +140,26 @@ local function read_env_config()
     return vars
 end
 
+local function removeBaseFromPath(path)
+    local git_cwd = get_git_cwd()
+    local base_dir = vim.fn.getcwd()
+    if git_cwd then
+        base_dir = git_cwd
+    end
+
+    -- Ensure paths end with separator for proper replacement
+    if base_dir:sub(-1) ~= '/' then
+        base_dir = base_dir .. '/'
+    end
+
+    -- Remove the base directory from the path
+    if path:sub(1, #base_dir) == base_dir then
+        path = path:sub(#base_dir + 1)
+    end
+
+    return path
+end
+
 
 M.find_from_end = find_from_end;
 M.find_parent_with_package_json = find_parent_with_package_json;
@@ -154,5 +174,6 @@ M.snippet_fmts = snippet_fmts;
 M.read_file = read_file;
 M.path_to_key = path_to_key;
 M.read_env_config = read_env_config;
+M.removeBaseFromPath = removeBaseFromPath;
 
 return M;
