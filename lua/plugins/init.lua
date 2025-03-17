@@ -12,6 +12,11 @@ return {
     'AndrewRadev/linediff.vim',
     'tpope/vim-sleuth',
     {
+        'kevinhwang91/nvim-fundo',
+        requires = 'kevinhwang91/promise-async',
+        build = function() require('fundo').install() end
+    },
+    {
         'machakann/vim-swap',
         keys = {
             { "g<", "<Plug>(swap-prev)",        desc = "Swap to previous buffer" },
