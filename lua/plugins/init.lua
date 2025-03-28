@@ -12,9 +12,18 @@ return {
     'AndrewRadev/linediff.vim',
     'tpope/vim-sleuth',
     {
-        'kevinhwang91/nvim-fundo',
-        requires = 'kevinhwang91/promise-async',
-        build = function() require('fundo').install() end
+        "kevinhwang91/nvim-fundo",
+        dependencies = {
+            "kevinhwang91/promise-async",
+        },
+        build = function()
+            require("fundo").install()
+        end,
+        config = true,
+        lazy = false,
+        init = function()
+            vim.opt.undofile = true
+        end,
     },
     {
         'machakann/vim-swap',
