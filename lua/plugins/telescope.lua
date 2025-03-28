@@ -112,6 +112,23 @@ return {
                         end,
                         ["<M-]>"] = function(prompt_bufnr)
                             actions_set.scroll_horizontal_results(prompt_bufnr, 1)
+                        end,
+                        ['<C-p>'] = function ()
+                            -- copy file path
+                            local entry = actions_state.get_selected_entry()
+                            local filepath = entry[1]
+                            -- if no / in filepath than it's name only, do nothing
+                            if string.find(filepath, "/") == nil then
+                                return
+                            end
+                            -- if there is / then remove last part of path
+                            local last_slash = string.find(filepath, "/[^/]*$")
+                            local path = string.sub(filepath, 1, last_slash)
+
+                            -- copy to 0 register
+                            vim.fn.setreg('0', path)
+
+                            
                         end
                     },
                 },
