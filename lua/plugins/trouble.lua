@@ -10,9 +10,14 @@ return {
                 desc = "Quickfix List (Trouble)",
             },
             {
-                "<leader>ty",
+                "<leader>tD",
                 "<cmd>Trouble diagnostics toggle<cr>",
                 desc = "Diagnostic List (Trouble)",
+            },
+            {
+                "<leader>tL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
             },
             {
                 "<leader>o",
