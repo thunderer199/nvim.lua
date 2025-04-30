@@ -7,3 +7,4 @@ require("vlad.colors")
 require("vlad.filetypes")
 
 require("vlad.file-jump")
+require("vlad.nuget-info")
