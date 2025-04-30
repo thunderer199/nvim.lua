@@ -3,7 +3,7 @@ return {
         'stevearc/oil.nvim',
         opts = {
             keymaps = {
-                ['yp'] = {
+                ['Yp'] = {
                     desc = 'Copy full filepath to register',
                     callback = function()
                         local util = require('vlad.util')
@@ -14,10 +14,11 @@ return {
                         local base_path = require('oil').get_current_dir()
                         local relative_path = util.removeBaseFromPath(base_path)
                         vim.fn.setreg('0', relative_path .. val.name)
+                        print('Copied ' .. relative_path .. val.name .. ' to register 0')
                     end,
                 },
-                ['yP'] = {
-                    desc = 'Copy full filepath to register',
+                ['YP'] = {
+                    desc = 'Copy full folder path to register',
                     callback = function()
                         local util = require('vlad.util')
                         local val = require('oil').get_cursor_entry()
@@ -27,6 +28,7 @@ return {
                         local base_path = require('oil').get_current_dir()
                         local relative_path = util.removeBaseFromPath(base_path)
                         vim.fn.setreg('0', relative_path)
+                        print('Copied ' .. relative_path .. ' to register 0')
                     end,
                 },
                 ['ga'] = {
