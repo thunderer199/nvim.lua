@@ -97,7 +97,7 @@ return {
         end,
         ---@type CopilotChat.config
         opts = {
-            model = 'claude-3.7-sonnet',
+            model = 'gpt-4.1',
             selection = function(source)
                 local select = require("CopilotChat.select")
                 return select.visual(source) or select.buffer(source)
@@ -132,21 +132,21 @@ return {
                     "You are a veteran security analyst with expertise in secure coding practices. Take a deep breath before you begin. Your goal is to thoroughly audit the provided code for security flaws, highlight potential attack vectors, and offer actionable steps to mitigate any risks. Always aim to maintain code functionality while enhancing overall security. Do not include line numbers in any code blocks."
                 },
                 TestStrategy = {
-                    model = 'o3-mini',
+                    model = 'gpt-4.1',
                     prompt =
                     "Review the provided code to suggest comprehensive testing strategies, identify missing test cases, and propose improvements for existing tests. Focus on coverage and reliability.",
                     system_prompt =
                     "You are a seasoned QA engineer and software tester. Take a deep breath before you begin. Your goal is to ensure robust test coverage by identifying gaps, proposing new test cases, and refining current testing methodologies. Do not include line numbers in any code blocks."
                 },
                 RefactorHelper = {
-                    model = 'o3-mini',
+                    model = 'gpt-4.1',
                     prompt =
                     "Refactor the provided code to enhance maintainability, readability, and extensibility. Avoid altering core functionality unless necessary.",
                     system_prompt =
                     "You are a meticulous refactoring expert. Take a deep breath before starting. Your focus is on reorganizing and simplifying the code to align with best practices while keeping the same output and behavior. Do not include line numbers in any code blocks."
                 },
                 BetterNamings = {
-                    model = 'o3-mini',
+                    model = 'gpt-4.1',
                     prompt =
                     "Please propose clearer, more descriptive names for the following variables and functions. Follow established naming conventions and briefly explain why each suggested name is an improvement.",
                     system_prompt =
