@@ -1,7 +1,6 @@
 return {
     {
         'stevearc/conform.nvim',
-        commit = "80b57f6",
         config = function()
             local conform = require("conform")
 
