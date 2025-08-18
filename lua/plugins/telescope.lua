@@ -114,7 +114,7 @@ return {
                         ["<M-]>"] = function(prompt_bufnr)
                             actions_set.scroll_horizontal_results(prompt_bufnr, 1)
                         end,
-                        ['<C-p>'] = function ()
+                        ['<C-p>'] = function()
                             -- copy file path
                             local entry = actions_state.get_selected_entry()
                             local filepath = entry[1]
@@ -128,8 +128,6 @@ return {
 
                             -- copy to 0 register
                             vim.fn.setreg('0', path)
-
-                            
                         end
                     },
                 },
@@ -205,14 +203,13 @@ return {
                                 vim.cmd((":DiffviewOpen %s..HEAD"):format(entry.value))
                             end,
                             ['<C-f>'] = open_diff_for_selected_file,
-                            ['<C-g>'] = function ()
+                            ['<C-g>'] = function()
                                 local entry = actions_state.get_selected_entry()
                                 actions.close(vim.api.nvim_get_current_buf())
                                 vim.cmd((":DiffviewOpen %s..HEAD -- %s"):format(
                                     entry.value,
                                     vim.fn.expand('%:p')
                                 ))
-
                             end
                         },
                     },
