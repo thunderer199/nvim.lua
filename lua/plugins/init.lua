@@ -78,7 +78,15 @@ return {
         "folke/which-key.nvim",
         event = "VeryLazy",
         opts = {
-            delay = 2000,
+            delay = function(ctx)
+                if ctx.plugin == "spelling" then
+                    return 20
+                end
+                if ctx.plugin == "marks" or ctx.plugin == "registers" then
+                    return 1000
+                end
+                return 2000
+            end,
         },
         keys = {
             {
