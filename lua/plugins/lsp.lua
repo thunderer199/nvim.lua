@@ -26,25 +26,25 @@ return {
                 end
             end
 
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-            vim.keymap.set("n", "gI", vim.lsp.buf.incoming_calls, opts)
-            vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, opts)
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to Definition", unpack(opts) })
+            vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to Declaration", unpack(opts) })
+            vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP: List References", unpack(opts) })
+            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP: Go to Implementation", unpack(opts) })
+            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "LSP: Go to Type Definition", unpack(opts) })
+            vim.keymap.set("n", "gI", vim.lsp.buf.incoming_calls, { desc = "LSP: Incoming Calls", unpack(opts) })
+            vim.keymap.set("n", "go", vim.lsp.buf.outgoing_calls, { desc = "LSP: Outgoing Calls", unpack(opts) })
 
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-            vim.keymap.set("n", "[d", diagnostic_goto(false), opts)
-            vim.keymap.set("n", "]d", diagnostic_goto(true), opts)
-            vim.keymap.set("n", "[e", diagnostic_goto(false, vim.diagnostic.severity.ERROR), opts);
-            vim.keymap.set("n", "]e", diagnostic_goto(true, vim.diagnostic.severity.ERROR), opts);
-            vim.keymap.set({ "n", "v" }, "<leader>va", vim.lsp.buf.code_action, opts)
-            vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, opts)
-            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-            vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, opts)
-            vim.keymap.set("n", "<leader>vd", vim.lsp.buf.document_symbol, opts)
-            vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, opts)
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation", unpack(opts) })
+            vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "LSP: Previous Diagnostic", unpack(opts) })
+            vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "LSP: Next Diagnostic", unpack(opts) })
+            vim.keymap.set("n", "[e", diagnostic_goto(false, vim.diagnostic.severity.ERROR), { desc = "LSP: Previous Error", unpack(opts) })
+            vim.keymap.set("n", "]e", diagnostic_goto(true, vim.diagnostic.severity.ERROR), { desc = "LSP: Next Error", unpack(opts) })
+            vim.keymap.set({ "n", "v" }, "<leader>va", vim.lsp.buf.code_action, { desc = "LSP: Code Action", unpack(opts) })
+            vim.keymap.set("n", "<leader>vn", vim.lsp.buf.rename, { desc = "LSP: Rename Symbol", unpack(opts) })
+            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "LSP: Signature Help", unpack(opts) })
+            vim.keymap.set("n", "<leader>fl", vim.diagnostic.open_float, { desc = "LSP: Show Diagnostics (Float)", unpack(opts) })
+            vim.keymap.set("n", "<leader>vd", vim.lsp.buf.document_symbol, { desc = "LSP: Document Symbols", unpack(opts) })
+            vim.keymap.set("n", "<leader>vw", vim.lsp.buf.workspace_symbol, { desc = "LSP: Workspace Symbols", unpack(opts) })
         end
 
         local actions = {
@@ -149,7 +149,6 @@ return {
                 }
                 local action_name = client and (actions_aliases[client.name] or client.name)
                 if actions[action_name] then
-
                     for _, action in ipairs(actions[action_name]) do
                         vim.keymap.set('n', action[1], action[2], { buffer = event.buf, desc = action[3].desc })
                     end
@@ -230,7 +229,7 @@ return {
                 }
             },
             angularls = {
-                root_dir = util.root_pattern("angular.json", "project.json"),
+                -- root_dir = util.root_pattern("angular.json", "project.json"),
             },
             lua_ls = {
                 settings = {
