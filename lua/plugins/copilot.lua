@@ -27,10 +27,7 @@ return {
         keys = {
             {
                 "<leader>cg",
-                function()
-                    local actions = require("CopilotChat.actions")
-                    require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-                end,
+                ':CopilotChatPrompts<cr>',
                 desc = "CopilotChat - Prompt actions",
             },
             {

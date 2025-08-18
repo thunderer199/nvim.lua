@@ -5,6 +5,7 @@ return {
         'nvim-lua/plenary.nvim',
         "nvim-telescope/telescope-live-grep-args.nvim",
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        { 'nvim-telescope/telescope-ui-select.nvim' },
         'nvim-telescope/telescope-dap.nvim',
     },
     config = function()
@@ -246,6 +247,7 @@ return {
         telescope.load_extension("live_grep_args")
         telescope.load_extension("fzf")
         telescope.load_extension("dap")
+        telescope.load_extension("ui-select")
 
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fB', builtin.git_branches, {})
