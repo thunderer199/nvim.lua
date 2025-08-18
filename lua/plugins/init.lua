@@ -38,6 +38,7 @@ return {
     },
     {
         "OXY2DEV/markview.nvim",
+        priority = 40,
         lazy = false
     },
     {
