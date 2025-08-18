@@ -48,7 +48,7 @@ vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
 vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'Quit' })
 vim.keymap.set('n', '<leader>x', '<cmd>x<CR>', { desc = 'Save and Quit' })
 
--- gF to cteate a new file
+-- gF to create a new file
 vim.keymap.set("n", "gF", ":e <cfile><CR>", { desc = "Create a new file under cursor" })
 
 -- splits
