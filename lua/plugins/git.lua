@@ -96,6 +96,10 @@ return {
                         vim.cmd.Git('push --force-with-lease')
                     end, opts);
 
+                    vim.keymap.set("n", "<leader>gf", function()
+                        vim.cmd.Git('fetch --prune')
+                    end, opts);
+
                     vim.keymap.set("n", "<C-o>", function()
                         local commit_hash = vim.fn.getline('.'):match("%S+")
                         if not commit_hash:match("^%x") then
