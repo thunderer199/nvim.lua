@@ -162,6 +162,15 @@ return {
                     system_prompt =
                     "You are a performance optimization expert. Take a deep breath before you start. Your goal is to identify performance bottlenecks in the provided code and suggest improvements to enhance speed and efficiency. Do not include line numbers in any code blocks."
                 },
+                JiraCommit = {
+                    model = 'grok-code-fast-1',
+                    prompt =
+                    "Generate a concise and descriptive git commit message based on the provided code changes. Ensure the message follows best practices for commit messages, including a clear summary and relevant details. The commit message should be one line if possible, but can include a body if necessary. In the next format: \"<JIRA-1234> - Short summary of the change.\" Do not include line numbers in any code blocks. <JIRA-1234> is a placeholder for the actual JIRA ticket number, which should be taken from the branch name if available.  If user has COMMIT_EDITMSG opened, generate replacement block for whole buffer.",
+                    system_prompt =
+                    "You are an expert in version control and commit message conventions. Take a deep breath before you start. Your task is to craft clear, informative commit messages that accurately reflect the changes made in the code. Do not include line numbers in any code blocks. Use #gitstatus to get the branch name and extract the JIRA ticket number if present.",
+                    resources = {
+                        'gitdiff:staged', 'gitstatus'
+                    },
                 }
             },
             mappings = {
