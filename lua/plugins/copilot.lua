@@ -169,7 +169,7 @@ return {
                     system_prompt =
                     "You are an expert in version control and commit message conventions. Take a deep breath before you start. Your task is to craft clear, informative commit messages that accurately reflect the changes made in the code. Do not include line numbers in any code blocks. Use #gitstatus to get the branch name and extract the JIRA ticket number if present.",
                     resources = {
-                        'gitdiff:staged', 'gitstatus'
+                        'gitdiff:staged', 'gitdiff:status', 'buffer'
                     },
                 }
             },
