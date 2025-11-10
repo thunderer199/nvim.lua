@@ -58,6 +58,12 @@ vim.keymap.set("n", "Wv", ':vsplit<CR><C-w>l', { desc = "Split window vertically
 -- close tab
 vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 
+-- -- open URL under cursor in browser
+-- vim.keymap.set('n', 'gx', function()
+--   local url = vim.fn.expand('<cWORD>')
+--   vim.fn.jobstart({'open', url}, {detach = true})
+-- end)
+
 
 -- mapping for diffget
 vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
