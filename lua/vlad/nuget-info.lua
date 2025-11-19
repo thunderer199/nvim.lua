@@ -56,19 +56,27 @@ end
 function M.get_latest_metadata(pkg)
   local name    = pkg:lower()
   local latest  = M.get_latest_version(pkg)
-  local reg_url = ("https://api.nuget.org/v3/registration5-gz-semver2/%s/index.json"):format(name)
+  local reg_url = ("https://api.nuget.org/v3/registration5-semver1/%s/index.json"):format(name)
   local data    = http_get_json(reg_url)
 
-  -- registration is split into pages; find the entry matching latest
-  for _, page in ipairs(data.items) do
-    for _, item in ipairs(page.items) do
-      local ce = item.catalogEntry
-      if ce.version == latest then
-        return ce
+  -- Check pages from last to first (latest versions are usually at the end)
+  for i = #data.items, 1, -1 do
+    local page = data.items[i]
+    local page_items = page.items
+    if not page_items and page["@id"] then
+      local page_data = http_get_json(page["@id"])
+      page_items = page_data.items
+    end
+    
+    if page_items then
+      for _, item in ipairs(page_items) do
+        local ce = item.catalogEntry
+        if ce.version == latest then
+          return ce
+        end
       end
     end
   end
-  -- error(("Could not find metadata for %s@%s"):format(pkg, latest))
   vim.notify(("Could not find metadata for %s@%s"):format(pkg, latest), vim.log.levels.ERROR)
   return nil
 end
@@ -79,13 +87,24 @@ end
 -- @return table catalogEntry
 function M.get_metadata(pkg, version)
   local name = pkg:lower()
-  local url  = ("https://api.nuget.org/v3/registration5-gz-semver2/%s/index.json"):format(name)
+  local url  = ("https://api.nuget.org/v3/registration5-semver1/%s/index.json"):format(name)
   local data = http_get_json(url)
-  for _, page in ipairs(data.items or {}) do
-    for _, item in ipairs(page.items or {}) do
-      local ce = item.catalogEntry
-      if ce.version:lower() == version:lower() then
-        return ce
+  
+  -- Check pages from last to first (newer versions are usually at the end)
+  for i = #(data.items or {}), 1, -1 do
+    local page = data.items[i]
+    local page_items = page.items
+    if not page_items and page["@id"] then
+      local page_data = http_get_json(page["@id"])
+      page_items = page_data.items
+    end
+    
+    if page_items then
+      for _, item in ipairs(page_items) do
+        local ce = item.catalogEntry
+        if ce.version:lower() == version:lower() then
+          return ce
+        end
       end
     end
   end
