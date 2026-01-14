@@ -247,10 +247,14 @@ vim.api.nvim_create_user_command('NugetVersions', function()
 
     -- Display results
     vim.schedule(function()
-      local msg = table.concat({
-        ("Latest: %s - [%s]"):format(latest, table.concat(latest_fws, ", ")),
-        ("Safe: %s - [%s]"):format(safe, table.concat(safe_fws, ", ")),
-      }, "\n")
+      local lines = {}
+      if latest ~= safe then
+        table.insert(lines, ("Latest: %s - [%s]"):format(latest, table.concat(latest_fws, ", ")))
+        table.insert(lines, ("Safe: %s - [%s]"):format(safe, table.concat(safe_fws, ", ")))
+      else
+        table.insert(lines, ("Latest/Safe: %s - [%s]"):format(latest, table.concat(latest_fws, ", ")))
+      end
+      local msg = table.concat(lines, "\n")
       vim.notify(msg, vim.log.levels.INFO, { title = "NuGet Versions" })
     end)
   end, 0)
