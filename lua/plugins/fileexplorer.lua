@@ -55,6 +55,11 @@ return {
                         vim.fn.setloclist(0, entries, 'a')
                         print('Added ' .. #entries .. ' entries to location list')
 
+                        -- and leave visual mode if we were in it
+                        if mode == "v" or mode == "V" then
+                            vim.cmd('normal! <Esc>')
+                        end
+
                     end,
                     mode = { 'n', 'v' },
                 },
