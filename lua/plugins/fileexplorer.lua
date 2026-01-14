@@ -3,6 +3,61 @@ return {
         'stevearc/oil.nvim',
         opts = {
             keymaps = {
+                ['L'] = {
+                    desc = 'Send (append) selected entries to location list',
+                    callback = function()
+                        local oil = require('oil')
+                        local util = require('oil.util')
+                        local selections = {}
+                        local mode = vim.api.nvim_get_mode().mode
+
+                        if mode == "v" or mode == "V" then
+                            local start_row, end_row = util.get_visual_range().start_lnum, util.get_visual_range().end_lnum
+                            for i = start_row, end_row do
+                                table.insert(selections, oil.get_entry_on_line(0, i))
+                            end
+                        else
+                            table.insert(selections, oil.get_cursor_entry())
+                        end
+
+                        if vim.tbl_isempty(selections) then
+                            print('No entries selected')
+                            return
+                        end
+
+                        local base_path = oil.get_current_dir()
+                        local entries = {}
+                        for _, val in ipairs(selections) do
+                            local full_path = base_path .. val.name
+                            if val.type == 'directory' then
+                                -- Add all files in the directory to the location list
+                                local files = vim.fn.glob(full_path .. '/*', false, true)
+                                for _, file_path in ipairs(files) do
+                                    if vim.fn.isdirectory(file_path) ~= 1 then
+                                        local file_name = vim.fn.fnamemodify(file_path, ':t')
+                                        table.insert(entries, {
+                                            filename = file_path,
+                                            lnum = 1,
+                                            col = 1,
+                                            text = file_name
+                                        })
+                                    end
+                                end
+                            else
+                                table.insert(entries, {
+                                    filename = full_path,
+                                    lnum = 1,
+                                    col = 1,
+                                    text = val.name
+                                })
+                            end
+                        end
+                        vim.fn.setloclist(0, entries, 'a')
+                        print('Added ' .. #entries .. ' entries to location list')
+
+                    end,
+                    mode = { 'n', 'v' },
+                },
                 ['F'] = {
                     desc = 'Send (append) to location list',
                     callback = function()
