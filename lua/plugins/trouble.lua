@@ -1,7 +1,17 @@
 return {
     {
         "folke/trouble.nvim",
-        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        opts = {
+            modes = {
+                symbols = {
+                    win = {
+                        position = "right",
+                        size = 0.25,
+                    },
+                    multiline = false,
+                }
+            }
+        },
         lazy = false,
         keys = {
             {
@@ -25,7 +35,7 @@ return {
                 desc = "Outline (Trouble)",
             }
         },
-        config = function()
+        config = function(_, opts)
             vim.api.nvim_create_autocmd("BufRead", {
                 callback = function(ev)
                     if vim.bo[ev.buf].buftype == "quickfix" then
@@ -37,6 +47,6 @@ return {
                 end,
             })
 
-            require('trouble').setup()
+            require('trouble').setup(opts)
         end,
     } }
