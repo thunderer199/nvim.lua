@@ -69,6 +69,16 @@ vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
 vim.keymap.set("n", "<leader>dl", ":diffget //3<CR>")
 
+vim.keymap.set("n", "<leader>z", function()
+    local type = vim.bo.filetype
+    if type == 'python' then
+        vim.cmd('!python %')
+    elseif type == 'javascript' then
+        vim.cmd('!node %')
+    end
+
+end)
+
 vim.keymap.set(
     "n",
     "<leader>e",
