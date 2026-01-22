@@ -68,3 +68,17 @@ vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 -- mapping for diffget
 vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
 vim.keymap.set("n", "<leader>dl", ":diffget //3<CR>")
+
+vim.keymap.set(
+    "n",
+    "<leader>e",
+    function()
+        vim.cmd('enew')
+        vim.bo.buftype = 'nofile'
+        vim.bo.bufhidden = 'hide'
+        vim.bo.swapfile = false
+
+        print("Scratch buffer created")
+    end,
+    { desc = "Create Scratch buffer" }
+)
