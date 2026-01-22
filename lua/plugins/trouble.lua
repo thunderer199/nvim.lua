@@ -33,6 +33,50 @@ return {
                 "<leader>o",
                 "<cmd>Trouble symbols toggle focus=true<cr>",
                 desc = "Outline (Trouble)",
+            },
+            {
+                "}",
+                function()
+                    local View = require("trouble.view")
+                    local views = View.get({ open = true })
+                    if #views == 0 then return end
+                    
+                    local view = views[1].view
+                    local cursor = vim.api.nvim_win_get_cursor(view.win.win)
+                    local current_row = cursor[1]
+                    
+                    -- Find the next group (file) node
+                    for row = current_row + 1, vim.api.nvim_buf_line_count(view.win.buf) do
+                        local loc = view.renderer:at(row)
+                        if loc.node and loc.node.group and loc.first_line then
+                            vim.api.nvim_win_set_cursor(view.win.win, { row, 0 })
+                            return
+                        end
+                    end
+                end,
+                desc = "Next File",
+            },
+            {
+                "{",
+                function()
+                    local View = require("trouble.view")
+                    local views = View.get({ open = true })
+                    if #views == 0 then return end
+                    
+                    local view = views[1].view
+                    local cursor = vim.api.nvim_win_get_cursor(view.win.win)
+                    local current_row = cursor[1]
+                    
+                    -- Find the previous group (file) node
+                    for row = current_row - 1, 1, -1 do
+                        local loc = view.renderer:at(row)
+                        if loc.node and loc.node.group and loc.first_line then
+                            vim.api.nvim_win_set_cursor(view.win.win, { row, 0 })
+                            return
+                        end
+                    end
+                end,
+                desc = "Previous File",
             }
         },
         config = function(_, opts)
