@@ -35,16 +35,16 @@ return {
                 desc = "Outline (Trouble)",
             },
             {
-                "}",
+                "<C-]>",
                 function()
                     local View = require("trouble.view")
                     local views = View.get({ open = true })
                     if #views == 0 then return end
-                    
+
                     local view = views[1].view
                     local cursor = vim.api.nvim_win_get_cursor(view.win.win)
                     local current_row = cursor[1]
-                    
+
                     -- Find the next group (file) node
                     for row = current_row + 1, vim.api.nvim_buf_line_count(view.win.buf) do
                         local loc = view.renderer:at(row)
@@ -57,16 +57,16 @@ return {
                 desc = "Next File",
             },
             {
-                "{",
+                "<C-[>",
                 function()
                     local View = require("trouble.view")
                     local views = View.get({ open = true })
                     if #views == 0 then return end
-                    
+
                     local view = views[1].view
                     local cursor = vim.api.nvim_win_get_cursor(view.win.win)
                     local current_row = cursor[1]
-                    
+
                     -- Find the previous group (file) node
                     for row = current_row - 1, 1, -1 do
                         local loc = view.renderer:at(row)
