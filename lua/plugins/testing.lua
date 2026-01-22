@@ -110,6 +110,20 @@ return {
             cwd = function(path)
                 return util.find_parent_with_package_json(path)
             end,
+            jestConfigFile = function(file)
+                -- Find the nearest jest config by walking up from the test file
+                local root = vim.fn.fnamemodify(file, ":p:h")
+                while root ~= "/" do
+                    for _, config in ipairs({ "jest.config.js", "jest.config.ts", "jest.config.mjs" }) do
+                        local path = root .. "/" .. config
+                        if vim.fn.filereadable(path) == 1 then
+                            return path
+                        end
+                    end
+                    root = vim.fn.fnamemodify(root, ":h")
+                end
+                return "jest.config.js" -- fallback
+            end,
         };
 
         require('neotest').setup({
