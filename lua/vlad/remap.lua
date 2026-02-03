@@ -64,6 +64,7 @@ vim.keymap.set("n", "gx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 --   vim.fn.jobstart({'open', url}, {detach = true})
 -- end)
 
+vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
 
 -- mapping for diffget
 vim.keymap.set("n", "<leader>dh", ":diffget //2<CR>")
