@@ -76,6 +76,10 @@ vim.keymap.set("n", "<leader>z", function()
         vim.cmd('!python %')
     elseif type == 'javascript' then
         vim.cmd('!node %')
+    elseif type == 'sh' then
+        vim.cmd('!bash %')
+    else
+        print("No run command for filetype: " .. type)
     end
 
 end)
