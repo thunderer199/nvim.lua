@@ -2,10 +2,12 @@ local M = {};
 
 ---@return string|nil
 local get_git_cwd = function()
-    local utils = require('telescope.utils')
-    local git_dir = utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })[1]
-
-    return git_dir
+    -- local utils = require('telescope.utils')
+    -- local git_dir = utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })[1]
+    --
+    -- return git_dir
+    
+  return vim.fs.root(0, ".git")
 end
 
 local path_to_key = function(path)
