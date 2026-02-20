@@ -88,10 +88,12 @@ vim.keymap.set(
     "n",
     "<leader>e",
     function()
+        local ft = vim.bo.filetype
         vim.cmd('enew')
         vim.bo.buftype = 'nofile'
         vim.bo.bufhidden = 'hide'
         vim.bo.swapfile = false
+        vim.bo.filetype = ft
 
         print("Scratch buffer created")
     end,
