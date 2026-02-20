@@ -96,6 +96,18 @@ return {
 
         telescope.setup {
             defaults = {
+                buffer_previewer_maker = function(filepath, bufnr, opts)
+                    opts = opts or {}
+                    local max_size = 100000 -- 100KB
+                    vim.loop.fs_stat(filepath, function(_, stat)
+                        if not stat then return end
+                        if stat.size > max_size then
+                            return
+                        else
+                            require('telescope.previewers').buffer_previewer_maker(filepath, bufnr, opts)
+                        end
+                    end)
+                end,
                 path_display = {
                     filename_first = true,
                 },
