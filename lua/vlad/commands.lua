@@ -24,3 +24,21 @@ vim.api.nvim_create_user_command("BuffersClose", function()
 		end
 	end
 end, {})
+
+local function toggle_diff_ignore_whitespace()
+	local diffopt = vim.opt.diffopt:get()
+	local has_iwhite = vim.tbl_contains(diffopt, "iwhite")
+	if has_iwhite then
+		vim.opt.diffopt:remove("iwhite")
+		vim.notify("Diff: now considering whitespace", vim.log.levels.INFO)
+	else
+		vim.opt.diffopt:append("iwhite")
+		vim.notify("Diff: ignoring whitespace", vim.log.levels.INFO)
+	end
+end
+
+vim.api.nvim_create_user_command(
+	"DiffToggleWhitespace",
+	toggle_diff_ignore_whitespace,
+	{ desc = "Toggle ignoring whitespace in diffs" }
+)
