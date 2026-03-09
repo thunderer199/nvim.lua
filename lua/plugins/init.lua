@@ -39,7 +39,12 @@ return {
     {
         "OXY2DEV/markview.nvim",
         priority = 40,
-        lazy = false
+        lazy = false,
+        config = {
+            preview = {
+                map_gx = false
+            }
+        }
     },
     {
         "iamcco/markdown-preview.nvim",
