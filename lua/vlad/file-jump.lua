@@ -33,6 +33,16 @@ local function get_first_existing_file(files)
     return nil
 end
 
+local function find_first_with_extensions(base_paths, extensions)
+    local candidates = {}
+    for _, base in ipairs(base_paths) do
+        for _, ext in ipairs(extensions) do
+            table.insert(candidates, base .. ext)
+        end
+    end
+    return get_first_existing_file(candidates)
+end
+
 local function path_to_snapshot(main_path, extension)
     local splited = vim.split(main_path, "/")
     -- add __snapshots__ folder to the path
@@ -60,7 +70,7 @@ end
 
 -- Angular files jump
 vim.api.nvim_create_user_command("JToFile", function(opts)
-    local main_file_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue", ".py" }
+    local main_file_extensions = { ".ts", ".tsx", ".js", ".jsx" , ".vue", ".py", ".razor" }
     local style_extensions = { ".scss", ".css", ".less", ".module.scss", ".module.css", ".module.less" }
     local story_extensions = { ".stories.tsx", ".stories.ts" , ".stories.js" , ".stories.jsx"}
 
@@ -118,7 +128,13 @@ vim.api.nvim_create_user_command("JToFile", function(opts)
     elseif type == 'main' then
         vim.fn.execute(":find " .. try_file(main_path, main_file_extensions))
     elseif type == 'scss' then
-        vim.fn.execute(":find " .. try_file(main_path, style_extensions))
+        local current_file = vim.fn.expand("%")
+        local style_file = find_first_with_extensions({ main_path, current_file }, style_extensions)
+        if style_file then
+            vim.fn.execute(":find " .. style_file)
+        else
+            print("Style file not found")
+        end
     elseif type == 'html' then
         vim.fn.execute(":find " .. try_file(main_path, { ".html" }))
     elseif type == 'story' then
