@@ -42,10 +42,13 @@ return {
 
             snacks.gitbrowse.open({
                 branch = command.args ~= "" and command.args or nil,
+                line_start = command.range > 0 and command.line1 or nil,
+                line_end = command.range > 0 and command.line2 or nil,
                 url_patterns = list,
             })
         end, {
             nargs = "?",
+            range = true,
             complete = function()
                 return vim.fn.systemlist({ "git", "branch", "--format=%(refname:short)" })
             end,
