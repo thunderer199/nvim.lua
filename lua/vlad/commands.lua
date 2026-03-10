@@ -1,19 +1,29 @@
-vim.api.nvim_create_user_command("CopyPath", function()
-	local path = vim.fn.expand("%:p") -- Get absolute path
-	local util = require('vlad.util')
+local function append_range(path, opts)
+	if opts.range > 0 then
+		return string.format("%s:%d-%d", path, opts.line1, opts.line2)
+	end
+
+	return path
+end
+
+vim.api.nvim_create_user_command("CopyPath", function(opts)
+	local path = vim.fn.expand("%:p")
+	local util = require("vlad.util")
 	local relative_path = util.removeBaseFromPath(path)
-	vim.fn.setreg("+", relative_path)
-	vim.notify('Copied "' .. relative_path .. '" to the clipboard!')
-end, {})
+	local path_with_range = append_range(relative_path, opts)
+	vim.fn.setreg("+", path_with_range)
+	vim.notify('Copied "' .. path_with_range .. '" to the clipboard!')
+end, { range = true })
 
-vim.api.nvim_create_user_command("CopyPathAbsolute", function()
-	local path = vim.fn.expand("%:p") -- Get absolute path
-	vim.fn.setreg("+", path)
-	vim.notify('Copied "' .. path .. '" to the clipboard!')
-end, {})
+vim.api.nvim_create_user_command("CopyPathAbsolute", function(opts)
+	local path = vim.fn.expand("%:p")
+	local path_with_range = append_range(path, opts)
+	vim.fn.setreg("+", path_with_range)
+	vim.notify('Copied "' .. path_with_range .. '" to the clipboard!')
+end, { range = true })
 
-vim.keymap.set('n', '<leader>cp', ':CopyPath<CR>')
-vim.keymap.set('n', '<leader>cP', ':CopyPathAbsolute<CR>')
+vim.keymap.set({ "n", "x" }, "<leader>cp", ":CopyPath<CR>")
+vim.keymap.set({ "n", "x" }, "<leader>cP", ":CopyPathAbsolute<CR>")
 
 vim.api.nvim_create_user_command("BuffersClose", function()
 	local curr_buf = vim.api.nvim_get_current_buf()
