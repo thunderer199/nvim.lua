@@ -46,9 +46,6 @@ return {
     },
     {
         'tpope/vim-fugitive',
-        dependencies = {
-            'tpope/vim-rhubarb',
-        },
         keys = {
             { '<leader>gs', vim.cmd.Git,                                        desc = "Git Status" },
             { "<leader>gb", function() vim.cmd.Git("blame -w -M") end,          desc = "Git Blame move and ignore whitespace" },
@@ -56,17 +53,9 @@ return {
             { "<leader>ge", vim.cmd.Gedit,                                      desc = "Gedit" },
         },
         cmd = {
-            "GBrowse", "Gedit"
+            "Gedit"
         },
         config = function()
-            -- vim read txt file
-            local util = require('vlad.util')
-            local file = util.read_file(os.getenv('HOME') .. '/.github-enterprise')
-            if file then
-                local lines = util.split_into_lines(file)
-                vim.g.github_enterprise_urls = lines
-            end
-
             local fugitive_cmd_group = vim.api.nvim_create_augroup("fugitive_cmd_group", {})
 
             vim.api.nvim_create_autocmd("BufWinEnter", {
