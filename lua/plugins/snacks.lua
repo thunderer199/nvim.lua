@@ -11,7 +11,7 @@ return {
             snacks.zen.zen({ toggles = { dim = true, git_signs = true } })
         end, {})
 
-        vim.api.nvim_create_user_command("GitBrowse", function()
+        vim.api.nvim_create_user_command("GitBrowse", function(command)
             local util = require('vlad.util')
             local urls = {
                 github = {
@@ -41,9 +41,15 @@ return {
             end
 
             snacks.gitbrowse.open({
+                branch = command.args ~= "" and command.args or nil,
                 url_patterns = list,
             })
-        end, {})
+        end, {
+            nargs = "?",
+            complete = function()
+                return vim.fn.systemlist({ "git", "branch", "--format=%(refname:short)" })
+            end,
+        })
     end,
     opts = {
         -- your configuration comes here
@@ -80,7 +86,7 @@ return {
             end,
             desc = "Delete other buffers",
         },
-        { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
-        { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+        { "<leader>.", function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
+        { "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
     }
 }
