@@ -22,8 +22,43 @@ vim.api.nvim_create_user_command("CopyPathAbsolute", function(opts)
 	vim.notify('Copied "' .. path_with_range .. '" to the clipboard!')
 end, { range = true })
 
+vim.api.nvim_create_user_command("CopyPathContext", function()
+	local path = vim.fn.expand("%:p")
+	local util = require("vlad.util")
+	local relative_path = util.removeBaseFromPath(path)
+
+	local fn_name = nil
+	local ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils")
+	if ok then
+		local node = ts_utils.get_node_at_cursor()
+		while node do
+			local type = node:type()
+			if
+				type == "function_declaration"
+				or type == "function_definition"
+				or type == "method_definition"
+				or type == "method_declaration"
+				or type == "arrow_function"
+				or type == "local_function"
+			then
+				local name_node = node:field("name")[1]
+				if name_node then
+					fn_name = vim.treesitter.get_node_text(name_node, 0)
+				end
+				break
+			end
+			node = node:parent()
+		end
+	end
+
+	local result = fn_name and (relative_path .. "#" .. fn_name) or relative_path
+	vim.fn.setreg("+", result)
+	vim.notify('Copied "' .. result .. '" to the clipboard!')
+end, {})
+
 vim.keymap.set({ "n", "x" }, "<leader>cp", ":CopyPath<CR>")
 vim.keymap.set({ "n", "x" }, "<leader>cP", ":CopyPathAbsolute<CR>")
+vim.keymap.set("n", "<leader>cC", ":CopyPathContext<CR>")
 
 vim.api.nvim_create_user_command("BuffersClose", function()
 	local curr_buf = vim.api.nvim_get_current_buf()
