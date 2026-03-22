@@ -145,7 +145,7 @@ return {
                 lsp_on_attach(event.buf)
 
                 local actions_aliases = {
-                    volar = 'ts_ls',
+                    vue_ls = 'ts_ls',
                 }
                 local action_name = client and (actions_aliases[client.name] or client.name)
                 if actions[action_name] then
@@ -191,6 +191,9 @@ return {
         })
 
         local util = require("lspconfig.util")
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
         local servers = {
             jsonls = {
                 settings = {
@@ -201,6 +204,20 @@ return {
                 },
             },
             ts_ls = {
+                filetypes = {
+                    'javascript', 'javascriptreact', 'javascript.jsx',
+                    'typescript', 'typescriptreact', 'typescript.tsx',
+                    'vue',
+                },
+                init_options = {
+                    plugins = {
+                        {
+                            name = '@vue/typescript-plugin',
+                            location = vim.fn.expand('$MASON/packages/vue-language-server/node_modules/@vue/language-server'),
+                            languages = { 'vue' },
+                        },
+                    },
+                },
                 settings = {
                     typescript = {
                         inlayHints = {
@@ -229,7 +246,7 @@ return {
                 }
             },
             angularls = {
-                -- root_dir = util.root_pattern("angular.json", "project.json"),
+                root_markers = { 'angular.json', 'nx.json' },
             },
             lua_ls = {
                 settings = {
@@ -245,29 +262,16 @@ return {
                     diagnosticSeverity = "Information",
                 },
             },
-            volar = {
-                filetypes = { 'vue' },
-                init_options = {
-                    vue = {
-                        hybridMode = false,
-                    },
-                },
-            },
+            vue_ls = {},
         }
 
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        for name, config in pairs(servers) do
+            config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
+            vim.lsp.config(name, config)
+        end
 
         require('mason-lspconfig').setup({
-            automatic_installation = false,
             ensure_installed = { 'ts_ls', 'jsonls' },
-            handlers = {
-                function(server_name)
-                    local server = servers[server_name] or {}
-                    server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                    require('lspconfig')[server_name].setup(server)
-                end,
-            }
         })
 
         vim.diagnostic.config({
