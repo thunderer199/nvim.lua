@@ -14,6 +14,7 @@ return {
       local run_actions = require("project_cli_commands.actions")
 
       return {
+        global_config_path = vim.fn.stdpath("config") .. "/commands.json",
         running_telescope_mapping = {
           ["<C-c>"] = run_actions.exit_terminal,
           ["<C-f>"] = run_actions.open_float,

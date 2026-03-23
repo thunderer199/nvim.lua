@@ -1,0 +1,7 @@
+{
+  "commands": {
+    "commit:4-1": "opencode run \"/lightweight-commit\" -m \"github-copilot/gpt-4.1\"",
+    "commit:5-mini": "opencode run \"/lightweight-commit\" -m \"github-copilot/gpt-5-mini\"",
+    "commit:grok": "opencode run \"/lightweight-commit\" -m \"github-copilot/grok-code-fast-1\""
+  }
+}
