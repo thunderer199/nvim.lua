@@ -1,7 +1,17 @@
 {
   "commands": {
-    "commit:4-1": "opencode run \"/lightweight-commit\" -m \"github-copilot/gpt-4.1\"",
-    "commit:5-mini": "opencode run \"/lightweight-commit\" -m \"github-copilot/gpt-5-mini\"",
-    "commit:grok": "opencode run \"/lightweight-commit\" -m \"github-copilot/grok-code-fast-1\""
+    "ai-commit": {
+      "name": "Lightweight commit (choose model)",
+      "description": "Run lightweight commit and pick model via placeholder",
+      "cmd": "opencode run \"/lightweight-commit\" -m ${model}",
+      "placeholders": {
+        "model": [
+          "github-copilot/gpt-5-mini",
+          "github-copilot/gpt-5.4-mini",
+          "github-copilot/gpt-4.1",
+          "github-copilot/grok-code-fast-1"
+        ]
+      }
+    }
   }
 }
