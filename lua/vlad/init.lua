@@ -5,6 +5,7 @@ require("vlad.commands")
 require("vlad.lazy")
 require("vlad.colors")
 require("vlad.filetypes")
+require("vlad.terminal")
 
 require("vlad.file-jump")
 require("vlad.nuget-info")
