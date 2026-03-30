@@ -3,7 +3,7 @@
     "ai-commit": {
       "name": "Lightweight commit (choose model)",
       "description": "Run lightweight commit and pick model via placeholder",
-      "cmd": "opencode run \"/lightweight-commit\" -m ${model}",
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m ${model}",
       "placeholders": {
         "model": [
           "github-copilot/gemini-2.5-pro",
