@@ -1,5 +1,9 @@
 local function append_range(path, opts)
 	if opts.range > 0 then
+		if opts.line1 == opts.line2 then
+			return string.format("%s:%d", path, opts.line1)
+		end
+
 		return string.format("%s:%d-%d", path, opts.line1, opts.line2)
 	end
 
