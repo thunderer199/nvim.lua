@@ -93,32 +93,60 @@ vim.api.nvim_create_user_command(
 )
 
 local function smart_gf()
-  -- Get the raw text under the cursor (more reliable than <cfile> for this use case)
-  local cword = vim.fn.expand("<cWORD>")   -- <cWORD> grabs until whitespace
+  -- Get the full word under cursor (may include :line, :start-:end or #L... fragments)
+  local raw = vim.fn.expand("<cWORD>")
 
-  -- Extract filename and line/range. Supports:
-  --   file.cs:29
-  --   file.cs:29-36
-  --   /full/path/file.cs:29-36
-  --   file.cs:29:5   etc.
-  local file, line_str = cword:match("^(.-):(%d+.*)$")
+  -- Trim common trailing punctuation that appears in Markdown/links, e.g. ")", "]", ",", "." etc.
+  raw = raw:gsub("[%)%]%.,;\"']+$", "")
 
-  if not file then
-    file = cword
+  local file = raw
+  local start_line, end_line
+
+  -- Handle GitHub-style fragments like #L123 or #L123-L456 (allowing optional repeated L)
+  local frag = raw:match("#(.+)$")
+  if frag then
+    -- GitHub-style: #L123-L456 or #L123-456 (range)
+    local s, e = frag:match("^L(%d+)%-L?(%d+)$")
+    if s then
+      start_line = tonumber(s)
+      end_line = tonumber(e)
+    else
+      -- Single line: #L123
+      local s2 = frag:match("^L(%d+)$")
+      if s2 then
+        start_line = tonumber(s2)
+      end
+    end
+
+    -- Remove the fragment from the file path
+    file = raw:sub(1, #raw - #frag - 1)
+  else
+    -- Fallback to colon-style line/range like file:29 or file:29-36
+    local before_colon, after_colon = raw:match("^(.-):(%d+.*)$")
+    if before_colon then
+      file = before_colon
+      local s, e = after_colon:match("^(%d+)%-(%d+)$")
+      if s then
+        start_line = tonumber(s)
+        end_line = tonumber(e)
+      else
+        start_line = tonumber(after_colon:match("^(%d+)"))
+      end
+    end
   end
 
-  -- Open the file (creates it if it doesn't exist)
+  -- Open the file (creates new buffer if file doesn't exist)
   vim.cmd("edit " .. vim.fn.fnameescape(file))
 
-  -- Jump to line if present
-  if line_str then
-    -- Take only the first number (so :29-36 → go to 29)
-    local line_num = tonumber(line_str:match("^(%d+)"))
-    if line_num then
-      vim.cmd("normal! " .. line_num .. "Gzz")   -- zz centers the line
+  if start_line then
+    vim.cmd("normal! " .. start_line .. "Gzz") -- go to start line and center
+
+    if end_line and end_line > start_line then
+      -- Range detected → enter Visual Line mode and select to end_line
+      vim.cmd("normal! V" .. end_line .. "G")
     end
   end
 end
 
--- Map gf to our smart function
-vim.keymap.set("n", "gf", smart_gf, { noremap = true, silent = true, desc = "Go to file + line (create if missing)" })
+-- Map gf to this smart function
+vim.keymap.set("n", "gF", smart_gf, { noremap = true, silent = true, desc = "Go to file" })
