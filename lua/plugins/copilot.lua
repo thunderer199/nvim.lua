@@ -7,6 +7,7 @@ return {
     {
         "github/copilot.vim",
         cond = envs['NVIM_COPILOT_STATE'] ~= 'off',
+        cmd = { "Copilot", "CopilotEnable", "CopilotDisable", "CopilotPanel", "CopilotAuth" },
         init = function()
             local v = util.get_base_path()
             print("Copilot workspace: " .. v)
