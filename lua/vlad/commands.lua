@@ -91,3 +91,34 @@ vim.api.nvim_create_user_command(
 	toggle_diff_ignore_whitespace,
 	{ desc = "Toggle ignoring whitespace in diffs" }
 )
+
+local function smart_gf()
+  -- Get the raw text under the cursor (more reliable than <cfile> for this use case)
+  local cword = vim.fn.expand("<cWORD>")   -- <cWORD> grabs until whitespace
+
+  -- Extract filename and line/range. Supports:
+  --   file.cs:29
+  --   file.cs:29-36
+  --   /full/path/file.cs:29-36
+  --   file.cs:29:5   etc.
+  local file, line_str = cword:match("^(.-):(%d+.*)$")
+
+  if not file then
+    file = cword
+  end
+
+  -- Open the file (creates it if it doesn't exist)
+  vim.cmd("edit " .. vim.fn.fnameescape(file))
+
+  -- Jump to line if present
+  if line_str then
+    -- Take only the first number (so :29-36 → go to 29)
+    local line_num = tonumber(line_str:match("^(%d+)"))
+    if line_num then
+      vim.cmd("normal! " .. line_num .. "Gzz")   -- zz centers the line
+    end
+  end
+end
+
+-- Map gf to our smart function
+vim.keymap.set("n", "gf", smart_gf, { noremap = true, silent = true, desc = "Go to file + line (create if missing)" })
