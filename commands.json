@@ -1,5 +1,10 @@
 {
   "commands": {
+    "ai-commit-fast": {
+      "name": "Lightweight commit",
+      "description": "Run lightweight commit",
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"github-copilot/gpt-5-mini\""
+    },
     "ai-commit": {
       "name": "Lightweight commit (choose model)",
       "description": "Run lightweight commit and pick model via placeholder",
