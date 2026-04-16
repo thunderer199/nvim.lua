@@ -130,6 +130,34 @@ return {
                         print('Copied ' .. relative_path .. ' to register 0')
                     end,
                 },
+                ['<leader>Yp'] = {
+                    desc = 'Copy full filepath to system clipboard',
+                    callback = function()
+                        local util = require('vlad.util')
+                        local val = require('oil').get_cursor_entry()
+                        if not val then
+                            return
+                        end
+                        local base_path = require('oil').get_current_dir()
+                        local relative_path = util.removeBaseFromPath(base_path)
+                        vim.fn.setreg('+', relative_path .. val.name)
+                        print('Copied ' .. relative_path .. val.name .. ' to system clipboard')
+                    end,
+                },
+                ['<leader>YP'] = {
+                    desc = 'Copy full folder path to system clipboard',
+                    callback = function()
+                        local util = require('vlad.util')
+                        local val = require('oil').get_cursor_entry()
+                        if not val then
+                            return
+                        end
+                        local base_path = require('oil').get_current_dir()
+                        local relative_path = util.removeBaseFromPath(base_path)
+                        vim.fn.setreg('+', relative_path)
+                        print('Copied ' .. relative_path .. ' to system clipboard')
+                    end,
+                },
                 ['ga'] = {
                     desc = 'Git add file to staging area',
                     callback = function()
