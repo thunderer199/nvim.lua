@@ -85,6 +85,18 @@ return {
                         vim.cmd.Git('push --force-with-lease')
                     end, opts);
 
+                    vim.keymap.set("n", "ca", function()
+                        vim.fn.setenv('GIT_AUTHOR_DATE', 'now')
+                        vim.cmd.Git('commit --amend --date=now')
+                        vim.fn.setenv('GIT_AUTHOR_DATE', nil)
+                    end, opts);
+
+                    vim.keymap.set("n", "ce", function()
+                        vim.fn.setenv('GIT_AUTHOR_DATE', 'now')
+                        vim.cmd.Git('commit --amend --no-edit --date=now')
+                        vim.fn.setenv('GIT_AUTHOR_DATE', nil)
+                    end, opts);
+
                     vim.keymap.set("n", "<leader>gf", function()
                         vim.cmd.Git('fetch --prune')
                     end, opts);
