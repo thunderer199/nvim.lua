@@ -95,9 +95,19 @@ return {
         local noop = function() end
 
         local function append_lga_flag(postfix)
+            local flag = vim.trim(postfix)
+            local escaped = vim.pesc(flag)
             return function(prompt_bufnr)
                 local picker = actions_state.get_current_picker(prompt_bufnr)
                 local prompt = picker:_get_prompt()
+                local new_prompt, count = prompt:gsub("%s" .. escaped .. "%s", " ", 1)
+                if count == 0 then
+                    new_prompt, count = prompt:gsub("%s" .. escaped .. "$", "", 1)
+                end
+                if count > 0 then
+                    picker:set_prompt(new_prompt)
+                    return
+                end
                 if prompt:find('"') then
                     picker:set_prompt(prompt .. postfix)
                 else
