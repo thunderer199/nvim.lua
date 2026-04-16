@@ -6,8 +6,8 @@ local default_model = 'oswe-vscode-prime'
 return {
     {
         "github/copilot.vim",
-        cond = envs['NVIM_COPILOT_STATE'] ~= 'off',
         cmd = { "Copilot", "CopilotEnable", "CopilotDisable", "CopilotPanel", "CopilotAuth" },
+        lazy = true,
         init = function()
             local v = util.get_base_path()
             print("Copilot workspace: " .. v)
@@ -21,7 +21,6 @@ return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "main",
-        lazy = false,
         dependencies = {
             -- { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
             { "github/copilot.vim" },
