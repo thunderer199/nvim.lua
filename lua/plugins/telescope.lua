@@ -94,6 +94,18 @@ return {
 
         local noop = function() end
 
+        local function append_lga_flag(postfix)
+            return function(prompt_bufnr)
+                local picker = actions_state.get_current_picker(prompt_bufnr)
+                local prompt = picker:_get_prompt()
+                if prompt:find('"') then
+                    picker:set_prompt(prompt .. postfix)
+                else
+                    picker:set_prompt('"' .. prompt .. '"' .. postfix)
+                end
+            end
+        end
+
         telescope.setup {
             defaults = {
                 buffer_previewer_maker = function(filepath, bufnr, opts)
@@ -245,9 +257,9 @@ return {
                     auto_quoting = true, -- enable/disable auto-quoting
                     mappings = {
                         i = {
-                            ["<C-l>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                            ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --hidden" }),
-                            ["<C-h>"] = lga_actions.quote_prompt({ postfix = " -F" })
+                            ["<C-l>"] = append_lga_flag(" --iglob "),
+                            ["<C-g>"] = append_lga_flag(" --hidden"),
+                            ["<C-h>"] = append_lga_flag(" -F")
                         },
                     },
                 }
