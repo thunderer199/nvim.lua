@@ -28,7 +28,7 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
+vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.opt.termguicolors = true
 

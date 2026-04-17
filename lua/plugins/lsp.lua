@@ -19,10 +19,9 @@ return {
             local opts = { buffer = bufnr, remap = false }
 
             local diagnostic_goto = function(next, severity)
-                local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
                 severity = severity and vim.diagnostic.severity[severity] or nil
                 return function()
-                    go({ severity = severity })
+                    vim.diagnostic.jump({ count = next and 1 or -1, severity = severity })
                 end
             end
 
@@ -154,7 +153,7 @@ return {
                     end
                 end
 
-                if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
                     local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
                     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
                         buffer = event.buf,
@@ -177,7 +176,7 @@ return {
                     })
                 end
 
-                if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
                     vim.keymap.set(
                         'n',
                         '<leader>ih',
