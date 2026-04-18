@@ -1,10 +1,10 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = 'main',
         build = ':TSUpdate',
         dependencies = {
             "OXY2DEV/markview.nvim",
-            'nvim-treesitter/nvim-treesitter-textobjects',
             'nvim-treesitter/nvim-treesitter-context',
             'windwp/nvim-ts-autotag',
         },
@@ -12,92 +12,31 @@ return {
             require 'treesitter-context'.setup {
                 enable = true,
                 multiple_threshold = 10,
-            };
-
-            ---@diagnostic disable-next-line: missing-fields
-            require 'nvim-treesitter.configs'.setup {
-                -- A list of parser names, or "all"
-                ensure_installed = { "help", "javascript", "typescript", "css", "scss", "json", "c", "lua", "rust" },
-
-                -- Install parsers synchronously (only applied to `ensure_installed`)
-                sync_install = false,
-
-                -- Automatically install missing parsers when entering buffer
-                -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-                auto_install = true,
-
-                indent = {
-                    enable = true,
-                },
-
-                highlight = {
-                    -- `false` will disable the whole extension
-                    enable = true,
-
-                    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-                    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-                    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-                    -- Instead of true it can also be a list of languages
-                    additional_vim_regex_highlighting = false,
-                },
-                textobjects = {
-                    select = {
-                        enable = true,
-                        lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-                        keymaps = {
-                            ['aa'] = '@parameter.outer',
-                            ['ia'] = '@parameter.inner',
-                            ['af'] = '@function.outer',
-                            ['if'] = '@function.inner',
-                            ['id'] = '@conditional.inner',
-                            ['ad'] = '@conditional.outer',
-                            ['ac'] = '@class.outer',
-                            ['ic'] = '@class.inner',
-                        },
-                        include_surrounding_whitespace = true,
-                    },
-                    move = {
-                        enable = true,
-                        set_jumps = true, -- whether to set jumps in the jumplist
-                        goto_next_start = {
-                            [']m'] = '@function.outer',
-                            [']o'] = '@class.outer',
-                            [']f'] = '@conditional.outer',
-                        },
-                        goto_next_end = {
-                            [']M'] = '@function.outer',
-                            [']O'] = '@class.outer',
-                            ['[F'] = '@conditional.outer',
-                        },
-                        goto_previous_start = {
-                            ['[m'] = '@function.outer',
-                            ['[o'] = '@class.outer',
-                            ['[f'] = '@conditional.outer',
-                        },
-                        goto_previous_end = {
-                            ['[M'] = '@function.outer',
-                            ['[O'] = '@class.outer',
-                            ['[F'] = '@conditional.outer',
-                        },
-                    },
-                    swap = {
-                        enable = true,
-                        swap_next = {
-                            ["<leader>k"] = "@parameter.inner",
-                        },
-                        swap_previous = {
-                            ["<leader>j"] = "@parameter.inner",
-                        },
-                    },
-                },
             }
+
+            local ensureInstalled = { "vimdoc", "javascript", "typescript", "tsx", "html", "xml", "css", "scss", "json", "c", "lua", "rust" }
+            local alreadyInstalled = require('nvim-treesitter.config').get_installed()
+            local parsersToInstall = vim.iter(ensureInstalled)
+                :filter(function(parser)
+                    return not vim.tbl_contains(alreadyInstalled, parser)
+                end)
+                :totable()
+            if #parsersToInstall > 0 then
+                require('nvim-treesitter').install(parsersToInstall)
+            end
+
+            vim.api.nvim_create_autocmd('FileType', {
+                callback = function()
+                    pcall(vim.treesitter.start)
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end,
+            })
 
             require('nvim-ts-autotag').setup({
                 opts = {
-                    -- Defaults
-                    enable_close = true,          -- Auto close tags
-                    enable_rename = true,         -- Auto rename pairs of tags
-                    enable_close_on_slash = false -- Auto close on trailing </
+                    enable_close = true,
+                    enable_rename = true,
+                    enable_close_on_slash = false,
                 },
             })
 
@@ -152,5 +91,70 @@ return {
             end
             vim.keymap.set('n', '<leader>nn', get_path_in_file, { desc = 'Copy path in file' })
         end
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'main',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        init = function()
+            vim.g.no_plugin_maps = true
+        end,
+        config = function()
+            require('nvim-treesitter-textobjects').setup({
+                select = {
+                    lookahead = true,
+                    include_surrounding_whitespace = true,
+                },
+                move = {
+                    set_jumps = true,
+                },
+            })
+
+            local select = require('nvim-treesitter-textobjects.select')
+            local move = require('nvim-treesitter-textobjects.move')
+            local swap = require('nvim-treesitter-textobjects.swap')
+
+            local select_maps = {
+                ['aa'] = '@parameter.outer',
+                ['ia'] = '@parameter.inner',
+                ['af'] = '@function.outer',
+                ['if'] = '@function.inner',
+                ['id'] = '@conditional.inner',
+                ['ad'] = '@conditional.outer',
+                ['ac'] = '@class.outer',
+                ['ic'] = '@class.inner',
+            }
+            for key, capture in pairs(select_maps) do
+                vim.keymap.set({ 'x', 'o' }, key, function()
+                    select.select_textobject(capture, 'textobjects')
+                end)
+            end
+
+            local move_maps = {
+                [']m'] = { 'goto_next_start',     '@function.outer' },
+                [']o'] = { 'goto_next_start',     '@class.outer' },
+                [']f'] = { 'goto_next_start',     '@conditional.outer' },
+                [']M'] = { 'goto_next_end',       '@function.outer' },
+                [']O'] = { 'goto_next_end',       '@class.outer' },
+                ['[m'] = { 'goto_previous_start', '@function.outer' },
+                ['[o'] = { 'goto_previous_start', '@class.outer' },
+                ['[f'] = { 'goto_previous_start', '@conditional.outer' },
+                ['[M'] = { 'goto_previous_end',   '@function.outer' },
+                ['[O'] = { 'goto_previous_end',   '@class.outer' },
+                ['[F'] = { 'goto_previous_end',   '@conditional.outer' },
+            }
+            for key, def in pairs(move_maps) do
+                vim.keymap.set('n', key, function()
+                    move[def[1]](def[2], 'textobjects')
+                end)
+            end
+
+            vim.keymap.set('n', '<leader>k', function()
+                swap.swap_next('@parameter.inner')
+            end)
+            vim.keymap.set('n', '<leader>j', function()
+                swap.swap_previous('@parameter.inner')
+            end)
+        end,
     },
 }
