@@ -11,7 +11,7 @@ return {
             snacks.zen.zen({ toggles = { dim = true, git_signs = true } })
         end, {})
 
-        vim.api.nvim_create_user_command("GitBrowse", function(command)
+        local function git_url_patterns()
             local util = require('vlad.util')
             local urls = {
                 github = {
@@ -25,7 +25,6 @@ return {
                     commit = "/-/commit/{commit}",
                 },
             }
-
             local list = {}
             for service, patterns in pairs(urls) do
                 local file = util.read_file(os.getenv('HOME') .. '/.' .. service .. '-enterprise')
@@ -34,24 +33,47 @@ return {
                     for _, line in ipairs(lines) do
                         local domain = line:gsub("%.", "%%.")
                         domain = domain:gsub("^https?://", "")
-
                         list[domain] = patterns
                     end
                 end
             end
+            return list
+        end
 
+        local branch_complete = function()
+            return vim.fn.systemlist({ "git", "branch", "--format=%(refname:short)" })
+        end
+
+        vim.api.nvim_create_user_command("GitBrowse", function(command)
             snacks.gitbrowse.open({
                 branch = command.args ~= "" and command.args or nil,
                 line_start = command.range > 0 and command.line1 or nil,
                 line_end = command.range > 0 and command.line2 or nil,
-                url_patterns = list,
+                url_patterns = git_url_patterns(),
             })
         end, {
             nargs = "?",
             range = true,
-            complete = function()
-                return vim.fn.systemlist({ "git", "branch", "--format=%(refname:short)" })
-            end,
+            complete = branch_complete,
+        })
+
+        vim.api.nvim_create_user_command("GitBrowseLink", function(command)
+            local filepath = vim.fn.expand("%:.")
+            snacks.gitbrowse.open({
+                branch = command.args ~= "" and command.args or nil,
+                line_start = command.range > 0 and command.line1 or nil,
+                line_end = command.range > 0 and command.line2 or nil,
+                url_patterns = git_url_patterns(),
+                open = function(url)
+                    local link = "[" .. filepath .. "](" .. url .. ")"
+                    vim.fn.setreg("+", link)
+                    vim.notify("Copied: " .. link)
+                end,
+            })
+        end, {
+            nargs = "?",
+            range = true,
+            complete = branch_complete,
         })
     end,
     opts = {
