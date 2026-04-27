@@ -2,7 +2,15 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
         -- LSP Support
-        { 'mason-org/mason.nvim',          config = true },
+        {
+            'mason-org/mason.nvim',
+            opts = {
+                registries = {
+                    'github:mason-org/mason-registry',
+                    'github:Crashdummyy/mason-registry',
+                },
+            },
+        },
         { 'mason-org/mason-lspconfig.nvim' },
 
         'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -272,6 +280,10 @@ return {
 
         require('mason-lspconfig').setup({
             ensure_installed = { 'ts_ls', 'jsonls' },
+        })
+
+        require('mason-tool-installer').setup({
+            ensure_installed = { 'roslyn' },
         })
 
         vim.diagnostic.config({
