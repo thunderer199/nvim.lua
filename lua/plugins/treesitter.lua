@@ -14,7 +14,7 @@ return {
                 multiple_threshold = 10,
             }
 
-            local ensureInstalled = { "vimdoc", "javascript", "typescript", "tsx", "html", "xml", "css", "scss", "json", "c", "lua", "rust" }
+            local ensureInstalled = { "vimdoc", "javascript", "typescript", "tsx", "html", "xml", "css", "scss", "json", "c", "lua", "rust", "http", "python", "c_sharp", "vue", "yaml", "bash" }
             local alreadyInstalled = require('nvim-treesitter.config').get_installed()
             local parsersToInstall = vim.iter(ensureInstalled)
                 :filter(function(parser)
