@@ -144,6 +144,51 @@ return {
                 harpoon:list():append()
             end
         end)
+
+        vim.keymap.set("n", "<leader>qa", function()
+            local qflist = vim.fn.getqflist()
+            if #qflist == 0 then
+                vim.notify("Quickfix list is empty", vim.log.levels.WARN)
+                return
+            end
+
+            local seen = {}
+            local files = {}
+            for _, item in ipairs(qflist) do
+                local fname = item.bufnr > 0 and vim.api.nvim_buf_get_name(item.bufnr) or ""
+                if fname ~= "" and not seen[fname] then
+                    seen[fname] = true
+                    table.insert(files, {
+                        value = fname,
+                        context = { row = item.lnum or 1, col = item.col or 0 },
+                    })
+                end
+            end
+
+            if #files == 0 then
+                vim.notify("No valid files in quickfix list", vim.log.levels.WARN)
+                return
+            end
+
+            local function do_add()
+                for _, file in ipairs(files) do
+                    harpoon:list():append(file)
+                end
+                vim.notify("Added " .. #files .. " file(s) to harpoon", vim.log.levels.INFO)
+            end
+
+            if #files > 3 then
+                vim.ui.select({ "Yes", "No" }, {
+                    prompt = "Add " .. #files .. " files to harpoon?",
+                }, function(choice)
+                    if choice == "Yes" then
+                        do_add()
+                    end
+                end)
+            else
+                do_add()
+            end
+        end)
         vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
         -- Alt - n - go to next file
