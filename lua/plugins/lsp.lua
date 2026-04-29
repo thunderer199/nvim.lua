@@ -279,7 +279,7 @@ return {
         end
 
         require('mason-lspconfig').setup({
-            ensure_installed = { 'ts_ls', 'jsonls' },
+            ensure_installed = { 'ts_ls', 'jsonls', 'basedpyright', 'angularls', 'lua_ls', 'typos_lsp', 'vue_ls' },
         })
 
         require('mason-tool-installer').setup({
