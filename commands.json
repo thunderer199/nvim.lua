@@ -3,7 +3,7 @@
     "ai-commit-fast": {
       "name": "Lightweight commit",
       "description": "Run lightweight commit",
-      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"github-copilot/gpt-5-mini\""
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"opencode-go/deepseek-v4-flash\""
     },
     "ai-commit": {
       "name": "Lightweight commit (choose model)",
@@ -11,24 +11,20 @@
       "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m ${model}",
       "placeholders": {
         "model": [
-          "github-copilot/gemini-2.5-pro",
-          "github-copilot/gemini-3-flash-preview",
-          "github-copilot/gemini-3-pro-preview",
-          "github-copilot/gemini-3.1-pro-preview",
-          "github-copilot/gpt-4.1",
-          "github-copilot/gpt-4o",
-          "github-copilot/gpt-5",
-          "github-copilot/gpt-5-mini",
-          "github-copilot/gpt-5.1",
-          "github-copilot/gpt-5.1-codex",
-          "github-copilot/gpt-5.1-codex-max",
-          "github-copilot/gpt-5.1-codex-mini",
-          "github-copilot/gpt-5.2",
-          "github-copilot/gpt-5.2-codex",
-          "github-copilot/gpt-5.3-codex",
-          "github-copilot/gpt-5.4",
-          "github-copilot/gpt-5.4-mini",
-          "github-copilot/grok-code-fast-1"
+          "opencode-go/deepseek-v4-flash",
+          "opencode-go/qwen3.5-plus",
+          "opencode-go/minimax-m2.5",
+          "opencode-go/minimax-m2.7",
+          "opencode-go/deepseek-v4-pro",
+          "opencode-go/qwen3.6-plus",
+          "opencode-go/kimi-k2.6",
+          "opencode-go/kimi-k2.5",
+          "opencode-go/mimo-v2-omni",
+          "opencode-go/mimo-v2.5",
+          "opencode-go/mimo-v2-pro",
+          "opencode-go/mimo-v2.5-pro",
+          "opencode-go/glm-5",
+          "opencode-go/glm-5.1"
         ]
       }
     }
