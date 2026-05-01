@@ -145,7 +145,7 @@ return {
             end
         end)
 
-        vim.keymap.set("n", "<leader>qa", function()
+        vim.keymap.set("n", "<leader>Qa", function()
             local qflist = vim.fn.getqflist()
             if #qflist == 0 then
                 vim.notify("Quickfix list is empty", vim.log.levels.WARN)
