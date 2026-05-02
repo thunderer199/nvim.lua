@@ -10,7 +10,7 @@ return {
         opts = {
             global_keymaps = true, -- enables all default keymaps
             global_keymaps_prefix = "<leader>R",
-            -- add more options here if needed
+            -- Add more options here if needed
         },
         init = function()
             vim.api.nvim_create_autocmd("FileType", {
@@ -18,25 +18,32 @@ return {
                 group = vim.api.nvim_create_augroup("KulalaEnvFallback", { clear = true }),
                 callback = function()
                     local kulala = require("kulala")
-                    local env_parser = require("kulala.parser.env")
 
                     local current_env = kulala.get_selected_env()
-
-                    -- Get all available environments from http-client.env.json
-                    local available_envs = {}
-                    local env_data = require("kulala.db").find_unique("http_client_env") or {}
-                    for name, _ in pairs(env_data) do
-                        table.insert(available_envs, name)
+                    local env_file = vim.fn.findfile("http-client.env.json", ".;")
+                    local env_data = nil
+                    if env_file ~= "" then
+                        local ok, data = pcall(vim.fn.readfile, env_file)
+                        if ok and data then
+                            env_data = vim.json.decode(table.concat(data, "\n"))
+                        end
                     end
-                    print('DEBUGPRINT[76]: rest.lua:26: available_envs=' .. vim.inspect(available_envs))
+                    local env_list = env_data and vim.tbl_keys(env_data) or {}
 
-                    -- If current env doesn't exist in the file → fallback to first one
-                    if not env_data[current_env] and #available_envs > 0 then
-                        local fallback = available_envs[1] -- or "local" if you prefer
+                    local env_exists = false
+                    for _, name in ipairs(env_list) do
+                        if name == current_env then
+                            env_exists = true
+                            break
+                        end
+                    end
+
+                    if not env_exists and #env_list > 0 then
+                        local fallback = env_list[1]
                         kulala.set_selected_env(fallback)
                         vim.notify(
-                            string.format("Kulala: '%s' not found → auto-selected '%s'", current_env, fallback),
-                            vim.log.levels.INFO
+                            string.format("Kulala: '%s' not found → switched to '%s'", current_env, fallback),
+                            vim.log.levels.WARN
                         )
                     end
                 end,
