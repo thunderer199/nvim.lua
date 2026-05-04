@@ -174,7 +174,7 @@ return {
                 }
             },
             lsp_file_methods = {
-                timeout_ms = 1000,
+                timeout_ms = 5000,
                 autosave_changes = true,
             },
             view_options = {
