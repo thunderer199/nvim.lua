@@ -32,9 +32,8 @@ vim.api.nvim_create_user_command("CopyPathContext", function()
 	local relative_path = util.removeBaseFromPath(path)
 
 	local fn_name = nil
-	local ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils")
-	if ok then
-		local node = ts_utils.get_node_at_cursor()
+	local node = vim.treesitter.get_node()
+	if node then
 		while node do
 			local type = node:type()
 			if
