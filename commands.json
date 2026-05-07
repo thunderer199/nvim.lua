@@ -3,12 +3,12 @@
     "ai-commit-fast": {
       "name": "Lightweight commit",
       "description": "Run lightweight commit",
-      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"opencode-go/deepseek-v4-flash\""
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"opencode-go/deepseek-v4-flash\" && opencode export $(opencode session list --max-count 1 --format json | jq -r '.[].id') | jq -r '.info as $i | .messages[-1].info as $m | \"\\($m.modelID) • \\($m.providerID) • \\((($i.time.updated-$i.time.created)/1000)|floor)s • \\($m.tokens.total) tokens • $\\( $m.cost )\"'"
     },
     "ai-commit": {
       "name": "Lightweight commit (choose model)",
       "description": "Run lightweight commit and pick model via placeholder",
-      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m ${model}",
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m ${model} && opencode export $(opencode session list --max-count 1 --format json | jq -r '.[].id') | jq -r '.info as $i | .messages[-1].info as $m | \"\\($m.modelID) • \\($m.providerID) • \\((($i.time.updated-$i.time.created)/1000)|floor)s • \\($m.tokens.total) tokens • $\\( $m.cost )\"'",
       "placeholders": {
         "model": [
           "opencode-go/deepseek-v4-flash",
