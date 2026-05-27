@@ -29,15 +29,15 @@ return {
         },
 
         virtualtext = {
-          auto_trigger_ft = {}, -- No auto
+          auto_trigger_ft = { "*" },
           manual_trigger_ft = { "*" },
 
           keymap = {
             accept = "<Tab>",
             accept_line = "<C-a>",
             accept_n_lines = "<C-z>",
-            prev = "<A-i>",      -- ← This will trigger new suggestion
-            next = "<A-i>",      -- Same key for simplicity
+            prev = "<A-[>",
+            next = "<A-]>",
             dismiss = "<C-x>",
           },
         },
