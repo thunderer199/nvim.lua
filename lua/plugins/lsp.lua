@@ -274,6 +274,17 @@ return {
             emmet_ls = {
                 filetypes = { 'html', 'css', 'scss', 'sass', 'less', 'javascriptreact', 'typescriptreact', 'vue', 'cshtml', 'razor' },
             },
+            stylelint_lsp = {
+                settings = {
+                    stylelintplus = {
+                        configFile = vim.fn.expand('~/.stylelintrc.json'),
+                        autoFixOnSave = false,
+                        autoFixOnFormat = false,
+                        validateOnType = true,
+                        validateOnSave = true,
+                    },
+                },
+            },
         }
 
         for name, config in pairs(servers) do
