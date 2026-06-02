@@ -271,6 +271,9 @@ return {
                 },
             },
             vue_ls = {},
+            emmet_ls = {
+                filetypes = { 'html', 'css', 'scss', 'sass', 'less', 'javascriptreact', 'typescriptreact', 'vue', 'cshtml', 'razor' },
+            },
         }
 
         for name, config in pairs(servers) do
@@ -279,7 +282,7 @@ return {
         end
 
         require('mason-lspconfig').setup({
-            ensure_installed = { 'ts_ls', 'jsonls', 'basedpyright', 'angularls', 'lua_ls', 'typos_lsp', 'vue_ls' },
+            ensure_installed = { 'ts_ls', 'jsonls', 'basedpyright', 'angularls', 'lua_ls', 'typos_lsp', 'vue_ls', 'emmet_ls' },
         })
 
         require('mason-tool-installer').setup({
