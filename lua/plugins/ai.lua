@@ -33,7 +33,7 @@ return {
           manual_trigger_ft = { "*" },
 
           keymap = {
-            accept = "<Tab>",
+            accept = "<C-a>",
             accept_line = "<C-a>",
             accept_n_lines = "<C-z>",
             prev = "<A-[>",
