@@ -11,16 +11,6 @@
       "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m $(echo ${model} | cut -d: -f1) $(echo ${model} | grep -q ':' && echo --variant $(echo ${model} | cut -d: -f2)) && opencode export $(opencode session list --max-count 1 --format json | jq -r '.[].id') | jq -r '.info as $i | .messages[-1].info as $m | \"\\($m.modelID) • \\($m.providerID) • \\((($i.time.updated-$i.time.created)/1000)|floor)s • \\($m.tokens.total) tokens (\\($m.tokens.input)i+\\($m.tokens.output)o+\\($m.tokens.reasoning)r, cache \\($m.tokens.cache.read)r/\\($m.tokens.cache.write)w) • $\\( $m.cost )\"'",
       "placeholders": {
         "model": [
-          "openai/gpt-5.2:none",
-          "openai/gpt-5.2:low",
-          "openai/gpt-5.2:medium",
-          "openai/gpt-5.2:high",
-          "openai/gpt-5.2:xhigh",
-          "openai/gpt-5.3-codex:none",
-          "openai/gpt-5.3-codex:low",
-          "openai/gpt-5.3-codex:medium",
-          "openai/gpt-5.3-codex:high",
-          "openai/gpt-5.3-codex:xhigh",
           "openai/gpt-5.4:none",
           "openai/gpt-5.4:low",
           "openai/gpt-5.4:medium",
@@ -35,9 +25,6 @@
           "openai/gpt-5.5:medium",
           "openai/gpt-5.5:high",
           "openai/gpt-5.5:xhigh",
-          "openai/gpt-5.5-pro:medium",
-          "openai/gpt-5.5-pro:high",
-          "openai/gpt-5.5-pro:xhigh",
           "opencode-go/deepseek-v4-flash:low",
           "opencode-go/deepseek-v4-flash:medium",
           "opencode-go/deepseek-v4-flash:high",
@@ -58,8 +45,10 @@
           "opencode-go/mimo-v2.5-pro:high",
           "opencode-go/minimax-m2.5",
           "opencode-go/minimax-m2.7",
-          "opencode-go/qwen3.5-plus",
-          "opencode-go/qwen3.6-plus"
+          "opencode-go/qwen3.6-plus",
+          "opencode-go/minimax-m3",
+          "opencode-go/qwen3.7-max",
+          "opencode-go/qwen3.7-plus"
         ]
       }
     }
