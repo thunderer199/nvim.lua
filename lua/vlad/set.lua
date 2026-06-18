@@ -3,7 +3,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- fold opened by default
 vim.opt.foldlevelstart = 99
-
+vim.o.termguicolors = true
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
