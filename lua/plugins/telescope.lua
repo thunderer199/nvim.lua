@@ -265,9 +265,6 @@ return {
                 },
                 live_grep_args = {
                     auto_quoting = true, -- enable/disable auto-quoting
-                    additional_args = function()
-                        return { "--multiline", "--multiline-dotall" }
-                    end,
                     mappings = {
                         i = {
                             ["<C-l>"] = append_lga_flag(" --iglob "),
