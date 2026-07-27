@@ -52,7 +52,8 @@
           "openai/gpt-5.6-sol",
           "openai/gpt-5.6-terra",
           "opencode-go/grok-4.5",
-          "opencode-go/kimi-k3"
+          "opencode-go/kimi-k3",
+          "opencode-go/hy3"
         ]
       }
     }
