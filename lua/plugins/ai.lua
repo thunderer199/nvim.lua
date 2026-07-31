@@ -16,7 +16,7 @@ return {
               return os.getenv("NVIM_OPENCODE_KEY")
             end,
             end_point = "https://opencode.ai/zen/go/v1/chat/completions",
-            model = "deepseek-v4-flash",
+            model = "mimo-v2.5",
             name = "Opencode",
 
             optional = {
