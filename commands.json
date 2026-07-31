@@ -3,7 +3,7 @@
     "ai-commit-fast": {
       "name": "Lightweight commit",
       "description": "Run lightweight commit",
-      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"opencode-go/deepseek-v4-flash\" --agent build && opencode export $(opencode session list --max-count 1 --format json | jq -r '.[].id') | jq -r '.info as $i | .messages[-1].info as $m | \"\\($m.modelID) • \\($m.providerID) • \\((($i.time.updated-$i.time.created)/1000)|floor)s • \\($m.tokens.total) tokens (\\($m.tokens.input)i+\\($m.tokens.output)o+\\($m.tokens.reasoning)r, cache \\($m.tokens.cache.read)r/\\($m.tokens.cache.write)w) • $\\( $m.cost )\"'"
+      "cmd": "opencode run \"/lightweight-commit\" \"Please create a lightweight commit for the currently staged changes\" -m \"opencode-go/mimo-v2.5\" --agent build && opencode export $(opencode session list --max-count 1 --format json | jq -r '.[].id') | jq -r '.info as $i | .messages[-1].info as $m | \"\\($m.modelID) • \\($m.providerID) • \\((($i.time.updated-$i.time.created)/1000)|floor)s • \\($m.tokens.total) tokens (\\($m.tokens.input)i+\\($m.tokens.output)o+\\($m.tokens.reasoning)r, cache \\($m.tokens.cache.read)r/\\($m.tokens.cache.write)w) • $\\( $m.cost )\"'"
     },
     "ai-commit": {
       "name": "Lightweight commit (choose model)",
