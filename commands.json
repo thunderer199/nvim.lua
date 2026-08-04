@@ -61,6 +61,7 @@
           "xai/grok-4.3",
           "xai/grok-4.5",
           "xai/grok-build-0.1",
+          "opencode-go/qwen3.8-max"
         ]
       }
     }
