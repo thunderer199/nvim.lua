@@ -18,6 +18,7 @@ EXCLUDE_PATTERNS = [
     re.compile(r"-free$"),
     re.compile(r"^opencode/"),
     re.compile(r"^openai/.+-(?:fast|spark|pro)"),
+    re.compile(r"^xai/grok-imagine"),  # imaging models unused in Open Code
 ]
 
 
