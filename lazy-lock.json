@@ -61,6 +61,7 @@
   "promise-async": { "branch": "main", "commit": "119e8961014c9bfaf1487bf3c2a393d254f337e2" },
   "rainbow_csv": { "branch": "master", "commit": "3dbbfd7d17536aebfb80f571255548495574c32b" },
   "refactoring.nvim": { "branch": "1.0", "commit": "6784b54587e6d8a6b9ea199318512170ffb9e418" },
+  "review.nvim": { "branch": "main", "commit": "6715e33857336b639440d5b90f2add5e5557913b" },
   "roslyn.nvim": { "branch": "main", "commit": "7d8c166a0c70473ffa558d4d2430769d581fa8dd" },
   "schemastore.nvim": { "branch": "main", "commit": "a652fcc01bf03946ab94b815be8c80ee157cbe1a" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },

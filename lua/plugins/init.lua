@@ -10,6 +10,11 @@ return {
     },
     'nvim-tree/nvim-web-devicons',
     'AndrewRadev/linediff.vim',
+    {
+        "vuki656/review.nvim",
+        cmd = "Review",
+        opts = {},
+    },
     'tpope/vim-sleuth',
     {
         "kevinhwang91/nvim-fundo",
