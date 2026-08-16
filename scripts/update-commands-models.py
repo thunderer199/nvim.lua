@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Update commands.json model placeholder lists from OpenCode and Pi.
+"""Update commands.json model lists from OpenCode and Pi catalogs.
 
-Preserves existing effort assignments and model order. Adds new models
-(base name only, no effort variants). Removes models no longer available.
+Reads live model ids and their thinking/effort variants. Keeps existing
+model order. Adds new models. Removes models no longer available.
 """
 
+from __future__ import annotations
+
 import json
+import os
 import re
 import subprocess
 import sys
@@ -28,14 +31,17 @@ PI_EXCLUDE = [
 
 EFFORT_ORDER = {
     "off": 0,
-    "none": 0,
-    "minimal": 1,
-    "low": 2,
-    "medium": 3,
-    "high": 4,
-    "xhigh": 5,
-    "max": 6,
+    "none": 1,
+    "minimal": 2,
+    "low": 3,
+    "medium": 4,
+    "high": 5,
+    "xhigh": 6,
+    "max": 7,
+    "thinking": 8,
 }
+
+MODEL_LINE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
 
 
 def should_exclude(name: str, patterns: list[re.Pattern[str]]) -> bool:
@@ -47,54 +53,88 @@ def parse_model_entry(entry: str) -> tuple[str, str | None]:
     return parts[0], parts[1] if len(parts) > 1 else None
 
 
-def merge_models(current: list[str], available: set[str]) -> tuple[list[str], set[str], set[str]]:
-    existing: dict[str, list[tuple[str | None, str]]] = {}
+def sort_efforts(efforts: list[str]) -> list[str]:
+    return sorted(set(efforts), key=lambda e: (EFFORT_ORDER.get(e, 99), e))
+
+
+def expand(base: str, efforts: list[str]) -> list[str]:
+    if not efforts:
+        return [base]
+    return [f"{base}:{effort}" for effort in sort_efforts(efforts)]
+
+
+def merge_models(
+    current: list[str],
+    available: dict[str, list[str]],
+) -> tuple[list[str], set[str], set[str]]:
+    existing_order: list[str] = []
+    seen: set[str] = set()
     for entry in current:
-        base, effort = parse_model_entry(entry)
-        existing.setdefault(base, []).append((effort, entry))
+        base, _ = parse_model_entry(entry)
+        if base not in seen:
+            existing_order.append(base)
+            seen.add(base)
 
     new_list: list[str] = []
-    seen: set[str] = set()
-
-    for base in existing:
+    for base in existing_order:
         if base not in available:
             continue
-        seen.add(base)
-        entries = existing[base]
-        entries.sort(key=lambda x: EFFORT_ORDER.get(x[0], 99) if x[0] else -1)
-        for _, entry in entries:
-            new_list.append(entry)
+        new_list.extend(expand(base, available[base]))
 
-    for name in sorted(available - seen):
-        new_list.append(name)
+    added = set(available) - seen
+    for base in sorted(added):
+        new_list.extend(expand(base, available[base]))
 
-    return new_list, set(existing.keys()) - available, available - set(existing.keys())
+    return new_list, seen - set(available), added
 
 
-def get_opencode_models() -> set[str]:
+def get_opencode_models() -> dict[str, list[str]]:
     result = subprocess.run(
-        ["opencode", "models"],
-        capture_output=True, text=True, timeout=30,
+        ["opencode", "models", "--verbose"],
+        capture_output=True, text=True, timeout=60,
     )
     if result.returncode != 0:
         raise RuntimeError(result.stderr.strip() or "opencode models failed")
-    names = set()
-    for line in result.stdout.strip().split("\n"):
-        line = line.strip()
-        if line and not should_exclude(line, OPENCODE_EXCLUDE):
-            names.add(line)
-    return names
+    models: dict[str, list[str]] = {}
+    lines = result.stdout.splitlines()
+    i = 0
+    while i < len(lines):
+        name = lines[i].strip()
+        i += 1
+        if not MODEL_LINE.fullmatch(name):
+            continue
+        while i < len(lines) and not lines[i].strip():
+            i += 1
+        if i >= len(lines) or not lines[i].lstrip().startswith("{"):
+            data: dict = {}
+        else:
+            buf: list[str] = []
+            depth = 0
+            while i < len(lines):
+                buf.append(lines[i])
+                depth += lines[i].count("{") - lines[i].count("}")
+                i += 1
+                if depth <= 0:
+                    break
+            data = json.loads("\n".join(buf))
+        if should_exclude(name, OPENCODE_EXCLUDE):
+            continue
+        variants = data.get("variants") or {}
+        efforts = list(variants) if isinstance(variants, dict) else []
+        models[name] = efforts
+    return models
 
 
-def get_pi_models() -> set[str]:
+def get_pi_models() -> dict[str, list[str]]:
     result = subprocess.run(
         ["pi", "--list-models"],
         capture_output=True, text=True, timeout=30,
     )
     if result.returncode != 0:
         raise RuntimeError(result.stderr.strip() or "pi --list-models failed")
-    names = set()
-    for line in result.stdout.strip().split("\n"):
+
+    names: list[str] = []
+    for line in result.stdout.splitlines():
         line = line.strip()
         if not line or line.lower().startswith("provider"):
             continue
@@ -103,11 +143,41 @@ def get_pi_models() -> set[str]:
             continue
         name = f"{parts[0]}/{parts[1]}"
         if not should_exclude(name, PI_EXCLUDE):
-            names.add(name)
-    return names
+            names.append(name)
+
+    levels = load_pi_thinking_levels()
+    return {name: levels.get(name, []) for name in names}
 
 
-def update_command(data: dict, key: str, available: set[str], label: str) -> None:
+def load_pi_thinking_levels() -> dict[str, list[str]]:
+    root = Path(os.environ.get("PI_CODING_AGENT_DIR") or Path.home() / ".pi/agent")
+    store = root / "models-store.json"
+    if not store.is_file():
+        return {}
+    try:
+        data = json.loads(store.read_text())
+    except json.JSONDecodeError:
+        return {}
+
+    levels: dict[str, list[str]] = {}
+    for provider, payload in data.items():
+        models = payload.get("models") if isinstance(payload, dict) else None
+        if not isinstance(models, list):
+            continue
+        for model in models:
+            if not isinstance(model, dict) or not model.get("id"):
+                continue
+            name = f"{provider}/{model['id']}"
+            mapping = model.get("thinkingLevelMap")
+            if not isinstance(mapping, dict):
+                continue
+            efforts = [key for key, value in mapping.items() if value is not None]
+            if efforts:
+                levels[name] = efforts
+    return levels
+
+
+def update_command(data: dict, key: str, available: dict[str, list[str]], label: str) -> None:
     current = data["commands"][key]["placeholders"]["model"]
     new_list, removed, added = merge_models(current, available)
     data["commands"][key]["placeholders"]["model"] = new_list
@@ -116,7 +186,12 @@ def update_command(data: dict, key: str, available: set[str], label: str) -> Non
         changes.append(f"removed {len(removed)}")
     if added:
         changes.append(f"added {len(added)}")
-    print(f"{label}: {len(new_list)} variants ({', '.join(changes) or 'no changes'})")
+    with_effort = sum(1 for efforts in available.values() if efforts)
+    print(
+        f"{label}: {len(new_list)} entries, "
+        f"{len(available)} models, {with_effort} with effort "
+        f"({', '.join(changes) or 'catalog refreshed'})"
+    )
 
 
 def main():
