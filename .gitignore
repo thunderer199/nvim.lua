@@ -1,3 +1,6 @@
 # compiled packer file
 plugin/packer_compiled.lua
 lazy-lock.json
+
+# Python bytecode
+__pycache__/
