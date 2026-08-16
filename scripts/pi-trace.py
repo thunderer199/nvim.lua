@@ -92,6 +92,31 @@ def n(usage: dict, *keys: str) -> float:
     return 0
 
 
+def fmt_int(value: float) -> str:
+    return f"{int(round(value)):,}"
+
+
+def fmt_usd(value: float) -> str:
+    if value == 0:
+        return "$0"
+    return "$" + f"{value:.6f}".rstrip("0").rstrip(".")
+
+
+def fmt_duration(seconds: int) -> str:
+    if seconds < 60:
+        return f"{seconds}s"
+    minutes, sec = divmod(seconds, 60)
+    if minutes < 60:
+        return f"{minutes}m {sec:02d}s"
+    hours, minutes = divmod(minutes, 60)
+    return f"{hours}h {minutes:02d}m {sec:02d}s"
+
+
+def align_rows(rows: list[tuple[str, str]]) -> list[str]:
+    width = max((len(value) for _, value in rows), default=0)
+    return [f"{value.rjust(width)}  {label}" for label, value in rows]
+
+
 _STATUS = re.compile(r"^([ MADRCU?!]{1,2})\s+(.*)$")
 _INLINE_CODE = re.compile(r"`([^`]+)`")
 _BOLD = re.compile(r"\*\*([^*]+)\*\*")
@@ -262,49 +287,87 @@ class Tracer:
             self._gap("assistant")
             self._out(color_assistant("\n".join(str(t) for t in texts)))
 
-    def usage_line(self, seconds: int) -> str | None:
+    def usage_block(self, seconds: int) -> str | None:
         if not self.usages and not self.model:
             return None
-        total = {
+        tokens = {
             "input": 0.0,
             "output": 0.0,
             "reasoning": 0.0,
             "cacheRead": 0.0,
             "cacheWrite": 0.0,
-            "totalTokens": 0.0,
-            "cost": 0.0,
+            "total": 0.0,
+        }
+        cost = {
+            "input": 0.0,
+            "output": 0.0,
+            "cacheRead": 0.0,
+            "cacheWrite": 0.0,
+            "total": 0.0,
         }
         for usage in self.usages:
-            total["input"] += n(usage, "input")
-            total["output"] += n(usage, "output")
-            total["reasoning"] += n(usage, "reasoning")
-            total["cacheRead"] += n(usage, "cacheRead")
-            total["cacheWrite"] += n(usage, "cacheWrite")
-            total["totalTokens"] += n(usage, "totalTokens")
-            total["cost"] += n(usage, "cost", "total")
+            tokens["input"] += n(usage, "input")
+            tokens["output"] += n(usage, "output")
+            tokens["reasoning"] += n(usage, "reasoning")
+            tokens["cacheRead"] += n(usage, "cacheRead")
+            tokens["cacheWrite"] += n(usage, "cacheWrite")
+            tokens["total"] += n(usage, "totalTokens")
+            cost["input"] += n(usage, "cost", "input")
+            cost["output"] += n(usage, "cost", "output")
+            cost["cacheRead"] += n(usage, "cost", "cacheRead")
+            cost["cacheWrite"] += n(usage, "cost", "cacheWrite")
+            cost["total"] += n(usage, "cost", "total")
 
-        model = paint(self.model or "?", "bold", "text")
-        provider = paint(self.provider or "?", "muted")
-        dur = paint(f"{seconds}s", "yellow")
-        tokens = paint(f"{int(total['totalTokens'])} tokens", "text")
-        breakdown = paint(
-            f"({int(total['input'])}i+{int(total['output'])}o+{int(total['reasoning'])}r, "
-            f"cache {int(total['cacheRead'])}r/{int(total['cacheWrite'])}w)",
-            "muted",
-        )
-        cost = paint(f"${total['cost']}", "green", "bold")
-        extras = []
+        billed = tokens["input"] + tokens["cacheRead"]
+        hit = (tokens["cacheRead"] / billed * 100) if billed else 0.0
+
+        meta = [
+            paint(self.model or "?", "bold", "text"),
+            paint(self.provider or "?", "muted"),
+            paint(fmt_duration(seconds), "yellow"),
+        ]
         if self.tool_count:
-            extras.append(paint(f"{self.tool_count} tools", "muted"))
+            noun = "tool" if self.tool_count == 1 else "tools"
+            meta.append(paint(f"{self.tool_count} {noun}", "muted"))
         if self.error_count:
-            extras.append(paint(f"{self.error_count} failed", "red"))
-        extra = ("  " + "  ".join(extras)) if extras else ""
-        rule = paint("─" * 48, "dimmer")
-        stats = (
-            f"{model} {paint('•', 'dimmer')} {provider} {paint('•', 'dimmer')} "
-            f"{dur} {paint('•', 'dimmer')} {tokens} {breakdown} {paint('•', 'dimmer')} {cost}"
-        )
-        return f"{rule}\n{stats}{extra}"
+            noun = "failed" if self.error_count == 1 else "failed"
+            meta.append(paint(f"{self.error_count} {noun}", "red"))
+
+        token_rows = align_rows([
+            ("total", fmt_int(tokens["total"])),
+            ("input", fmt_int(tokens["input"])),
+            ("output", fmt_int(tokens["output"])),
+            ("reasoning", fmt_int(tokens["reasoning"])),
+            ("cache read", fmt_int(tokens["cacheRead"])),
+            ("cache write", fmt_int(tokens["cacheWrite"])),
+        ])
+        cost_rows = [("total", fmt_usd(cost["total"]))]
+        for label, key in (
+            ("input", "input"),
+            ("output", "output"),
+            ("cache read", "cacheRead"),
+            ("cache write", "cacheWrite"),
+        ):
+            if cost[key] >= 1e-6:
+                cost_rows.append((label, fmt_usd(cost[key])))
+        cost_lines = align_rows(cost_rows)
+
+        lines = [
+            paint("─" * 32, "dimmer"),
+            f"  {paint(' • ', 'dimmer').join(meta)}",
+            "",
+            f"  {paint('tokens', 'cyan', 'bold')}"
+            + (paint(f"   cache hit {hit:.0f}%", "accent") if billed else ""),
+        ]
+        for i, row in enumerate(token_rows):
+            style = ("bold", "text") if i == 0 else ("muted",)
+            lines.append(f"    {paint(row, *style)}")
+        lines.append("")
+        lines.append(f"  {paint('cost', 'green', 'bold')}")
+        for i, row in enumerate(cost_lines):
+            style = ("bold", "green") if i == 0 else ("muted",)
+            lines.append(f"    {paint(row, *style)}")
+        return "\n".join(lines)
 
 
 def iter_events(stream) -> Any:
@@ -340,11 +403,11 @@ def run(argv: list[str]) -> int:
             tracer.handle(event)
 
     code = proc.wait() if proc is not None else 0
-    line = tracer.usage_line(max(0, int(time.time() - started)))
-    if line:
+    block = tracer.usage_block(max(0, int(time.time() - started)))
+    if block:
         if tracer._last:
             print()
-        print(line, flush=True)
+        print(block, flush=True)
     if tracer.failed and code == 0:
         return 1
     return code
