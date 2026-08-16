@@ -70,12 +70,12 @@
     "pi-commit-fast": {
       "name": "Lightweight commit (Pi)",
       "description": "Run lightweight commit with Pi",
-      "cmd": "pi -p --model \"opencode-go/minimax-m3\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\" && f=$(ls -t \"$HOME/.pi/agent/sessions/--$(pwd | sed 's|^/||;s|/|-|g')--\"/*.jsonl | head -1) && jq -rs 'def n($x): $x // 0; ([.[] | select(.type==\"message\" and .message.role==\"assistant\")] | last) as $a | ([.[] | select(.type==\"message\") | .message.timestamp] | (max-min)/1000 | floor) as $s | ([.[] | select(.type==\"message\" and .message.role==\"assistant\") | .message.usage] | {i:(map(n(.input))|add),o:(map(n(.output))|add),r:(map(n(.reasoning))|add),cr:(map(n(.cacheRead))|add),cw:(map(n(.cacheWrite))|add),t:(map(n(.totalTokens))|add),c:(map(n(.cost.total))|add)}) as $u | \"\\($a.message.model) • \\($a.message.provider) • \\($s)s • \\($u.t) tokens (\\($u.i)i+\\($u.o)o+\\($u.r)r, cache \\($u.cr)r/\\($u.cw)w) • $\\($u.c)\"' \"$f\""
+      "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"opencode-go/minimax-m3\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\""
     },
     "pi-commit": {
       "name": "Lightweight commit (Pi, choose model)",
       "description": "Run lightweight commit with Pi and pick model via placeholder",
-      "cmd": "pi -p --model \"${model}\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\" && f=$(ls -t \"$HOME/.pi/agent/sessions/--$(pwd | sed 's|^/||;s|/|-|g')--\"/*.jsonl | head -1) && jq -rs 'def n($x): $x // 0; ([.[] | select(.type==\"message\" and .message.role==\"assistant\")] | last) as $a | ([.[] | select(.type==\"message\") | .message.timestamp] | (max-min)/1000 | floor) as $s | ([.[] | select(.type==\"message\" and .message.role==\"assistant\") | .message.usage] | {i:(map(n(.input))|add),o:(map(n(.output))|add),r:(map(n(.reasoning))|add),cr:(map(n(.cacheRead))|add),cw:(map(n(.cacheWrite))|add),t:(map(n(.totalTokens))|add),c:(map(n(.cost.total))|add)}) as $u | \"\\($a.message.model) • \\($a.message.provider) • \\($s)s • \\($u.t) tokens (\\($u.i)i+\\($u.o)o+\\($u.r)r, cache \\($u.cr)r/\\($u.cw)w) • $\\($u.c)\"' \"$f\"",
+      "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"${model}\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\"",
       "placeholders": {
         "model": [
           "opencode-go/deepseek-v4-flash:low",
