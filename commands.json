@@ -111,6 +111,7 @@
       "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"${model}\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\"",
       "placeholders": {
         "model": [
+          "opencode-go/deepseek-v4-flash:low",
           "opencode-go/deepseek-v4-flash:high",
           "opencode-go/deepseek-v4-flash:max",
           "opencode-go/deepseek-v4-pro:high",
