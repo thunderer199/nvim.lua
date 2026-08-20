@@ -294,6 +294,9 @@ return {
 
         require('mason-lspconfig').setup({
             ensure_installed = { 'ts_ls', 'jsonls', 'basedpyright', 'angularls', 'lua_ls', 'typos_lsp', 'vue_ls', 'emmet_ls' },
+            automatic_enable = {
+                exclude = { 'angularls' },
+            },
         })
 
         require('mason-tool-installer').setup({
