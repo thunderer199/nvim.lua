@@ -96,7 +96,12 @@
           "xai/grok-4.6:xhigh",
           "opencode-go/glm-5.3:low",
           "opencode-go/glm-5.3:high",
-          "opencode-go/glm-5.3:max"
+          "opencode-go/glm-5.3:max",
+          "opencode-go/muse-spark-1.2-contributor:minimal",
+          "opencode-go/muse-spark-1.2-contributor:low",
+          "opencode-go/muse-spark-1.2-contributor:medium",
+          "opencode-go/muse-spark-1.2-contributor:high",
+          "opencode-go/muse-spark-1.2-contributor:xhigh"
         ]
       }
     },
@@ -143,7 +148,12 @@
           "opencode-go/qwen3.8-max",
           "opencode-go/glm-5.3:low",
           "opencode-go/glm-5.3:high",
-          "opencode-go/glm-5.3:max"
+          "opencode-go/glm-5.3:max",
+          "opencode-go/muse-spark-1.2-contributor:minimal",
+          "opencode-go/muse-spark-1.2-contributor:low",
+          "opencode-go/muse-spark-1.2-contributor:medium",
+          "opencode-go/muse-spark-1.2-contributor:high",
+          "opencode-go/muse-spark-1.2-contributor:xhigh"
         ]
       }
     }
