@@ -18,7 +18,6 @@ REPO = Path(__file__).resolve().parent.parent
 COMMANDS_JSON = REPO / "commands.json"
 
 PI_EXCLUDE = [
-    re.compile(r"-free$"),
     re.compile(r"^opencode/"),
     re.compile(r"^openai-codex/.+-(?:fast|spark|pro)"),
 ]
