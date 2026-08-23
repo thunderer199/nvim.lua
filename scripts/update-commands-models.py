@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Update commands.json model lists from OpenCode and Pi catalogs.
+"""Update commands.json model lists from the Pi catalog.
 
 Reads live model ids and their thinking/effort variants. Keeps existing
 model order. Adds new models. Removes models no longer available.
@@ -17,16 +17,10 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 COMMANDS_JSON = REPO / "commands.json"
 
-OPENCODE_EXCLUDE = [
-    re.compile(r"-free$"),
-    re.compile(r"^opencode/"),
-    re.compile(r"^openai/.+-(?:fast|spark|pro)"),
-    re.compile(r"^xai/grok-imagine"),
-    re.compile(r"^xai/.+-fast"),
-]
-
 PI_EXCLUDE = [
     re.compile(r"-free$"),
+    re.compile(r"^opencode/"),
+    re.compile(r"^openai-codex/.+-(?:fast|spark|pro)"),
 ]
 
 EFFORT_ORDER = {
@@ -40,9 +34,6 @@ EFFORT_ORDER = {
     "max": 7,
     "thinking": 8,
 }
-
-MODEL_LINE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
-
 
 def should_exclude(name: str, patterns: list[re.Pattern[str]]) -> bool:
     return any(p.search(name) for p in patterns)
@@ -86,43 +77,6 @@ def merge_models(
         new_list.extend(expand(base, available[base]))
 
     return new_list, seen - set(available), added
-
-
-def get_opencode_models() -> dict[str, list[str]]:
-    result = subprocess.run(
-        ["opencode", "models", "--verbose"],
-        capture_output=True, text=True, timeout=60,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(result.stderr.strip() or "opencode models failed")
-    models: dict[str, list[str]] = {}
-    lines = result.stdout.splitlines()
-    i = 0
-    while i < len(lines):
-        name = lines[i].strip()
-        i += 1
-        if not MODEL_LINE.fullmatch(name):
-            continue
-        while i < len(lines) and not lines[i].strip():
-            i += 1
-        if i >= len(lines) or not lines[i].lstrip().startswith("{"):
-            data: dict = {}
-        else:
-            buf: list[str] = []
-            depth = 0
-            while i < len(lines):
-                buf.append(lines[i])
-                depth += lines[i].count("{") - lines[i].count("}")
-                i += 1
-                if depth <= 0:
-                    break
-            data = json.loads("\n".join(buf))
-        if should_exclude(name, OPENCODE_EXCLUDE):
-            continue
-        variants = data.get("variants") or {}
-        efforts = list(variants) if isinstance(variants, dict) else []
-        models[name] = efforts
-    return models
 
 
 def get_pi_models() -> dict[str, list[str]]:
@@ -198,25 +152,15 @@ def main():
     with open(COMMANDS_JSON) as f:
         data = json.load(f)
 
-    errors = 0
-    try:
-        update_command(data, "ai-commit", get_opencode_models(), "OpenCode")
-    except Exception as exc:
-        errors += 1
-        print(f"OpenCode: skipped ({exc})", file=sys.stderr)
-
     try:
         update_command(data, "pi-commit", get_pi_models(), "Pi")
     except Exception as exc:
-        errors += 1
         print(f"Pi: skipped ({exc})", file=sys.stderr)
+        sys.exit(1)
 
     with open(COMMANDS_JSON, "w") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
-
-    if errors:
-        sys.exit(1)
 
 
 if __name__ == "__main__":
