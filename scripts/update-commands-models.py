@@ -28,17 +28,9 @@ PI_EXCLUDE = [
     re.compile(r"^openai-codex/.+-(?:fast|spark|pro)"),
 ]
 
-EFFORT_ORDER = {
-    "off": 0,
-    "none": 1,
-    "minimal": 2,
-    "low": 3,
-    "medium": 4,
-    "high": 5,
-    "xhigh": 6,
-    "max": 7,
-    "thinking": 8,
-}
+EXTENDED_THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh", "max"]
+
+EFFORT_ORDER = {level: i for i, level in enumerate(EXTENDED_THINKING_LEVELS)}
 
 
 def should_exclude(name: str, patterns: list[re.Pattern[str]]) -> bool:
@@ -152,6 +144,14 @@ def get_pi_models() -> dict[str, list[str]]:
 
 
 def load_pi_thinking_levels() -> dict[str, list[str]]:
+    """Return supported thinking levels per model using Pi's own algorithm.
+
+    Replicates getSupportedThinkingLevels() from pi-ai/models.js:
+    - reasoning=false -> ["off"]
+    - reasoning=true, missing map -> ["off","minimal","low","medium","high"]
+    - a level is dropped only if its map entry is explicitly null;
+      xhigh/max are also dropped when absent from the map.
+    """
     root = Path(os.environ.get("PI_CODING_AGENT_DIR") or Path.home() / ".pi/agent")
     store = root / "models-store.json"
     if not store.is_file():
@@ -170,12 +170,20 @@ def load_pi_thinking_levels() -> dict[str, list[str]]:
             if not isinstance(model, dict) or not model.get("id"):
                 continue
             name = f"{provider}/{model['id']}"
-            mapping = model.get("thinkingLevelMap")
-            if not isinstance(mapping, dict):
+            if not model.get("reasoning"):
+                levels[name] = ["off"]
                 continue
-            efforts = [key for key, value in mapping.items() if value is not None]
-            if efforts:
-                levels[name] = efforts
+            mapping = model.get("thinkingLevelMap") or {}
+            supported: list[str] = []
+            for level in EXTENDED_THINKING_LEVELS:
+                if level in mapping:
+                    if mapping[level] is None:
+                        continue  # explicitly disabled
+                else:
+                    if level in ("xhigh", "max"):
+                        continue  # absent -> unsupported
+                supported.append(level)
+            levels[name] = supported
     return levels
 
 
