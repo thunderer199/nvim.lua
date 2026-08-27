@@ -109,13 +109,15 @@ def fetch_go_catalog() -> dict[str, dict]:
 
 
 def go_model_lists(
-    catalog: dict[str, dict], efforts: dict[str, list[str]]
+    catalog: dict[str, dict],
+    efforts: dict[str, list[str]],
+    pi_models: dict[str, list[str]],
 ) -> tuple[list[str], dict[str, list[str]]]:
     """Return $60-bucket entries sorted by requests/5h desc, and their efforts."""
     bucket_models = [
         (name, info["per5h"])
         for name, info in catalog.items()
-        if info["bucket"] == GO_BUCKET
+        if info["bucket"] == GO_BUCKET and name in pi_models
     ]
     bucket_models.sort(key=lambda item: (-item[1], item[0]))
     entries: list[str] = []
@@ -259,7 +261,7 @@ def main():
     try:
         catalog = fetch_go_catalog()
         efforts = load_pi_thinking_levels()
-        go_entries, go_available = go_model_lists(catalog, efforts)
+        go_entries, go_available = go_model_lists(catalog, efforts, pi_models)
         print(
             f"Go: {len(catalog)} models in catalog, "
             f"{len(go_available)} in {GO_BUCKET} bucket"
