@@ -189,6 +189,7 @@ class Tracer:
         self.tool_count = 0
         self.error_count = 0
         self._partial: dict[str, str] = {}
+        self._details: dict[str, str] = {}
         self._buffers: dict[str, LineBuffer] = {}
         self._started: dict[str, float] = {}
         self._last: str | None = None
@@ -219,6 +220,7 @@ class Tracer:
         name = str(event.get("toolName") or "tool")
         detail = tool_detail(name, event.get("args"))
         self._partial[call_id] = ""
+        self._details[call_id] = detail
         self._started[call_id] = time.time()
         self.tool_count += 1
         self._gap("tool")
@@ -265,6 +267,22 @@ class Tracer:
         if event.get("isError"):
             self.error_count += 1
             self._out(f"{paint('✗', 'red', 'bold')} {paint(name + ' failed', 'red')}{slow}")
+            detail = self._details.get(call_id, "")
+            if detail:
+                shown = detail if len(detail) <= 200 else detail[:200] + paint("…", "dimmer")
+                first, _, rest = shown.partition("\n")
+                self._out(f"  {paint('command:', 'red')} {paint(first, 'text')}")
+                for line in rest.splitlines():
+                    self._out(f"    {paint(line, 'text')}")
+            error_text = content_text(event.get("result")).strip()
+            if error_text:
+                lines = error_text.splitlines()
+                keep = lines[:6]
+                if len(lines) > 6:
+                    keep.append(f"… (+{len(lines) - 6} more lines)")
+                self._out(f"  {paint('error:', 'red', 'bold')}")
+                for line in keep:
+                    self._out(f"    {paint(line, 'red')}")
 
     def _message_end(self, message: dict) -> None:
         if message.get("role") != "assistant":
