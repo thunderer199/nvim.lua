@@ -3,7 +3,7 @@
     "pi-commit-fast": {
       "name": "Lightweight commit (Pi)",
       "description": "Run lightweight commit with Pi",
-      "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"opencode-go/minimax-m3\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\""
+      "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"opencode-go/deepseek-v4-flash:high\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\""
     },
     "pi-commit": {
       "name": "Lightweight commit (Pi, choose model)",
