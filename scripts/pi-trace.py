@@ -522,25 +522,32 @@ def run(argv: list[str]) -> int:
     tracer = Tracer()
     perf = PerfTracer(enabled=bool(os.environ.get("PI_TRACE_PERF")))
     started = time.time()
+
+    # Hint first, before anything can fail; stderr keeps it out of piped
+    # output. The gap before the first event (or a missing `pi`) is exactly
+    # what this makes visible.
+    model = argv[argv.index("--model") + 1] if "--model" in argv else ""
+    hint = StartupHint(model)
+
     proc = None
     if argv:
-        proc = subprocess.Popen(
-            ["pi", "--mode", "json", *argv],
-            stdout=subprocess.PIPE,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-        )
+        try:
+            proc = subprocess.Popen(
+                ["pi", "--mode", "json", *argv],
+                stdout=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except FileNotFoundError:
+            hint.finish()
+            print(paint("error: `pi` not found on PATH", "red", "bold"), file=sys.stderr)
+            print("when run from nvim, :! uses a limited PATH — check $PATH", file=sys.stderr)
+            return 127
         assert proc.stdout is not None
         stream = proc.stdout
     else:
         stream = sys.stdin
-
-    # Hint whenever we own the process; stderr keeps it out of piped output.
-    hint: StartupHint | None = None
-    if proc is not None:
-        model = argv[argv.index("--model") + 1] if "--model" in argv else ""
-        hint = StartupHint(model)
 
     try:
         for event in iter_events(stream):
