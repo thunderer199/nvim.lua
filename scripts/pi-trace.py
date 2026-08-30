@@ -11,6 +11,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 import time
 from typing import Any
 
@@ -467,6 +468,45 @@ class PerfTracer:
         return lines
 
 
+class StartupHint:
+    """'Waiting for pi' line shown until the first event arrives.
+
+    The gap before pi emits anything (startup, auth, context load, first
+    token) looks like a hang; this makes the wait visible. Call finish()
+    exactly once; safe if no events ever arrive.
+
+    Lives on stderr so it never pollutes the transcript piped into stdout.
+    On a TTY stderr it ticks in place; otherwise it is a single line.
+    """
+
+    def __init__(self, suffix: str = "") -> None:
+        self._done = threading.Event()
+        self._t0 = time.monotonic()
+        self._suffix = suffix
+        self._tty = sys.stderr.isatty()
+        self._paint(0)
+        self._thread = threading.Thread(target=self._tick, daemon=True)
+        self._thread.start()
+
+    def _text(self, secs: int) -> str:
+        return f"waiting for pi\u2026 {secs}s" + (f" \u00b7 {self._suffix}" if self._suffix else "")
+
+    def _paint(self, secs: int) -> None:
+        text = paint(self._text(secs), "muted") if self._tty else self._text(secs)
+        sys.stderr.write(("\r\033[K" if self._tty else "") + text + ("\n" if not self._tty else ""))
+        sys.stderr.flush()
+
+    def _tick(self) -> None:
+        while not self._done.wait(1.0):
+            self._paint(int(time.monotonic() - self._t0))
+
+    def finish(self) -> None:
+        self._done.set()
+        if self._tty:
+            sys.stderr.write("\r\033[K")
+            sys.stderr.flush()
+
+
 def iter_events(stream) -> Any:
     for raw in stream:
         line = raw.strip()
@@ -496,16 +536,29 @@ def run(argv: list[str]) -> int:
     else:
         stream = sys.stdin
 
-    for event in iter_events(stream):
-        if isinstance(event, dict):
-            perf.record(str(event.get("type") or "?"), label=str(event.get("toolName") or ""))
-            tracer.handle(event)
+    # Hint whenever we own the process; stderr keeps it out of piped output.
+    hint: StartupHint | None = None
+    if proc is not None:
+        model = argv[argv.index("--model") + 1] if "--model" in argv else ""
+        hint = StartupHint(model)
+
+    try:
+        for event in iter_events(stream):
+            if isinstance(event, dict):
+                if hint:
+                    hint.finish()
+                    hint = None
+                perf.record(str(event.get("type") or "?"), label=str(event.get("toolName") or ""))
+                tracer.handle(event)
+    finally:
+        if hint:
+            hint.finish()
 
     code = proc.wait() if proc is not None else 0
     perf.finish()
     tail = tracer.usage_block(max(0, int(time.time() - started))) or ""
     if perf.type_counts:
-        tail += ("\n" if tail else "") + "\n".join(perf.summary_lines())
+        tail += ("\n\n" if tail else "") + "\n".join(perf.summary_lines())
     if tail:
         if tracer._last:
             print()
