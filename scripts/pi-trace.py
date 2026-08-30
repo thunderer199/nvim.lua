@@ -388,6 +388,85 @@ class Tracer:
         return "\n".join(lines)
 
 
+HANDLED_EVENT_KINDS = {
+    "tool_execution_start",
+    "tool_execution_update",
+    "tool_execution_end",
+    "message_end",
+}
+
+
+class PerfTracer:
+    """Times the JSONL event stream to reveal where wall-clock time goes.
+
+    Intervals between events are attributed to tool exec while at least one
+    tool is running, otherwise to model/loop (pi itself + streaming). Gaps
+    outside tool exec that exceed STALL_THRESHOLD are kept as stalls.
+    """
+
+    STALL_THRESHOLD = 0.5
+
+    def __init__(self, enabled: bool = False) -> None:
+        self.enabled = enabled
+        self._t0 = time.monotonic()
+        self._prev: float | None = None
+        self._prev_kind: str | None = None
+        self._open_tools = 0
+        self.tool_secs = 0.0
+        self.model_secs = 0.0
+        self.total_secs = 0.0
+        self.stalls: list[tuple[float, str]] = []
+        self.type_counts: dict[str, int] = {}
+
+    def record(self, kind: str, label: str = "") -> None:
+        now = time.monotonic() - self._t0
+        delta = now - self._prev if self._prev is not None else 0.0
+        self.type_counts[kind] = self.type_counts.get(kind, 0) + 1
+        if self._prev is not None:
+            if self._open_tools > 0:
+                self.tool_secs += delta
+            else:
+                self.model_secs += delta
+                if delta >= self.STALL_THRESHOLD and self._prev_kind:
+                    self.stalls.append((delta, f"{self._prev_kind} \u2192 {kind}"))
+        if kind == "tool_execution_start":
+            self._open_tools += 1
+        elif kind == "tool_execution_end":
+            self._open_tools = max(0, self._open_tools - 1)
+        if self.enabled:
+            suffix = f"  {label}" if label else ""
+            unhandled = "" if kind in HANDLED_EVENT_KINDS else "  (unhandled)"
+            sys.stderr.write(f"[+{now:7.2f}s \u0394{delta:5.2f}s] {kind}{suffix}{unhandled}\n")
+            sys.stderr.flush()
+        self._prev = now
+        self._prev_kind = kind
+
+    def finish(self) -> None:
+        self.total_secs = time.monotonic() - self._t0
+
+    def summary_lines(self) -> list[str]:
+        rows = [
+            ("wall", f"{self.total_secs:.1f}s"),
+            ("model/loop", f"{self.model_secs:.1f}s"),
+            ("tool exec", f"{self.tool_secs:.1f}s"),
+        ]
+        lines = [f"  {paint('timing', 'cyan', 'bold')}"]
+        for i, row in enumerate(align_rows(rows)):
+            style = ("bold", "text") if i == 0 else ("muted",)
+            lines.append(f"    {paint(row, *style)}")
+        if self.stalls:
+            lines.append(f"  {paint('top stalls', 'green', 'bold')}")
+            for gap, boundary in sorted(self.stalls, key=lambda s: -s[0])[:3]:
+                lines.append(f"    {paint(f'{gap:.1f}s', 'yellow')}  {paint(boundary, 'dimmer')}")
+        if self.enabled and self.type_counts:
+            lines.append(f"  {paint('events', 'purple', 'bold')}")
+            ordered = sorted(self.type_counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            for kind, count in ordered:
+                mark = "" if kind in HANDLED_EVENT_KINDS else paint("  unhandled", "red")
+                lines.append(f"    {paint(f'{count:>4}x', 'muted')}  {paint(kind, 'text')}{mark}")
+        return lines
+
+
 def iter_events(stream) -> Any:
     for raw in stream:
         line = raw.strip()
@@ -401,6 +480,7 @@ def iter_events(stream) -> Any:
 
 def run(argv: list[str]) -> int:
     tracer = Tracer()
+    perf = PerfTracer(enabled=bool(os.environ.get("PI_TRACE_PERF")))
     started = time.time()
     proc = None
     if argv:
@@ -418,14 +498,18 @@ def run(argv: list[str]) -> int:
 
     for event in iter_events(stream):
         if isinstance(event, dict):
+            perf.record(str(event.get("type") or "?"), label=str(event.get("toolName") or ""))
             tracer.handle(event)
 
     code = proc.wait() if proc is not None else 0
-    block = tracer.usage_block(max(0, int(time.time() - started)))
-    if block:
+    perf.finish()
+    tail = tracer.usage_block(max(0, int(time.time() - started))) or ""
+    if perf.type_counts:
+        tail += ("\n" if tail else "") + "\n".join(perf.summary_lines())
+    if tail:
         if tracer._last:
             print()
-        print(block, flush=True)
+        print(tail, flush=True)
     if tracer.failed and code == 0:
         return 1
     return code
