@@ -182,7 +182,9 @@ class LineBuffer:
 
 
 class Tracer:
-    def __init__(self) -> None:
+    def __init__(self, on_output=None) -> None:
+        self._on_output = on_output
+        self._announced = False
         self.usages: list[dict] = []
         self.model: str | None = None
         self.provider: str | None = None
@@ -200,7 +202,15 @@ class Tracer:
             sys.stdout.write("\n")
         self._last = kind
 
+    def _announce(self) -> None:
+        """Clear the startup hint just before the first transcript output."""
+        if not self._announced:
+            self._announced = True
+            if self._on_output:
+                self._on_output()
+
     def _out(self, text: str = "", end: str = "\n") -> None:
+        self._announce()
         sys.stdout.write(text)
         sys.stdout.write(end)
         sys.stdout.flush()
@@ -295,6 +305,7 @@ class Tracer:
         self.provider = message.get("provider") or self.provider
         if message.get("stopReason") in {"error", "aborted"}:
             self.failed = True
+            self._announce()
             err = message.get("errorMessage") or message.get("stopReason")
             print(paint(str(err), "red"), file=sys.stderr)
         texts = [
@@ -417,12 +428,15 @@ class PerfTracer:
         self.model_secs = 0.0
         self.total_secs = 0.0
         self.stalls: list[tuple[float, str]] = []
+        self.first_event: float | None = None
         self.type_counts: dict[str, int] = {}
 
     def record(self, kind: str, label: str = "") -> None:
         now = time.monotonic() - self._t0
         delta = now - self._prev if self._prev is not None else 0.0
         self.type_counts[kind] = self.type_counts.get(kind, 0) + 1
+        if self.first_event is None:
+            self.first_event = now
         if self._prev is not None:
             if self._open_tools > 0:
                 self.tool_secs += delta
@@ -448,6 +462,7 @@ class PerfTracer:
     def summary_lines(self) -> list[str]:
         rows = [
             ("wall", f"{self.total_secs:.1f}s"),
+            ("startup", f"{self.first_event:.1f}s" if self.first_event is not None else "-"),
             ("model/loop", f"{self.model_secs:.1f}s"),
             ("tool exec", f"{self.tool_secs:.1f}s"),
         ]
@@ -483,15 +498,26 @@ class StartupHint:
         self._done = threading.Event()
         self._t0 = time.monotonic()
         self._suffix = suffix
+        self._label = "starting pi"
         self._tty = sys.stderr.isatty()
+        self._painted_label: str | None = None
         self._paint(0)
         self._thread = threading.Thread(target=self._tick, daemon=True)
         self._thread.start()
 
+    def phase(self, label: str) -> None:
+        self._label = label
+        self._paint(int(time.monotonic() - self._t0))
+
     def _text(self, secs: int) -> str:
-        return f"waiting for pi\u2026 {secs}s" + (f" \u00b7 {self._suffix}" if self._suffix else "")
+        return f"{self._label}\u2026 {secs}s" + (f" \u00b7 {self._suffix}" if self._suffix else "")
 
     def _paint(self, secs: int) -> None:
+        if not self._tty:
+            # Non-TTY: only line per phase, no per-second spam.
+            if self._painted_label == self._label:
+                return
+            self._painted_label = self._label
         text = paint(self._text(secs), "muted") if self._tty else self._text(secs)
         sys.stderr.write(("\r\033[K" if self._tty else "") + text + ("\n" if not self._tty else ""))
         sys.stderr.flush()
@@ -519,7 +545,6 @@ def iter_events(stream) -> Any:
 
 
 def run(argv: list[str]) -> int:
-    tracer = Tracer()
     perf = PerfTracer(enabled=bool(os.environ.get("PI_TRACE_PERF")))
     started = time.time()
 
@@ -527,8 +552,15 @@ def run(argv: list[str]) -> int:
     # output. The gap before the first event (or a missing `pi`) is exactly
     # what this makes visible.
     model = argv[argv.index("--model") + 1] if "--model" in argv else ""
-    hint = StartupHint(model)
+    hint: StartupHint | None = StartupHint(model)
 
+    def clear_hint() -> None:
+        nonlocal hint
+        if hint:
+            hint.finish()
+            hint = None
+
+    tracer = Tracer(on_output=clear_hint)
     proc = None
     if argv:
         try:
@@ -552,14 +584,14 @@ def run(argv: list[str]) -> int:
     try:
         for event in iter_events(stream):
             if isinstance(event, dict):
-                if hint:
-                    hint.finish()
-                    hint = None
+                # Events flow but nothing is on screen yet: model is loading
+                # context or thinking. Relabel instead of erasing the hint.
+                if hint and hint._label == "starting pi":
+                    hint.phase("thinking")
                 perf.record(str(event.get("type") or "?"), label=str(event.get("toolName") or ""))
                 tracer.handle(event)
     finally:
-        if hint:
-            hint.finish()
+        clear_hint()
 
     code = proc.wait() if proc is not None else 0
     perf.finish()
