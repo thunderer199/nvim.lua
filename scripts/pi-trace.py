@@ -196,6 +196,7 @@ class Tracer:
         self._buffers: dict[str, LineBuffer] = {}
         self._started: dict[str, float] = {}
         self._last: str | None = None
+        self.last_text: str = ""
 
     def _gap(self, kind: str) -> None:
         if self._last:
@@ -210,6 +211,8 @@ class Tracer:
                 self._on_output()
 
     def _out(self, text: str = "", end: str = "\n") -> None:
+        if QUIET:
+            return
         self._announce()
         sys.stdout.write(text)
         sys.stdout.write(end)
@@ -314,8 +317,9 @@ class Tracer:
             if isinstance(block, dict) and block.get("type") == "text" and block.get("text")
         ]
         if texts:
+            self.last_text = "\n".join(str(t) for t in texts)
             self._gap("assistant")
-            self._out(color_assistant("\n".join(str(t) for t in texts)))
+            self._out(color_assistant(self.last_text))
 
     def usage_block(self, seconds: int) -> str | None:
         if not self.usages and not self.model:
@@ -533,6 +537,9 @@ class StartupHint:
             sys.stderr.flush()
 
 
+QUIET = False
+
+
 def iter_events(stream) -> Any:
     for raw in stream:
         line = raw.strip()
@@ -545,6 +552,12 @@ def iter_events(stream) -> Any:
 
 
 def run(argv: list[str]) -> int:
+    global QUIET
+    # --quiet: print only the final assistant message to stdout (usage/timing
+    # go to stderr). Used for piped one-shot runs, e.g. commit messages.
+    if "--quiet" in argv:
+        argv = [a for a in argv if a != "--quiet"]
+        QUIET = True
     perf = PerfTracer(enabled=bool(os.environ.get("PI_TRACE_PERF")))
     started = time.time()
 
@@ -601,7 +614,14 @@ def run(argv: list[str]) -> int:
     if tail:
         if tracer._last:
             print()
-        print(tail, flush=True)
+        if QUIET:
+            print(tail, file=sys.stderr)
+        else:
+            print(tail, flush=True)
+    if QUIET:
+        if tracer.last_text:
+            print(tracer.last_text, flush=True)
+        return 1 if tracer.failed else 0
     if tracer.failed and code == 0:
         return 1
     return code
