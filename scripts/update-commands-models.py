@@ -52,25 +52,20 @@ def expand(base: str, efforts: list[str]) -> list[str]:
     return [f"{base}:{effort}" for effort in sort_efforts(efforts)]
 
 
+def normalize_model_name(name: str) -> str:
+    """Align Pi display names with Go docs names (punctuation / '(New)')."""
+    name = re.sub(r"\([^)]*\)", "", name).lower()
+    return re.sub(r"[^a-z0-9]+", "", name)
+
+
 def fetch_go_catalog() -> dict[str, int]:
-    """Scrape the Go docs for requests per 5h per model."""
+    """Scrape estimated requests per 5h from the Go docs, keyed by display name."""
     req = urllib.request.Request(
         GO_DOCS_URL, headers={"User-Agent": "Mozilla/5.0 (update-commands-models)"}
     )
     with urllib.request.urlopen(req, timeout=30) as resp:
         html = resp.read().decode()
 
-    # display name -> model id (endpoints table)
-    ids: dict[str, str] = {}
-    for row in re.findall(r"<tr>(.*?)</tr>", html, flags=re.S):
-        cells = [
-            re.sub(r"<[^>]+>", "", c).strip()
-            for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, flags=re.S)
-        ]
-        if len(cells) >= 4 and "opencode.ai/zen/go" in cells[2]:
-            ids[cells[0]] = cells[1]
-
-    # display name -> requests per 5h (usage limits table)
     per5h: dict[str, int] = {}
     for row in re.findall(r"<tr>(.*?)</tr>", html, flags=re.S):
         cells = [
@@ -79,25 +74,34 @@ def fetch_go_catalog() -> dict[str, int]:
         ]
         if len(cells) == 4 and re.fullmatch(r"[\d,]+", cells[1] or ""):
             per5h[cells[0]] = int(cells[1].replace(",", ""))
-
-    return {
-        f"{GO_PROVIDER}/{model_id}": per5h[name]
-        for name, model_id in ids.items()
-        if name in per5h
-    }
+    return per5h
 
 
 def go_model_lists(
     catalog: dict[str, int],
     efforts: dict[str, list[str]],
     pi_models: dict[str, list[str]],
+    pi_names: dict[str, str],
 ) -> tuple[list[str], dict[str, list[str]]]:
-    """Return entries above the requests/5h threshold, sorted desc."""
-    qualifying = [
-        (name, req5h)
-        for name, req5h in catalog.items()
-        if req5h >= GO_REQ5H_THRESHOLD and name in pi_models
-    ]
+    """Return Pi Go entries above the requests/5h threshold, sorted desc.
+
+    Quota rows on the website are keyed by display name, not API id
+    (`deepseek-v4.1-flash` vs Pi's `deepseek-flash`).
+    """
+    quota_by_name = {
+        normalize_model_name(name): req5h for name, req5h in catalog.items()
+    }
+    qualifying: list[tuple[str, int]] = []
+    for key in pi_models:
+        if not key.startswith(f"{GO_PROVIDER}/"):
+            continue
+        display = pi_names.get(key)
+        if not display:
+            continue
+        req5h = quota_by_name.get(normalize_model_name(display))
+        if req5h is None or req5h < GO_REQ5H_THRESHOLD:
+            continue
+        qualifying.append((key, req5h))
     qualifying.sort(key=lambda item: (-item[1], item[0]))
     entries: list[str] = []
     for name, _ in qualifying:
@@ -130,6 +134,36 @@ def get_pi_models() -> dict[str, list[str]]:
     return {name: levels.get(name, []) for name in names}
 
 
+def load_models_store() -> dict:
+    root = Path(os.environ.get("PI_CODING_AGENT_DIR") or Path.home() / ".pi/agent")
+    store = root / "models-store.json"
+    if not store.is_file():
+        return {}
+    try:
+        data = json.loads(store.read_text())
+    except json.JSONDecodeError:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def iter_store_models(data: dict):
+    for provider, payload in data.items():
+        models = payload.get("models") if isinstance(payload, dict) else None
+        if not isinstance(models, list):
+            continue
+        for model in models:
+            if isinstance(model, dict) and model.get("id"):
+                yield f"{provider}/{model['id']}", model
+
+
+def load_pi_display_names() -> dict[str, str]:
+    """Return provider/id -> display name from Pi's models store."""
+    names: dict[str, str] = {}
+    for key, model in iter_store_models(load_models_store()):
+        names[key] = str(model.get("name") or model["id"])
+    return names
+
+
 def load_pi_thinking_levels() -> dict[str, list[str]]:
     """Return supported thinking levels per model using Pi's own algorithm.
 
@@ -139,38 +173,22 @@ def load_pi_thinking_levels() -> dict[str, list[str]]:
     - a level is dropped only if its map entry is explicitly null;
       xhigh/max are also dropped when absent from the map.
     """
-    root = Path(os.environ.get("PI_CODING_AGENT_DIR") or Path.home() / ".pi/agent")
-    store = root / "models-store.json"
-    if not store.is_file():
-        return {}
-    try:
-        data = json.loads(store.read_text())
-    except json.JSONDecodeError:
-        return {}
-
     levels: dict[str, list[str]] = {}
-    for provider, payload in data.items():
-        models = payload.get("models") if isinstance(payload, dict) else None
-        if not isinstance(models, list):
+    for name, model in iter_store_models(load_models_store()):
+        if not model.get("reasoning"):
+            levels[name] = ["off"]
             continue
-        for model in models:
-            if not isinstance(model, dict) or not model.get("id"):
-                continue
-            name = f"{provider}/{model['id']}"
-            if not model.get("reasoning"):
-                levels[name] = ["off"]
-                continue
-            mapping = model.get("thinkingLevelMap") or {}
-            supported: list[str] = []
-            for level in EXTENDED_THINKING_LEVELS:
-                if level in mapping:
-                    if mapping[level] is None:
-                        continue
-                else:
-                    if level in ("xhigh", "max"):
-                        continue
-                supported.append(level)
-            levels[name] = supported
+        mapping = model.get("thinkingLevelMap") or {}
+        supported: list[str] = []
+        for level in EXTENDED_THINKING_LEVELS:
+            if level in mapping:
+                if mapping[level] is None:
+                    continue
+            else:
+                if level in ("xhigh", "max"):
+                    continue
+            supported.append(level)
+        levels[name] = supported
     return levels
 
 
@@ -256,7 +274,9 @@ def main():
     try:
         catalog = fetch_go_catalog()
         efforts = load_pi_thinking_levels()
-        go_entries, go_available = go_model_lists(catalog, efforts, pi_models)
+        go_entries, go_available = go_model_lists(
+            catalog, efforts, pi_models, load_pi_display_names()
+        )
         print(
             f"Go: {len(catalog)} models in catalog, "
             f"{len(go_available)} above {GO_REQ5H_THRESHOLD} req/5h"
