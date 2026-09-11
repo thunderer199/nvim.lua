@@ -11,118 +11,414 @@
       "cmd": "python3 \"$HOME/.config/nvim/scripts/pi-trace.py\" --model \"${model}\" \"/skill:lightweight-commit Please create a lightweight commit for the currently staged changes\"",
       "placeholders": {
         "model": [
-          "opencode-go/muse-spark-1.2-contributor:minimal",
-          "opencode-go/muse-spark-1.2-contributor:low",
-          "opencode-go/muse-spark-1.2-contributor:medium",
-          "opencode-go/muse-spark-1.2-contributor:high",
-          "opencode-go/muse-spark-1.2-contributor:xhigh",
-          "opencode-go/muse-spark-1.3-contributor:minimal",
-          "opencode-go/muse-spark-1.3-contributor:low",
-          "opencode-go/muse-spark-1.3-contributor:medium",
-          "opencode-go/muse-spark-1.3-contributor:high",
-          "opencode-go/muse-spark-1.3-contributor:xhigh",
-          "opencode-go/mimo-v2.5:off",
-          "opencode-go/mimo-v2.5:minimal",
-          "opencode-go/mimo-v2.5:low",
-          "opencode-go/mimo-v2.5:medium",
-          "opencode-go/mimo-v2.5:high",
-          "opencode-go/deepseek-v4-flash:off",
-          "opencode-go/deepseek-v4-flash:low",
-          "opencode-go/deepseek-v4-flash:high",
-          "opencode-go/deepseek-v4-flash:max",
-          "opencode-go/longcat-2.0:off",
-          "opencode-go/longcat-2.0:minimal",
-          "opencode-go/longcat-2.0:low",
-          "opencode-go/longcat-2.0:medium",
-          "opencode-go/longcat-2.0:high",
-          "opencode-go/deepseek-flash:low",
-          "opencode-go/deepseek-flash:high",
-          "opencode-go/deepseek-flash:max",
-          "opencode-go/deepseek-v4-flash-vision-exp:off",
-          "opencode-go/deepseek-v4-flash-vision-exp:low",
-          "opencode-go/deepseek-v4-flash-vision-exp:high",
-          "opencode-go/deepseek-v4-flash-vision-exp:max",
-          "opencode-go/glm-5.3-flash:low",
-          "opencode-go/glm-5.3-flash:high",
-          "opencode-go/glm-5.3-flash:max",
-          "opencode-go/qwen3.8-flash:off",
-          "opencode-go/qwen3.8-flash:minimal",
-          "opencode-go/qwen3.8-flash:low",
-          "opencode-go/qwen3.8-flash:medium",
-          "opencode-go/qwen3.8-flash:high",
-          "opencode-go/hy3:off",
-          "opencode-go/hy3:low",
-          "opencode-go/hy3:high",
-          "opencode-go/qwen3.7-plus:off",
-          "opencode-go/qwen3.7-plus:minimal",
-          "opencode-go/qwen3.7-plus:low",
-          "opencode-go/qwen3.7-plus:medium",
-          "opencode-go/qwen3.7-plus:high",
-          "opencode-go/minimax-m2.7:off",
-          "opencode-go/minimax-m2.7:minimal",
-          "opencode-go/minimax-m2.7:low",
-          "opencode-go/minimax-m2.7:medium",
-          "opencode-go/minimax-m2.7:high",
-          "opencode-go/qwen3.6-plus:off",
-          "opencode-go/qwen3.6-plus:minimal",
-          "opencode-go/qwen3.6-plus:low",
-          "opencode-go/qwen3.6-plus:medium",
-          "opencode-go/qwen3.6-plus:high",
-          "opencode-go/mimo-v2.5-pro:off",
-          "opencode-go/mimo-v2.5-pro:minimal",
-          "opencode-go/mimo-v2.5-pro:low",
-          "opencode-go/mimo-v2.5-pro:medium",
-          "opencode-go/mimo-v2.5-pro:high",
-          "opencode-go/minimax-m3:off",
-          "opencode-go/minimax-m3:minimal",
-          "opencode-go/minimax-m3:low",
-          "opencode-go/minimax-m3:medium",
-          "opencode-go/minimax-m3:high",
-          "openai-codex/gpt-5.4:off",
-          "openai-codex/gpt-5.4:minimal",
-          "openai-codex/gpt-5.4:low",
-          "openai-codex/gpt-5.4:medium",
-          "openai-codex/gpt-5.4:high",
-          "openai-codex/gpt-5.4:xhigh",
-          "openai-codex/gpt-5.4-mini:off",
-          "openai-codex/gpt-5.4-mini:minimal",
-          "openai-codex/gpt-5.4-mini:low",
-          "openai-codex/gpt-5.4-mini:medium",
-          "openai-codex/gpt-5.4-mini:high",
-          "openai-codex/gpt-5.4-mini:xhigh",
-          "openai-codex/gpt-5.5:off",
-          "openai-codex/gpt-5.5:minimal",
-          "openai-codex/gpt-5.5:low",
-          "openai-codex/gpt-5.5:medium",
-          "openai-codex/gpt-5.5:high",
-          "openai-codex/gpt-5.5:xhigh",
-          "openai-codex/gpt-5.6-luna:off",
-          "openai-codex/gpt-5.6-luna:minimal",
-          "openai-codex/gpt-5.6-luna:low",
-          "openai-codex/gpt-5.6-luna:medium",
-          "openai-codex/gpt-5.6-luna:high",
-          "openai-codex/gpt-5.6-luna:xhigh",
-          "openai-codex/gpt-5.6-luna:max",
-          "openai-codex/gpt-5.6-sol:off",
-          "openai-codex/gpt-5.6-sol:minimal",
-          "openai-codex/gpt-5.6-sol:low",
-          "openai-codex/gpt-5.6-sol:medium",
-          "openai-codex/gpt-5.6-sol:high",
-          "openai-codex/gpt-5.6-sol:xhigh",
-          "openai-codex/gpt-5.6-sol:max",
-          "openai-codex/gpt-5.6-terra:off",
-          "openai-codex/gpt-5.6-terra:minimal",
-          "openai-codex/gpt-5.6-terra:low",
-          "openai-codex/gpt-5.6-terra:medium",
-          "openai-codex/gpt-5.6-terra:high",
-          "openai-codex/gpt-5.6-terra:xhigh",
-          "openai-codex/gpt-5.6-terra:max",
-          "openai-codex/gpt-6-astra:minimal",
-          "openai-codex/gpt-6-astra:low",
-          "openai-codex/gpt-6-astra:medium",
-          "openai-codex/gpt-6-astra:high",
-          "openai-codex/gpt-6-astra:xhigh",
-          "openai-codex/gpt-6-astra:max"
+          {
+            "label": "Muse Spark 1.2 Contributor minimal",
+            "value": "opencode-go/muse-spark-1.2-contributor:minimal"
+          },
+          {
+            "label": "Muse Spark 1.2 Contributor low",
+            "value": "opencode-go/muse-spark-1.2-contributor:low"
+          },
+          {
+            "label": "Muse Spark 1.2 Contributor medium",
+            "value": "opencode-go/muse-spark-1.2-contributor:medium"
+          },
+          {
+            "label": "Muse Spark 1.2 Contributor high",
+            "value": "opencode-go/muse-spark-1.2-contributor:high"
+          },
+          {
+            "label": "Muse Spark 1.2 Contributor xhigh",
+            "value": "opencode-go/muse-spark-1.2-contributor:xhigh"
+          },
+          {
+            "label": "Muse Spark 1.3 Contributor minimal",
+            "value": "opencode-go/muse-spark-1.3-contributor:minimal"
+          },
+          {
+            "label": "Muse Spark 1.3 Contributor low",
+            "value": "opencode-go/muse-spark-1.3-contributor:low"
+          },
+          {
+            "label": "Muse Spark 1.3 Contributor medium",
+            "value": "opencode-go/muse-spark-1.3-contributor:medium"
+          },
+          {
+            "label": "Muse Spark 1.3 Contributor high",
+            "value": "opencode-go/muse-spark-1.3-contributor:high"
+          },
+          {
+            "label": "Muse Spark 1.3 Contributor xhigh",
+            "value": "opencode-go/muse-spark-1.3-contributor:xhigh"
+          },
+          {
+            "label": "MiMo V2.5 off",
+            "value": "opencode-go/mimo-v2.5:off"
+          },
+          {
+            "label": "MiMo V2.5 minimal",
+            "value": "opencode-go/mimo-v2.5:minimal"
+          },
+          {
+            "label": "MiMo V2.5 low",
+            "value": "opencode-go/mimo-v2.5:low"
+          },
+          {
+            "label": "MiMo V2.5 medium",
+            "value": "opencode-go/mimo-v2.5:medium"
+          },
+          {
+            "label": "MiMo V2.5 high",
+            "value": "opencode-go/mimo-v2.5:high"
+          },
+          {
+            "label": "DeepSeek V4 Flash off",
+            "value": "opencode-go/deepseek-v4-flash:off"
+          },
+          {
+            "label": "DeepSeek V4 Flash low",
+            "value": "opencode-go/deepseek-v4-flash:low"
+          },
+          {
+            "label": "DeepSeek V4 Flash high",
+            "value": "opencode-go/deepseek-v4-flash:high"
+          },
+          {
+            "label": "DeepSeek V4 Flash max",
+            "value": "opencode-go/deepseek-v4-flash:max"
+          },
+          {
+            "label": "LongCat-2.0 off",
+            "value": "opencode-go/longcat-2.0:off"
+          },
+          {
+            "label": "LongCat-2.0 minimal",
+            "value": "opencode-go/longcat-2.0:minimal"
+          },
+          {
+            "label": "LongCat-2.0 low",
+            "value": "opencode-go/longcat-2.0:low"
+          },
+          {
+            "label": "LongCat-2.0 medium",
+            "value": "opencode-go/longcat-2.0:medium"
+          },
+          {
+            "label": "LongCat-2.0 high",
+            "value": "opencode-go/longcat-2.0:high"
+          },
+          {
+            "label": "DeepSeek V4.1 Flash low",
+            "value": "opencode-go/deepseek-flash:low"
+          },
+          {
+            "label": "DeepSeek V4.1 Flash high",
+            "value": "opencode-go/deepseek-flash:high"
+          },
+          {
+            "label": "DeepSeek V4.1 Flash max",
+            "value": "opencode-go/deepseek-flash:max"
+          },
+          {
+            "label": "DeepSeek V4 Flash Vision Exp off",
+            "value": "opencode-go/deepseek-v4-flash-vision-exp:off"
+          },
+          {
+            "label": "DeepSeek V4 Flash Vision Exp low",
+            "value": "opencode-go/deepseek-v4-flash-vision-exp:low"
+          },
+          {
+            "label": "DeepSeek V4 Flash Vision Exp high",
+            "value": "opencode-go/deepseek-v4-flash-vision-exp:high"
+          },
+          {
+            "label": "DeepSeek V4 Flash Vision Exp max",
+            "value": "opencode-go/deepseek-v4-flash-vision-exp:max"
+          },
+          {
+            "label": "GLM-5.3-Flash low",
+            "value": "opencode-go/glm-5.3-flash:low"
+          },
+          {
+            "label": "GLM-5.3-Flash high",
+            "value": "opencode-go/glm-5.3-flash:high"
+          },
+          {
+            "label": "GLM-5.3-Flash max",
+            "value": "opencode-go/glm-5.3-flash:max"
+          },
+          {
+            "label": "Qwen3.8 Flash off",
+            "value": "opencode-go/qwen3.8-flash:off"
+          },
+          {
+            "label": "Qwen3.8 Flash minimal",
+            "value": "opencode-go/qwen3.8-flash:minimal"
+          },
+          {
+            "label": "Qwen3.8 Flash low",
+            "value": "opencode-go/qwen3.8-flash:low"
+          },
+          {
+            "label": "Qwen3.8 Flash medium",
+            "value": "opencode-go/qwen3.8-flash:medium"
+          },
+          {
+            "label": "Qwen3.8 Flash high",
+            "value": "opencode-go/qwen3.8-flash:high"
+          },
+          {
+            "label": "Hy3 off",
+            "value": "opencode-go/hy3:off"
+          },
+          {
+            "label": "Hy3 low",
+            "value": "opencode-go/hy3:low"
+          },
+          {
+            "label": "Hy3 high",
+            "value": "opencode-go/hy3:high"
+          },
+          {
+            "label": "Qwen3.7 Plus off",
+            "value": "opencode-go/qwen3.7-plus:off"
+          },
+          {
+            "label": "Qwen3.7 Plus minimal",
+            "value": "opencode-go/qwen3.7-plus:minimal"
+          },
+          {
+            "label": "Qwen3.7 Plus low",
+            "value": "opencode-go/qwen3.7-plus:low"
+          },
+          {
+            "label": "Qwen3.7 Plus medium",
+            "value": "opencode-go/qwen3.7-plus:medium"
+          },
+          {
+            "label": "Qwen3.7 Plus high",
+            "value": "opencode-go/qwen3.7-plus:high"
+          },
+          {
+            "label": "MiniMax-M2.7 off",
+            "value": "opencode-go/minimax-m2.7:off"
+          },
+          {
+            "label": "MiniMax-M2.7 minimal",
+            "value": "opencode-go/minimax-m2.7:minimal"
+          },
+          {
+            "label": "MiniMax-M2.7 low",
+            "value": "opencode-go/minimax-m2.7:low"
+          },
+          {
+            "label": "MiniMax-M2.7 medium",
+            "value": "opencode-go/minimax-m2.7:medium"
+          },
+          {
+            "label": "MiniMax-M2.7 high",
+            "value": "opencode-go/minimax-m2.7:high"
+          },
+          {
+            "label": "Qwen3.6 Plus off",
+            "value": "opencode-go/qwen3.6-plus:off"
+          },
+          {
+            "label": "Qwen3.6 Plus minimal",
+            "value": "opencode-go/qwen3.6-plus:minimal"
+          },
+          {
+            "label": "Qwen3.6 Plus low",
+            "value": "opencode-go/qwen3.6-plus:low"
+          },
+          {
+            "label": "Qwen3.6 Plus medium",
+            "value": "opencode-go/qwen3.6-plus:medium"
+          },
+          {
+            "label": "Qwen3.6 Plus high",
+            "value": "opencode-go/qwen3.6-plus:high"
+          },
+          {
+            "label": "MiMo V2.5 Pro off",
+            "value": "opencode-go/mimo-v2.5-pro:off"
+          },
+          {
+            "label": "MiMo V2.5 Pro minimal",
+            "value": "opencode-go/mimo-v2.5-pro:minimal"
+          },
+          {
+            "label": "MiMo V2.5 Pro low",
+            "value": "opencode-go/mimo-v2.5-pro:low"
+          },
+          {
+            "label": "MiMo V2.5 Pro medium",
+            "value": "opencode-go/mimo-v2.5-pro:medium"
+          },
+          {
+            "label": "MiMo V2.5 Pro high",
+            "value": "opencode-go/mimo-v2.5-pro:high"
+          },
+          {
+            "label": "MiniMax-M3 off",
+            "value": "opencode-go/minimax-m3:off"
+          },
+          {
+            "label": "MiniMax-M3 minimal",
+            "value": "opencode-go/minimax-m3:minimal"
+          },
+          {
+            "label": "MiniMax-M3 low",
+            "value": "opencode-go/minimax-m3:low"
+          },
+          {
+            "label": "MiniMax-M3 medium",
+            "value": "opencode-go/minimax-m3:medium"
+          },
+          {
+            "label": "MiniMax-M3 high",
+            "value": "opencode-go/minimax-m3:high"
+          },
+          {
+            "label": "openai-codex/gpt-5.4",
+            "value": "openai-codex/gpt-5.4"
+          },
+          {
+            "label": "openai-codex/gpt-5.4-mini",
+            "value": "openai-codex/gpt-5.4-mini"
+          },
+          {
+            "label": "GPT-5.5 off",
+            "value": "openai-codex/gpt-5.5:off"
+          },
+          {
+            "label": "GPT-5.5 minimal",
+            "value": "openai-codex/gpt-5.5:minimal"
+          },
+          {
+            "label": "GPT-5.5 low",
+            "value": "openai-codex/gpt-5.5:low"
+          },
+          {
+            "label": "GPT-5.5 medium",
+            "value": "openai-codex/gpt-5.5:medium"
+          },
+          {
+            "label": "GPT-5.5 high",
+            "value": "openai-codex/gpt-5.5:high"
+          },
+          {
+            "label": "GPT-5.5 xhigh",
+            "value": "openai-codex/gpt-5.5:xhigh"
+          },
+          {
+            "label": "GPT-5.6 Luna off",
+            "value": "openai-codex/gpt-5.6-luna:off"
+          },
+          {
+            "label": "GPT-5.6 Luna minimal",
+            "value": "openai-codex/gpt-5.6-luna:minimal"
+          },
+          {
+            "label": "GPT-5.6 Luna low",
+            "value": "openai-codex/gpt-5.6-luna:low"
+          },
+          {
+            "label": "GPT-5.6 Luna medium",
+            "value": "openai-codex/gpt-5.6-luna:medium"
+          },
+          {
+            "label": "GPT-5.6 Luna high",
+            "value": "openai-codex/gpt-5.6-luna:high"
+          },
+          {
+            "label": "GPT-5.6 Luna xhigh",
+            "value": "openai-codex/gpt-5.6-luna:xhigh"
+          },
+          {
+            "label": "GPT-5.6 Luna max",
+            "value": "openai-codex/gpt-5.6-luna:max"
+          },
+          {
+            "label": "GPT-5.6 Sol off",
+            "value": "openai-codex/gpt-5.6-sol:off"
+          },
+          {
+            "label": "GPT-5.6 Sol minimal",
+            "value": "openai-codex/gpt-5.6-sol:minimal"
+          },
+          {
+            "label": "GPT-5.6 Sol low",
+            "value": "openai-codex/gpt-5.6-sol:low"
+          },
+          {
+            "label": "GPT-5.6 Sol medium",
+            "value": "openai-codex/gpt-5.6-sol:medium"
+          },
+          {
+            "label": "GPT-5.6 Sol high",
+            "value": "openai-codex/gpt-5.6-sol:high"
+          },
+          {
+            "label": "GPT-5.6 Sol xhigh",
+            "value": "openai-codex/gpt-5.6-sol:xhigh"
+          },
+          {
+            "label": "GPT-5.6 Sol max",
+            "value": "openai-codex/gpt-5.6-sol:max"
+          },
+          {
+            "label": "GPT-5.6 Terra off",
+            "value": "openai-codex/gpt-5.6-terra:off"
+          },
+          {
+            "label": "GPT-5.6 Terra minimal",
+            "value": "openai-codex/gpt-5.6-terra:minimal"
+          },
+          {
+            "label": "GPT-5.6 Terra low",
+            "value": "openai-codex/gpt-5.6-terra:low"
+          },
+          {
+            "label": "GPT-5.6 Terra medium",
+            "value": "openai-codex/gpt-5.6-terra:medium"
+          },
+          {
+            "label": "GPT-5.6 Terra high",
+            "value": "openai-codex/gpt-5.6-terra:high"
+          },
+          {
+            "label": "GPT-5.6 Terra xhigh",
+            "value": "openai-codex/gpt-5.6-terra:xhigh"
+          },
+          {
+            "label": "GPT-5.6 Terra max",
+            "value": "openai-codex/gpt-5.6-terra:max"
+          },
+          {
+            "label": "GPT-6 Astra minimal",
+            "value": "openai-codex/gpt-6-astra:minimal"
+          },
+          {
+            "label": "GPT-6 Astra low",
+            "value": "openai-codex/gpt-6-astra:low"
+          },
+          {
+            "label": "GPT-6 Astra medium",
+            "value": "openai-codex/gpt-6-astra:medium"
+          },
+          {
+            "label": "GPT-6 Astra high",
+            "value": "openai-codex/gpt-6-astra:high"
+          },
+          {
+            "label": "GPT-6 Astra xhigh",
+            "value": "openai-codex/gpt-6-astra:xhigh"
+          },
+          {
+            "label": "GPT-6 Astra max",
+            "value": "openai-codex/gpt-6-astra:max"
+          }
         ]
       }
     }

@@ -37,8 +37,10 @@ def should_exclude(name: str, patterns: list[re.Pattern[str]]) -> bool:
     return any(p.search(name) for p in patterns)
 
 
-def parse_model_entry(entry: str) -> tuple[str, str | None]:
-    parts = entry.split(":", 1)
+def parse_model_entry(entry: str | dict) -> tuple[str, str | None]:
+    if isinstance(entry, dict):
+        entry = str(entry.get("value") or "")
+    parts = str(entry).split(":", 1)
     return parts[0], parts[1] if len(parts) > 1 else None
 
 
@@ -46,10 +48,16 @@ def sort_efforts(efforts: list[str]) -> list[str]:
     return sorted(set(efforts), key=lambda e: (EFFORT_ORDER.get(e, 99), e))
 
 
-def expand(base: str, efforts: list[str]) -> list[str]:
+def expand(
+    base: str, efforts: list[str], display: str | None = None
+) -> list[dict[str, str]]:
+    title = display or base
     if not efforts:
-        return [base]
-    return [f"{base}:{effort}" for effort in sort_efforts(efforts)]
+        return [{"label": title, "value": base}]
+    return [
+        {"label": f"{title} {effort}", "value": f"{base}:{effort}"}
+        for effort in sort_efforts(efforts)
+    ]
 
 
 def normalize_model_name(name: str) -> str:
@@ -82,7 +90,7 @@ def go_model_lists(
     efforts: dict[str, list[str]],
     pi_models: dict[str, list[str]],
     pi_names: dict[str, str],
-) -> tuple[list[str], dict[str, list[str]]]:
+) -> tuple[list[dict[str, str]], dict[str, list[str]]]:
     """Return Pi Go entries above the requests/5h threshold, sorted desc.
 
     Quota rows on the website are keyed by display name, not API id
@@ -103,9 +111,9 @@ def go_model_lists(
             continue
         qualifying.append((key, req5h))
     qualifying.sort(key=lambda item: (-item[1], item[0]))
-    entries: list[str] = []
+    entries: list[dict[str, str]] = []
     for name, _ in qualifying:
-        entries.extend(expand(name, efforts.get(name, [])))
+        entries.extend(expand(name, efforts.get(name, []), pi_names.get(name)))
     available = {name: efforts.get(name, []) for name, _ in qualifying}
     return entries, available
 
@@ -193,17 +201,19 @@ def load_pi_thinking_levels() -> dict[str, list[str]]:
 
 
 def merge_models(
-    current: list[str],
+    current: list,
     available: dict[str, list[str]],
-    go_entries: list[str] | None = None,
-) -> tuple[list[str], set[str], set[str]]:
+    go_entries: list[dict[str, str]] | None = None,
+    pi_names: dict[str, str] | None = None,
+) -> tuple[list[dict[str, str]], set[str], set[str]]:
     """Merge models into the placeholder list.
 
     With go_entries, the list is rebuilt as: sorted Go entries first, then
     non-Go providers in their existing order (new non-Go models appended).
     """
+    names = pi_names or {}
     if go_entries is not None:
-        other: list[str] = []
+        other: list[dict[str, str]] = []
         seen_other: set[str] = set()
         for entry in current:
             base, _ = parse_model_entry(entry)
@@ -212,11 +222,11 @@ def merge_models(
             if base not in seen_other:
                 seen_other.add(base)
                 if base in available:
-                    other.extend(expand(base, available[base]))
+                    other.extend(expand(base, available[base], names.get(base)))
 
         for base in sorted(set(available) - seen_other):
             if not base.startswith(f"{GO_PROVIDER}/"):
-                other.extend(expand(base, available[base]))
+                other.extend(expand(base, available[base], names.get(base)))
 
         return go_entries + other, set(), set()
 
@@ -228,15 +238,15 @@ def merge_models(
             existing_order.append(base)
             seen.add(base)
 
-    new_list: list[str] = []
+    new_list: list[dict[str, str]] = []
     for base in existing_order:
         if base not in available:
             continue
-        new_list.extend(expand(base, available[base]))
+        new_list.extend(expand(base, available[base], names.get(base)))
 
     added = set(available) - seen
     for base in sorted(added):
-        new_list.extend(expand(base, available[base]))
+        new_list.extend(expand(base, available[base], names.get(base)))
 
     return new_list, seen - set(available), added
 
@@ -246,10 +256,11 @@ def update_command(
     key: str,
     available: dict[str, list[str]],
     label: str,
-    go_entries: list[str] | None = None,
+    go_entries: list[dict[str, str]] | None = None,
+    pi_names: dict[str, str] | None = None,
 ) -> None:
     current = data["commands"][key]["placeholders"]["model"]
-    new_list, removed, added = merge_models(current, available, go_entries)
+    new_list, removed, added = merge_models(current, available, go_entries, pi_names)
     data["commands"][key]["placeholders"]["model"] = new_list
     changes = []
     if removed:
@@ -269,13 +280,14 @@ def main():
         data = json.load(f)
 
     pi_models = get_pi_models()
+    pi_names = load_pi_display_names()
 
     go_entries = None
     try:
         catalog = fetch_go_catalog()
         efforts = load_pi_thinking_levels()
         go_entries, go_available = go_model_lists(
-            catalog, efforts, pi_models, load_pi_display_names()
+            catalog, efforts, pi_models, pi_names
         )
         print(
             f"Go: {len(catalog)} models in catalog, "
@@ -284,15 +296,18 @@ def main():
     except Exception as exc:
         # Keep the existing Go entries untouched if the docs can't be fetched.
         print(f"Go: failed ({exc}); keeping current Go list", file=sys.stderr)
-        go_entries = [e for e in data["commands"]["pi-commit"]["placeholders"]["model"]
-                      if e.startswith(f"{GO_PROVIDER}/")]
+        go_entries = [
+            e
+            for e in data["commands"]["pi-commit"]["placeholders"]["model"]
+            if parse_model_entry(e)[0].startswith(f"{GO_PROVIDER}/")
+        ]
 
     available = {
         name: efforts for name, efforts in pi_models.items()
         if not name.startswith(f"{GO_PROVIDER}/")
     }
 
-    update_command(data, "pi-commit", available, "Pi", go_entries)
+    update_command(data, "pi-commit", available, "Pi", go_entries, pi_names)
 
     with open(COMMANDS_JSON, "w") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
