@@ -66,6 +66,21 @@ def normalize_model_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", name)
 
 
+def _strip_html(fragment: str) -> str:
+    fragment = re.sub(r"<br\s*/?>", "\n", fragment, flags=re.I)
+    return re.sub(r"<[^>]+>", "", fragment)
+
+
+def _parse_req5h(cell_html: str) -> int | None:
+    """Current requests/5h; promo rows strike the old value and bold the new one."""
+    strong = re.findall(r"<strong>(.*?)</strong>", cell_html, flags=re.S | re.I)
+    text = _strip_html(strong[-1] if strong else cell_html)
+    line = next((part.strip() for part in reversed(text.splitlines()) if part.strip()), "")
+    if not re.fullmatch(r"[\d,]+", line):
+        return None
+    return int(line.replace(",", ""))
+
+
 def fetch_go_catalog() -> dict[str, int]:
     """Scrape estimated requests per 5h from the Go docs, keyed by display name."""
     req = urllib.request.Request(
@@ -76,12 +91,13 @@ def fetch_go_catalog() -> dict[str, int]:
 
     per5h: dict[str, int] = {}
     for row in re.findall(r"<tr>(.*?)</tr>", html, flags=re.S):
-        cells = [
-            re.sub(r"<[^>]+>", "", c).strip()
-            for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, flags=re.S)
-        ]
-        if len(cells) == 4 and re.fullmatch(r"[\d,]+", cells[1] or ""):
-            per5h[cells[0]] = int(cells[1].replace(",", ""))
+        raw_cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, flags=re.S)
+        if len(raw_cells) != 4:
+            continue
+        name = _strip_html(raw_cells[0]).splitlines()[0].strip()
+        req5h = _parse_req5h(raw_cells[1])
+        if name and req5h is not None:
+            per5h[name] = req5h
     return per5h
 
 
