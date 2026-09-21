@@ -72,8 +72,8 @@
             "value": "opencode-go/mimo-v2.5:high"
           },
           {
-            "label": "DeepSeek V4.1 Flash off",
-            "value": "opencode-go/deepseek-v4.1-flash:off"
+            "label": "DeepSeek V4.1 Flash low",
+            "value": "opencode-go/deepseek-v4.1-flash:low"
           },
           {
             "label": "DeepSeek V4.1 Flash high",
