@@ -72,6 +72,26 @@
             "value": "opencode-go/mimo-v2.5:high"
           },
           {
+            "label": "MiMo-V2.6-Flash off",
+            "value": "opencode-go/mimo-v2.6-flash:off"
+          },
+          {
+            "label": "MiMo-V2.6-Flash minimal",
+            "value": "opencode-go/mimo-v2.6-flash:minimal"
+          },
+          {
+            "label": "MiMo-V2.6-Flash low",
+            "value": "opencode-go/mimo-v2.6-flash:low"
+          },
+          {
+            "label": "MiMo-V2.6-Flash medium",
+            "value": "opencode-go/mimo-v2.6-flash:medium"
+          },
+          {
+            "label": "MiMo-V2.6-Flash high",
+            "value": "opencode-go/mimo-v2.6-flash:high"
+          },
+          {
             "label": "DeepSeek V4.1 Flash low",
             "value": "opencode-go/deepseek-v4.1-flash:low"
           },
@@ -260,6 +280,26 @@
             "value": "opencode-go/mimo-v2.5-pro:high"
           },
           {
+            "label": "MiMo-V2.6-Pro off",
+            "value": "opencode-go/mimo-v2.6-pro:off"
+          },
+          {
+            "label": "MiMo-V2.6-Pro minimal",
+            "value": "opencode-go/mimo-v2.6-pro:minimal"
+          },
+          {
+            "label": "MiMo-V2.6-Pro low",
+            "value": "opencode-go/mimo-v2.6-pro:low"
+          },
+          {
+            "label": "MiMo-V2.6-Pro medium",
+            "value": "opencode-go/mimo-v2.6-pro:medium"
+          },
+          {
+            "label": "MiMo-V2.6-Pro high",
+            "value": "opencode-go/mimo-v2.6-pro:high"
+          },
+          {
             "label": "MiniMax-M3 off",
             "value": "opencode-go/minimax-m3:off"
           },
@@ -278,14 +318,6 @@
           {
             "label": "MiniMax-M3 high",
             "value": "opencode-go/minimax-m3:high"
-          },
-          {
-            "label": "openai-codex/gpt-5.4",
-            "value": "openai-codex/gpt-5.4"
-          },
-          {
-            "label": "openai-codex/gpt-5.4-mini",
-            "value": "openai-codex/gpt-5.4-mini"
           },
           {
             "label": "GPT-5.5 off",
