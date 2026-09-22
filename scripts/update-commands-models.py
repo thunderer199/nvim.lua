@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import urllib.request
@@ -134,9 +135,40 @@ def go_model_lists(
     return entries, available
 
 
-def get_pi_models() -> dict[str, list[str]]:
+PI_MODULE = "@earendil-works/pi-coding-agent/dist/bundle/cli.js"
+
+
+def pi_command() -> list[str]:
+    """Return the argv prefix to run pi, falling back to the npm global module
+    if the `pi` launcher is missing from PATH."""
+    pi = shutil.which("pi")
+    if pi:
+        return [pi]
+    npm_root = subprocess.run(
+        ["npm", "root", "-g"], capture_output=True, text=True, timeout=30
+    )
+    if npm_root.returncode == 0:
+        cli = Path(npm_root.stdout.strip()) / PI_MODULE
+        if cli.is_file():
+            return ["node", str(cli)]
+    raise RuntimeError("pi executable not found")
+
+
+def refresh_pi_models() -> None:
+    """Force Pi to refresh its model catalog (models-store.json) first,
+    otherwise pi --list-models can serve a stale cache missing new models."""
     result = subprocess.run(
-        ["pi", "--list-models"],
+        pi_command() + ["update", "--models"],
+        capture_output=True, text=True, timeout=120,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip() or "pi update --models failed")
+
+
+def get_pi_models() -> dict[str, list[str]]:
+    refresh_pi_models()
+    result = subprocess.run(
+        pi_command() + ["--list-models"],
         capture_output=True, text=True, timeout=30,
     )
     if result.returncode != 0:
