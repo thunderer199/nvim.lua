@@ -220,6 +220,30 @@
             "value": "opencode-go/qwen3.7-plus:high"
           },
           {
+            "label": "GPT-6 Luna off",
+            "value": "opencode-go/gpt-6-luna:off"
+          },
+          {
+            "label": "GPT-6 Luna low",
+            "value": "opencode-go/gpt-6-luna:low"
+          },
+          {
+            "label": "GPT-6 Luna medium",
+            "value": "opencode-go/gpt-6-luna:medium"
+          },
+          {
+            "label": "GPT-6 Luna high",
+            "value": "opencode-go/gpt-6-luna:high"
+          },
+          {
+            "label": "GPT-6 Luna xhigh",
+            "value": "opencode-go/gpt-6-luna:xhigh"
+          },
+          {
+            "label": "GPT-6 Luna max",
+            "value": "opencode-go/gpt-6-luna:max"
+          },
+          {
             "label": "MiniMax-M2.7 off",
             "value": "opencode-go/minimax-m2.7:off"
           },
@@ -450,6 +474,62 @@
           {
             "label": "GPT-6 Astra max",
             "value": "openai-codex/gpt-6-astra:max"
+          },
+          {
+            "label": "GPT-6 Luna off",
+            "value": "openai-codex/gpt-6-luna:off"
+          },
+          {
+            "label": "GPT-6 Luna minimal",
+            "value": "openai-codex/gpt-6-luna:minimal"
+          },
+          {
+            "label": "GPT-6 Luna low",
+            "value": "openai-codex/gpt-6-luna:low"
+          },
+          {
+            "label": "GPT-6 Luna medium",
+            "value": "openai-codex/gpt-6-luna:medium"
+          },
+          {
+            "label": "GPT-6 Luna high",
+            "value": "openai-codex/gpt-6-luna:high"
+          },
+          {
+            "label": "GPT-6 Luna xhigh",
+            "value": "openai-codex/gpt-6-luna:xhigh"
+          },
+          {
+            "label": "GPT-6 Luna max",
+            "value": "openai-codex/gpt-6-luna:max"
+          },
+          {
+            "label": "GPT-6 Sol off",
+            "value": "openai-codex/gpt-6-sol:off"
+          },
+          {
+            "label": "GPT-6 Sol minimal",
+            "value": "openai-codex/gpt-6-sol:minimal"
+          },
+          {
+            "label": "GPT-6 Sol low",
+            "value": "openai-codex/gpt-6-sol:low"
+          },
+          {
+            "label": "GPT-6 Sol medium",
+            "value": "openai-codex/gpt-6-sol:medium"
+          },
+          {
+            "label": "GPT-6 Sol high",
+            "value": "openai-codex/gpt-6-sol:high"
+          },
+          {
+            "label": "GPT-6 Sol xhigh",
+            "value": "openai-codex/gpt-6-sol:xhigh"
+          },
+          {
+            "label": "GPT-6 Sol max",
+            "value": "openai-codex/gpt-6-sol:max"
           }
         ]
       }
