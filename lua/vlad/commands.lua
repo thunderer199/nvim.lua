@@ -10,8 +10,17 @@ local function append_range(path, opts)
 	return path
 end
 
-vim.api.nvim_create_user_command("CopyPath", function(opts)
+-- Resolve pseudo-URL buffers (e.g. fugitive://) to the real file path
+local function real_path()
 	local path = vim.fn.expand("%:p")
+	if path:match("^fugitive://") and vim.fn.exists("*FugitiveReal") == 1 then
+		path = vim.fn.FugitiveReal(path)
+	end
+	return path
+end
+
+vim.api.nvim_create_user_command("CopyPath", function(opts)
+	local path = real_path()
 	local util = require("vlad.util")
 	local relative_path = util.removeBaseFromPath(path)
 	local path_with_range = append_range(relative_path, opts)
@@ -20,14 +29,14 @@ vim.api.nvim_create_user_command("CopyPath", function(opts)
 end, { range = true })
 
 vim.api.nvim_create_user_command("CopyPathAbsolute", function(opts)
-	local path = vim.fn.expand("%:p")
+	local path = real_path()
 	local path_with_range = append_range(path, opts)
 	vim.fn.setreg("+", path_with_range)
 	vim.notify('Copied "' .. path_with_range .. '" to the clipboard!')
 end, { range = true })
 
 vim.api.nvim_create_user_command("CopyPathContext", function()
-	local path = vim.fn.expand("%:p")
+	local path = real_path()
 	local util = require("vlad.util")
 	local relative_path = util.removeBaseFromPath(path)
 
