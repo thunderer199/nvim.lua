@@ -12,6 +12,26 @@
       "placeholders": {
         "model": [
           {
+            "label": "Space Bunny Free low",
+            "value": "opencode-go/space-bunny-free:low"
+          },
+          {
+            "label": "Space Bunny Free medium",
+            "value": "opencode-go/space-bunny-free:medium"
+          },
+          {
+            "label": "Space Bunny Free high",
+            "value": "opencode-go/space-bunny-free:high"
+          },
+          {
+            "label": "Space Bunny Free xhigh",
+            "value": "opencode-go/space-bunny-free:xhigh"
+          },
+          {
+            "label": "Space Bunny Free max",
+            "value": "opencode-go/space-bunny-free:max"
+          },
+          {
             "label": "Muse Spark 1.2 Contributor minimal",
             "value": "opencode-go/muse-spark-1.2-contributor:minimal"
           },
