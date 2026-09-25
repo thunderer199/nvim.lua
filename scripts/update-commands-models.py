@@ -77,9 +77,11 @@ def _parse_req5h(cell_html: str) -> int | None:
     strong = re.findall(r"<strong>(.*?)</strong>", cell_html, flags=re.S | re.I)
     text = _strip_html(strong[-1] if strong else cell_html)
     line = next((part.strip() for part in reversed(text.splitlines()) if part.strip()), "")
-    if not re.fullmatch(r"[\d,]+", line):
-        return None
-    return int(line.replace(",", ""))
+    if re.fullmatch(r"[\d,]+", line):
+        return int(line.replace(",", ""))
+    if "unlimited" in line.lower():
+        return sys.maxsize
+    return None
 
 
 def fetch_go_catalog() -> dict[str, int]:
