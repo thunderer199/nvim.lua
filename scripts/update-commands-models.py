@@ -301,6 +301,55 @@ def merge_models(
     return new_list, seen - set(available), added
 
 
+def group_entries(entries: list) -> list[tuple[str, list[str], list[int]]]:
+    """Collapse effort variants: base id -> (display, efforts, positions)."""
+    groups: dict[str, tuple[str, list[str], list[int]]] = {}
+    for pos, entry in enumerate(entries):
+        base, effort = parse_model_entry(entry)
+        display, efforts, positions = groups.setdefault(
+            base, (str(entry.get("label") or base).rstrip(), [], [])
+        )
+        if effort:
+            efforts.append(effort)
+            display = display[: display.rfind(f" {effort}")]
+        positions.append(pos)
+    return [(base, *rest) for base, rest in sorted(groups.items())]
+
+
+def diff_report(before: list, after: list) -> str:
+    """Human-readable diff of placeholder entries, grouped by model."""
+    old, new = group_entries(before), group_entries(after)
+    old_map = {base: (name, eff, pos) for base, name, eff, pos in old}
+    new_map = {base: (name, eff, pos) for base, name, eff, pos in new}
+
+    lines: list[str] = []
+    added = [b for b in new_map if b not in old_map]
+    removed = [b for b in old_map if b not in new_map]
+    moved = [
+        b for b in new_map
+        if b in old_map and old_map[b][2] != new_map[b][2]
+    ]
+    if added:
+        lines.append("added:")
+        for base in added:
+            name, efforts, _ = new_map[base]
+            levels = f" [{', '.join(efforts)}]" if efforts else ""
+            lines.append(f"  + {name} ({base}){levels}")
+    if removed:
+        lines.append("removed:")
+        for base in removed:
+            name, efforts, _ = old_map[base]
+            lines.append(f"  - {name} ({base})")
+    if moved:
+        lines.append("moved:")
+        for base in moved:
+            name, efforts, _ = new_map[base]
+            was = old_map[base][2][0]
+            now = new_map[base][2][0]
+            lines.append(f"  ~ {name} ({base}) {was} -> {now}")
+    return "\n".join(lines) if lines else "no model changes"
+
+
 def update_command(
     data: dict,
     key: str,
@@ -323,6 +372,8 @@ def update_command(
         f"{len(available)} models, {with_effort} with effort "
         f"({', '.join(changes) or 'catalog refreshed'})"
     )
+    report = diff_report(current, new_list)
+    print(f"{label} diff:\n{report}")
 
 
 def main():
