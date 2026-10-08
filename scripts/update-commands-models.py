@@ -26,7 +26,7 @@ GO_REQ5H_THRESHOLD = 3000
 
 PI_EXCLUDE = [
     re.compile(r"^opencode/"),
-    re.compile(r"^openai-codex/.+-(?:fast|spark|pro)"),
+    re.compile(r"^(?:azure-)?openai"),
 ]
 
 EXTENDED_THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh", "max"]
