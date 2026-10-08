@@ -32,26 +32,6 @@
             "value": "opencode-go/longcat-2.5-preview-free:high"
           },
           {
-            "label": "Space Bunny Free low",
-            "value": "opencode-go/space-bunny-free:low"
-          },
-          {
-            "label": "Space Bunny Free medium",
-            "value": "opencode-go/space-bunny-free:medium"
-          },
-          {
-            "label": "Space Bunny Free high",
-            "value": "opencode-go/space-bunny-free:high"
-          },
-          {
-            "label": "Space Bunny Free xhigh",
-            "value": "opencode-go/space-bunny-free:xhigh"
-          },
-          {
-            "label": "Space Bunny Free max",
-            "value": "opencode-go/space-bunny-free:max"
-          },
-          {
             "label": "Muse Spark 1.2 Contributor minimal",
             "value": "opencode-go/muse-spark-1.2-contributor:minimal"
           },
@@ -264,6 +244,34 @@
             "value": "opencode-go/qwen3.8-flash:high"
           },
           {
+            "label": "Claude Haiku 5.5 off",
+            "value": "opencode-go/claude-haiku-5-5:off"
+          },
+          {
+            "label": "Claude Haiku 5.5 minimal",
+            "value": "opencode-go/claude-haiku-5-5:minimal"
+          },
+          {
+            "label": "Claude Haiku 5.5 low",
+            "value": "opencode-go/claude-haiku-5-5:low"
+          },
+          {
+            "label": "Claude Haiku 5.5 medium",
+            "value": "opencode-go/claude-haiku-5-5:medium"
+          },
+          {
+            "label": "Claude Haiku 5.5 high",
+            "value": "opencode-go/claude-haiku-5-5:high"
+          },
+          {
+            "label": "Claude Haiku 5.5 xhigh",
+            "value": "opencode-go/claude-haiku-5-5:xhigh"
+          },
+          {
+            "label": "Claude Haiku 5.5 max",
+            "value": "opencode-go/claude-haiku-5-5:max"
+          },
+          {
             "label": "MiniMax-M2.7 off",
             "value": "opencode-go/minimax-m2.7:off"
           },
@@ -342,6 +350,26 @@
           {
             "label": "Qwen3.7 Plus high",
             "value": "opencode-go/qwen3.7-plus:high"
+          },
+          {
+            "label": "Space Bunny low",
+            "value": "opencode-go/space-bunny:low"
+          },
+          {
+            "label": "Space Bunny medium",
+            "value": "opencode-go/space-bunny:medium"
+          },
+          {
+            "label": "Space Bunny high",
+            "value": "opencode-go/space-bunny:high"
+          },
+          {
+            "label": "Space Bunny xhigh",
+            "value": "opencode-go/space-bunny:xhigh"
+          },
+          {
+            "label": "Space Bunny max",
+            "value": "opencode-go/space-bunny:max"
           },
           {
             "label": "MiniMax-M3 off",
