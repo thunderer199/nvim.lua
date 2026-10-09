@@ -32,6 +32,18 @@
             "value": "opencode-go/longcat-2.5-preview-free:high"
           },
           {
+            "label": "Step 5 Preview Free low",
+            "value": "opencode-go/step-5-preview-free:low"
+          },
+          {
+            "label": "Step 5 Preview Free medium",
+            "value": "opencode-go/step-5-preview-free:medium"
+          },
+          {
+            "label": "Step 5 Preview Free high",
+            "value": "opencode-go/step-5-preview-free:high"
+          },
+          {
             "label": "Muse Spark 1.2 Contributor minimal",
             "value": "opencode-go/muse-spark-1.2-contributor:minimal"
           },
