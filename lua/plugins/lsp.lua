@@ -300,7 +300,7 @@ return {
         })
 
         require('mason-tool-installer').setup({
-            ensure_installed = { 'roslyn' },
+            ensure_installed = { { 'roslyn', auto_update = true } },
         })
 
         vim.diagnostic.config({
