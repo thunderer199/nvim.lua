@@ -119,6 +119,7 @@ def go_model_lists(
         normalize_model_name(name): req5h for name, req5h in catalog.items()
     }
     qualifying: list[tuple[str, int]] = []
+    excluded: list[tuple[str, str, int | None]] = []
     for key in pi_models:
         if not key.startswith(f"{GO_PROVIDER}/"):
             continue
@@ -126,7 +127,11 @@ def go_model_lists(
         if not display:
             continue
         req5h = quota_by_name.get(normalize_model_name(display))
-        if req5h is None or req5h < GO_REQ5H_THRESHOLD:
+        if req5h is None:
+            excluded.append((key, display, None))
+            continue
+        if req5h < GO_REQ5H_THRESHOLD:
+            excluded.append((key, display, req5h))
             continue
         qualifying.append((key, req5h))
     qualifying.sort(key=lambda item: (-item[1], item[0]))
@@ -134,7 +139,7 @@ def go_model_lists(
     for name, _ in qualifying:
         entries.extend(expand(name, efforts.get(name, []), pi_names.get(name)))
     available = {name: efforts.get(name, []) for name, _ in qualifying}
-    return entries, available
+    return entries, available, excluded
 
 
 PI_MODULE = "@earendil-works/pi-coding-agent/dist/bundle/cli.js"
@@ -387,13 +392,22 @@ def main():
     try:
         catalog = fetch_go_catalog()
         efforts = load_pi_thinking_levels()
-        go_entries, go_available = go_model_lists(
+        go_entries, go_available, go_excluded = go_model_lists(
             catalog, efforts, pi_models, pi_names
         )
         print(
             f"Go: {len(catalog)} models in catalog, "
             f"{len(go_available)} above {GO_REQ5H_THRESHOLD} req/5h"
         )
+        if go_excluded:
+            print("Go excluded from commands.json:")
+            for key, display, req5h in go_excluded:
+                reason = (
+                    f"{req5h} req/5h < {GO_REQ5H_THRESHOLD}"
+                    if req5h is not None
+                    else "not in Go quota table"
+                )
+                print(f"  - {display} ({key}): {reason}")
     except Exception as exc:
         # Keep the existing Go entries untouched if the docs can't be fetched.
         print(f"Go: failed ({exc}); keeping current Go list", file=sys.stderr)

@@ -12,6 +12,26 @@
       "placeholders": {
         "model": [
           {
+            "label": "Cat Jam Free low",
+            "value": "opencode-go/cat-jam-free:low"
+          },
+          {
+            "label": "Cat Jam Free medium",
+            "value": "opencode-go/cat-jam-free:medium"
+          },
+          {
+            "label": "Cat Jam Free high",
+            "value": "opencode-go/cat-jam-free:high"
+          },
+          {
+            "label": "Cat Jam Free xhigh",
+            "value": "opencode-go/cat-jam-free:xhigh"
+          },
+          {
+            "label": "Cat Jam Free max",
+            "value": "opencode-go/cat-jam-free:max"
+          },
+          {
             "label": "LongCat 2.5 Preview Free off",
             "value": "opencode-go/longcat-2.5-preview-free:off"
           },
@@ -136,22 +156,6 @@
             "value": "opencode-go/mimo-v2.6-flash:high"
           },
           {
-            "label": "DeepSeek V4 Flash off",
-            "value": "opencode-go/deepseek-v4-flash:off"
-          },
-          {
-            "label": "DeepSeek V4 Flash low",
-            "value": "opencode-go/deepseek-v4-flash:low"
-          },
-          {
-            "label": "DeepSeek V4 Flash high",
-            "value": "opencode-go/deepseek-v4-flash:high"
-          },
-          {
-            "label": "DeepSeek V4 Flash max",
-            "value": "opencode-go/deepseek-v4-flash:max"
-          },
-          {
             "label": "LongCat-2.0 off",
             "value": "opencode-go/longcat-2.0:off"
           },
@@ -170,22 +174,6 @@
           {
             "label": "LongCat-2.0 high",
             "value": "opencode-go/longcat-2.0:high"
-          },
-          {
-            "label": "DeepSeek V4 Flash Vision Exp off",
-            "value": "opencode-go/deepseek-v4-flash-vision-exp:off"
-          },
-          {
-            "label": "DeepSeek V4 Flash Vision Exp low",
-            "value": "opencode-go/deepseek-v4-flash-vision-exp:low"
-          },
-          {
-            "label": "DeepSeek V4 Flash Vision Exp high",
-            "value": "opencode-go/deepseek-v4-flash-vision-exp:high"
-          },
-          {
-            "label": "DeepSeek V4 Flash Vision Exp max",
-            "value": "opencode-go/deepseek-v4-flash-vision-exp:max"
           },
           {
             "label": "GLM-5.3-Flash low",
