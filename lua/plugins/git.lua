@@ -58,6 +58,20 @@ return {
         config = function()
             local fugitive_cmd_group = vim.api.nvim_create_augroup("fugitive_cmd_group", {})
 
+            -- LSP is not attached to fugitive:// buffers, so say why instead of erroring
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                group = fugitive_cmd_group,
+                pattern = "fugitive://*",
+                callback = function(ev)
+                    local warn = function()
+                        vim.notify("Git history buffer: no LSP. Open the working copy with <leader>ge.", vim.log.levels.WARN)
+                    end
+                    for _, lhs in ipairs({ "gd", "gD", "gr", "gi", "gt", "gI", "go" }) do
+                        vim.keymap.set("n", lhs, warn, { buffer = ev.buf, desc = "Fugitive: LSP unavailable" })
+                    end
+                end,
+            })
+
             vim.api.nvim_create_autocmd("BufWinEnter", {
                 group = fugitive_cmd_group,
                 pattern = "*",

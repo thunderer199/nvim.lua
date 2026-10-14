@@ -10,6 +10,14 @@ return {
             lualine_c = {
                 'diagnostics',
                 {
+                    function()
+                        local rev = vim.api.nvim_buf_get_name(0):match('^fugitive://.*/%.git//(%x+)/')
+                        return ' GIT HISTORY' .. (rev and (' @' .. rev:sub(1, 7)) or '')
+                    end,
+                    cond = function() return vim.api.nvim_buf_get_name(0):match('^fugitive://') ~= nil end,
+                    color = 'DiagnosticWarn',
+                },
+                {
                     'filename',
                     file_status = true,
                     newfile_status = true,
