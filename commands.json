@@ -84,6 +84,18 @@
             "value": "opencode-go/muse-spark-1.3-contributor:xhigh"
           },
           {
+            "label": "DeepSeek V4.1 Flash low",
+            "value": "opencode-go/deepseek-v4.1-flash:low"
+          },
+          {
+            "label": "DeepSeek V4.1 Flash high",
+            "value": "opencode-go/deepseek-v4.1-flash:high"
+          },
+          {
+            "label": "DeepSeek V4.1 Flash max",
+            "value": "opencode-go/deepseek-v4.1-flash:max"
+          },
+          {
             "label": "MiMo V2.5 off",
             "value": "opencode-go/mimo-v2.5:off"
           },
@@ -138,18 +150,6 @@
           {
             "label": "DeepSeek V4 Flash max",
             "value": "opencode-go/deepseek-v4-flash:max"
-          },
-          {
-            "label": "DeepSeek V4.1 Flash low",
-            "value": "opencode-go/deepseek-v4.1-flash:low"
-          },
-          {
-            "label": "DeepSeek V4.1 Flash high",
-            "value": "opencode-go/deepseek-v4.1-flash:high"
-          },
-          {
-            "label": "DeepSeek V4.1 Flash max",
-            "value": "opencode-go/deepseek-v4.1-flash:max"
           },
           {
             "label": "LongCat-2.0 off",
