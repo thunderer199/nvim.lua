@@ -1,6 +1,7 @@
 return {
     {
         "mistweaverco/kulala.nvim",
+        tag = "v5.3.4", -- last release before kulala-core license tokens; migrate away
         keys = {
             { "<leader>Rs", desc = "Send request" },
             { "<leader>Ra", desc = "Send all requests" }, -- ← This is what you wanted!
