@@ -85,12 +85,22 @@ def _parse_req5h(cell_html: str) -> int | None:
 
 
 def fetch_go_catalog() -> dict[str, int]:
-    """Scrape estimated requests per 5h from the Go docs, keyed by display name."""
+    """Scrape estimated requests per 5h from the Go docs, keyed by display name.
+
+    Only the first estimated-requests table (the Go plan) is read; the second
+    (Go Plus) lists the same models with higher limits.
+    """
     req = urllib.request.Request(
         GO_DOCS_URL, headers={"User-Agent": "Mozilla/5.0 (update-commands-models)"}
     )
     with urllib.request.urlopen(req, timeout=30) as resp:
         html = resp.read().decode()
+
+    est_idx = html.find("Estimated requests")
+    if est_idx != -1:
+        tables = re.findall(r"<table[^>]*>.*?</table>", html[est_idx:], flags=re.S)
+        if tables:
+            html = tables[0]
 
     per5h: dict[str, int] = {}
     for row in re.findall(r"<tr>(.*?)</tr>", html, flags=re.S):
