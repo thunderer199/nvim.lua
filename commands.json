@@ -12,26 +12,6 @@
       "placeholders": {
         "model": [
           {
-            "label": "Cat Jam Free low",
-            "value": "opencode-go/cat-jam-free:low"
-          },
-          {
-            "label": "Cat Jam Free medium",
-            "value": "opencode-go/cat-jam-free:medium"
-          },
-          {
-            "label": "Cat Jam Free high",
-            "value": "opencode-go/cat-jam-free:high"
-          },
-          {
-            "label": "Cat Jam Free xhigh",
-            "value": "opencode-go/cat-jam-free:xhigh"
-          },
-          {
-            "label": "Cat Jam Free max",
-            "value": "opencode-go/cat-jam-free:max"
-          },
-          {
             "label": "LongCat 2.5 Preview Free off",
             "value": "opencode-go/longcat-2.5-preview-free:off"
           },
@@ -176,6 +156,26 @@
             "value": "opencode-go/glm-5.3-flash:max"
           },
           {
+            "label": "Qwen3.8 Flash off",
+            "value": "opencode-go/qwen3.8-flash:off"
+          },
+          {
+            "label": "Qwen3.8 Flash minimal",
+            "value": "opencode-go/qwen3.8-flash:minimal"
+          },
+          {
+            "label": "Qwen3.8 Flash low",
+            "value": "opencode-go/qwen3.8-flash:low"
+          },
+          {
+            "label": "Qwen3.8 Flash medium",
+            "value": "opencode-go/qwen3.8-flash:medium"
+          },
+          {
+            "label": "Qwen3.8 Flash high",
+            "value": "opencode-go/qwen3.8-flash:high"
+          },
+          {
             "label": "Hy3 off",
             "value": "opencode-go/hy3:off"
           },
@@ -186,6 +186,26 @@
           {
             "label": "Hy3 high",
             "value": "opencode-go/hy3:high"
+          },
+          {
+            "label": "Qwen3.7 Plus off",
+            "value": "opencode-go/qwen3.7-plus:off"
+          },
+          {
+            "label": "Qwen3.7 Plus minimal",
+            "value": "opencode-go/qwen3.7-plus:minimal"
+          },
+          {
+            "label": "Qwen3.7 Plus low",
+            "value": "opencode-go/qwen3.7-plus:low"
+          },
+          {
+            "label": "Qwen3.7 Plus medium",
+            "value": "opencode-go/qwen3.7-plus:medium"
+          },
+          {
+            "label": "Qwen3.7 Plus high",
+            "value": "opencode-go/qwen3.7-plus:high"
           },
           {
             "label": "GPT-6 Luna off",
@@ -210,26 +230,6 @@
           {
             "label": "GPT-6 Luna max",
             "value": "opencode-go/gpt-6-luna:max"
-          },
-          {
-            "label": "Qwen3.8 Flash off",
-            "value": "opencode-go/qwen3.8-flash:off"
-          },
-          {
-            "label": "Qwen3.8 Flash minimal",
-            "value": "opencode-go/qwen3.8-flash:minimal"
-          },
-          {
-            "label": "Qwen3.8 Flash low",
-            "value": "opencode-go/qwen3.8-flash:low"
-          },
-          {
-            "label": "Qwen3.8 Flash medium",
-            "value": "opencode-go/qwen3.8-flash:medium"
-          },
-          {
-            "label": "Qwen3.8 Flash high",
-            "value": "opencode-go/qwen3.8-flash:high"
           },
           {
             "label": "Claude Haiku 5.5 off",
@@ -258,26 +258,6 @@
           {
             "label": "Claude Haiku 5.5 max",
             "value": "opencode-go/claude-haiku-5-5:max"
-          },
-          {
-            "label": "MiniMax-M2.7 off",
-            "value": "opencode-go/minimax-m2.7:off"
-          },
-          {
-            "label": "MiniMax-M2.7 minimal",
-            "value": "opencode-go/minimax-m2.7:minimal"
-          },
-          {
-            "label": "MiniMax-M2.7 low",
-            "value": "opencode-go/minimax-m2.7:low"
-          },
-          {
-            "label": "MiniMax-M2.7 medium",
-            "value": "opencode-go/minimax-m2.7:medium"
-          },
-          {
-            "label": "MiniMax-M2.7 high",
-            "value": "opencode-go/minimax-m2.7:high"
           },
           {
             "label": "MiMo V2.5 Pro off",
@@ -320,46 +300,6 @@
             "value": "opencode-go/mimo-v2.6-pro:high"
           },
           {
-            "label": "Qwen3.7 Plus off",
-            "value": "opencode-go/qwen3.7-plus:off"
-          },
-          {
-            "label": "Qwen3.7 Plus minimal",
-            "value": "opencode-go/qwen3.7-plus:minimal"
-          },
-          {
-            "label": "Qwen3.7 Plus low",
-            "value": "opencode-go/qwen3.7-plus:low"
-          },
-          {
-            "label": "Qwen3.7 Plus medium",
-            "value": "opencode-go/qwen3.7-plus:medium"
-          },
-          {
-            "label": "Qwen3.7 Plus high",
-            "value": "opencode-go/qwen3.7-plus:high"
-          },
-          {
-            "label": "Space Bunny low",
-            "value": "opencode-go/space-bunny:low"
-          },
-          {
-            "label": "Space Bunny medium",
-            "value": "opencode-go/space-bunny:medium"
-          },
-          {
-            "label": "Space Bunny high",
-            "value": "opencode-go/space-bunny:high"
-          },
-          {
-            "label": "Space Bunny xhigh",
-            "value": "opencode-go/space-bunny:xhigh"
-          },
-          {
-            "label": "Space Bunny max",
-            "value": "opencode-go/space-bunny:max"
-          },
-          {
             "label": "MiniMax-M3 off",
             "value": "opencode-go/minimax-m3:off"
           },
@@ -380,64 +320,24 @@
             "value": "opencode-go/minimax-m3:high"
           },
           {
-            "label": "GPT-5.6 Luna low",
-            "value": "opencode-go/gpt-5.6-luna:low"
+            "label": "Space Bunny low",
+            "value": "opencode-go/space-bunny:low"
           },
           {
-            "label": "GPT-5.6 Luna medium",
-            "value": "opencode-go/gpt-5.6-luna:medium"
+            "label": "Space Bunny medium",
+            "value": "opencode-go/space-bunny:medium"
           },
           {
-            "label": "GPT-5.6 Luna high",
-            "value": "opencode-go/gpt-5.6-luna:high"
+            "label": "Space Bunny high",
+            "value": "opencode-go/space-bunny:high"
           },
           {
-            "label": "GPT-5.6 Luna xhigh",
-            "value": "opencode-go/gpt-5.6-luna:xhigh"
+            "label": "Space Bunny xhigh",
+            "value": "opencode-go/space-bunny:xhigh"
           },
           {
-            "label": "GPT-5.6 Luna max",
-            "value": "opencode-go/gpt-5.6-luna:max"
-          },
-          {
-            "label": "Hy4 preview off",
-            "value": "opencode-go/hy4-preview:off"
-          },
-          {
-            "label": "Hy4 preview high",
-            "value": "opencode-go/hy4-preview:high"
-          },
-          {
-            "label": "DeepSeek V4 Pro (New) off",
-            "value": "opencode-go/deepseek-v4-pro:off"
-          },
-          {
-            "label": "DeepSeek V4 Pro (New) high",
-            "value": "opencode-go/deepseek-v4-pro:high"
-          },
-          {
-            "label": "DeepSeek V4 Pro (New) max",
-            "value": "opencode-go/deepseek-v4-pro:max"
-          },
-          {
-            "label": "Kimi K2.7 Code off",
-            "value": "opencode-go/kimi-k2.7-code:off"
-          },
-          {
-            "label": "Kimi K2.7 Code minimal",
-            "value": "opencode-go/kimi-k2.7-code:minimal"
-          },
-          {
-            "label": "Kimi K2.7 Code low",
-            "value": "opencode-go/kimi-k2.7-code:low"
-          },
-          {
-            "label": "Kimi K2.7 Code medium",
-            "value": "opencode-go/kimi-k2.7-code:medium"
-          },
-          {
-            "label": "Kimi K2.7 Code high",
-            "value": "opencode-go/kimi-k2.7-code:high"
+            "label": "Space Bunny max",
+            "value": "opencode-go/space-bunny:max"
           }
         ]
       }
