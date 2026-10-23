@@ -32,26 +32,6 @@
             "value": "opencode-go/beam-free:max"
           },
           {
-            "label": "LongCat 2.5 Preview Free off",
-            "value": "opencode-go/longcat-2.5-preview-free:off"
-          },
-          {
-            "label": "LongCat 2.5 Preview Free minimal",
-            "value": "opencode-go/longcat-2.5-preview-free:minimal"
-          },
-          {
-            "label": "LongCat 2.5 Preview Free low",
-            "value": "opencode-go/longcat-2.5-preview-free:low"
-          },
-          {
-            "label": "LongCat 2.5 Preview Free medium",
-            "value": "opencode-go/longcat-2.5-preview-free:medium"
-          },
-          {
-            "label": "LongCat 2.5 Preview Free high",
-            "value": "opencode-go/longcat-2.5-preview-free:high"
-          },
-          {
             "label": "MiniMax M3.1 Flash Free low",
             "value": "opencode-go/minimax-m3.1-flash-free:low"
           },
