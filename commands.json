@@ -32,26 +32,6 @@
             "value": "opencode-go/beam-free:max"
           },
           {
-            "label": "MiniMax M3.1 Flash Free low",
-            "value": "opencode-go/minimax-m3.1-flash-free:low"
-          },
-          {
-            "label": "MiniMax M3.1 Flash Free medium",
-            "value": "opencode-go/minimax-m3.1-flash-free:medium"
-          },
-          {
-            "label": "MiniMax M3.1 Flash Free high",
-            "value": "opencode-go/minimax-m3.1-flash-free:high"
-          },
-          {
-            "label": "MiniMax M3.1 Flash Free xhigh",
-            "value": "opencode-go/minimax-m3.1-flash-free:xhigh"
-          },
-          {
-            "label": "MiniMax M3.1 Flash Free max",
-            "value": "opencode-go/minimax-m3.1-flash-free:max"
-          },
-          {
             "label": "Muse Spark 1.2 Contributor minimal",
             "value": "opencode-go/muse-spark-1.2-contributor:minimal"
           },
@@ -250,6 +230,26 @@
           {
             "label": "GPT-6 Luna max",
             "value": "opencode-go/gpt-6-luna:max"
+          },
+          {
+            "label": "MiniMax M3.1 Flash low",
+            "value": "opencode-go/minimax-m3.1-flash:low"
+          },
+          {
+            "label": "MiniMax M3.1 Flash medium",
+            "value": "opencode-go/minimax-m3.1-flash:medium"
+          },
+          {
+            "label": "MiniMax M3.1 Flash high",
+            "value": "opencode-go/minimax-m3.1-flash:high"
+          },
+          {
+            "label": "MiniMax M3.1 Flash xhigh",
+            "value": "opencode-go/minimax-m3.1-flash:xhigh"
+          },
+          {
+            "label": "MiniMax M3.1 Flash max",
+            "value": "opencode-go/minimax-m3.1-flash:max"
           },
           {
             "label": "Claude Haiku 5.5 off",
